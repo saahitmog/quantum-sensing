@@ -1,0 +1,9 @@
+2022-04-06T14:39:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 134, in run
+    bgraimg = frame.image_buffer >> (self._bit_depth - 8)
+AttributeError: 'NoneType' object has no attribute 'image_buffer'
+

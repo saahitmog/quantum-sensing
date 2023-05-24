@@ -1,0 +1,72 @@
+2022-11-11T13:23:51|ERROR|thorlabs_tsi_sdk.tl_camera|Could not disarm camera; tl_camera_disarm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2022-11-11T13:23:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 204, in enable_connection
+    self.connect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 51, in connect
+    self.sdk = TLCameraSDK()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 172, in __init__
+    raise TLCameraError("TLCameraSDK is already in use. Please dispose of the current instance before"
+thorlabs_tsi_sdk.tl_camera.TLCameraError: TLCameraSDK is already in use. Please dispose of the current instance before trying to create another
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 219, in enable_connection
+    raise err
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 212, in enable_connection
+    self.disconnect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 78, in disconnect
+    self.cam.disarm()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 848, in disarm
+    raise exception
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 845, in disarm
+    raise TLCameraError(_create_c_failure_message(self._sdk, "tl_camera_disarm", error_code))
+thorlabs_tsi_sdk.tl_camera.TLCameraError: tl_camera_disarm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+
+2022-11-11T13:23:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 208, in enable_connection
+    raise err
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 204, in enable_connection
+    self.connect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 51, in connect
+    self.sdk = TLCameraSDK()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 172, in __init__
+    raise TLCameraError("TLCameraSDK is already in use. Please dispose of the current instance before"
+thorlabs_tsi_sdk.tl_camera.TLCameraError: TLCameraSDK is already in use. Please dispose of the current instance before trying to create another
+
+2022-11-11T13:23:51|ERROR|thorlabs_tsi_sdk.tl_camera|Could not disarm camera; tl_camera_disarm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2022-11-11T13:23:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 204, in enable_connection
+    self.connect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 51, in connect
+    self.sdk = TLCameraSDK()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 172, in __init__
+    raise TLCameraError("TLCameraSDK is already in use. Please dispose of the current instance before"
+thorlabs_tsi_sdk.tl_camera.TLCameraError: TLCameraSDK is already in use. Please dispose of the current instance before trying to create another
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 219, in enable_connection
+    raise err
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 212, in enable_connection
+    self.disconnect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 78, in disconnect
+    self.cam.disarm()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 848, in disarm
+    raise exception
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 845, in disarm
+    raise TLCameraError(_create_c_failure_message(self._sdk, "tl_camera_disarm", error_code))
+thorlabs_tsi_sdk.tl_camera.TLCameraError: tl_camera_disarm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+
+2022-11-11T13:23:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 208, in enable_connection
+    raise err
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 204, in enable_connection
+    self.connect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 51, in connect
+    self.sdk = TLCameraSDK()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 172, in __init__
+    raise TLCameraError("TLCameraSDK is already in use. Please dispose of the current instance before"
+thorlabs_tsi_sdk.tl_camera.TLCameraError: TLCameraSDK is already in use. Please dispose of the current instance before trying to create another
+

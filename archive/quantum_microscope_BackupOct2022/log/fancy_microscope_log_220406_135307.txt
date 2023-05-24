@@ -1,0 +1,15 @@
+2022-04-06T13:53:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 46, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 23, in setup
+    self.add_hardware(thorcam_sci.thorcam_sci_hw.ThorcamSCIHW(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\hardware.py", line 80, in __init__
+    self.setup()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 41, in setup
+    self.cam = self.connect()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 50, in connect
+    self.sdk.dispose()
+AttributeError: 'ThorcamSCIHW' object has no attribute 'sdk'
+

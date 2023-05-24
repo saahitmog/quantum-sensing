@@ -1,0 +1,13 @@
+2022-03-31T14:40:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 44, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 23, in setup
+    self.add_hardware(thorcam_sci.thorcam_sci_hw.ThorcamSCIHW(self))
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\hardware.py", line 80, in __init__
+    self.setup()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_sci\thorcam_sci_hw.py", line 35, in setup
+    configure_path()
+UnboundLocalError: local variable 'configure_path' referenced before assignment
+

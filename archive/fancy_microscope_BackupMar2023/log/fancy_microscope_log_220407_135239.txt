@@ -1,0 +1,19 @@
+2022-04-07T13:52:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 278, in run
+    self.img = image_acquisition_thread.get_output_queue().get_nowait()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\queue.py", line 192, in get_nowait
+    return self.get(block=False)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\queue.py", line 161, in get
+    raise Empty
+queue.Empty
+
+2022-04-07T13:54:01|ERROR|thorlabs_tsi_sdk.tl_camera|Camera SDK destruction failed; tl_camera_close_sdk() returned non-zero error code: 1004; error message: Cameras must be closed before closing the SDK. Error: Invalid operation.
+2022-04-07T13:54:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 135, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+

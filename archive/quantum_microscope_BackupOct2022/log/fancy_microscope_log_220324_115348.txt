@@ -1,0 +1,239 @@
+2022-03-24T11:55:57|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:57|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:58|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:59|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:59|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:59|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:59|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:55:59|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 256, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-24T11:56:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 44, in configureDAQ
+    channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.RSE,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\_task_modules\ai_channel_collection.py", line 2563, in add_ai_voltage_chan
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Requested value is not a supported value for this property. The property value may be invalid because it conflicts with another property.
+Property: DAQmx_AI_TermCfg
+Requested Value: DAQmx_Val_RSE
+Possible Values: DAQmx_Val_Diff
+Channel Name: Dev1/ai0
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200077
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 145, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 223, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+
+2022-03-24T11:56:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 44, in configureDAQ
+    channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.RSE,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\_task_modules\ai_channel_collection.py", line 2563, in add_ai_voltage_chan
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Requested value is not a supported value for this property. The property value may be invalid because it conflicts with another property.
+Property: DAQmx_AI_TermCfg
+Requested Value: DAQmx_Val_RSE
+Possible Values: DAQmx_Val_Diff
+Channel Name: Dev1/ai0
+
+Task Name: _unnamedTask<1>
+
+Status Code: -200077
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 145, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 223, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+
+2022-03-24T11:56:15|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 44, in configureDAQ
+    channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.RSE,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\_task_modules\ai_channel_collection.py", line 2563, in add_ai_voltage_chan
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Requested value is not a supported value for this property. The property value may be invalid because it conflicts with another property.
+Property: DAQmx_AI_TermCfg
+Requested Value: DAQmx_Val_RSE
+Possible Values: DAQmx_Val_Diff
+Channel Name: Dev1/ai0
+
+Task Name: _unnamedTask<2>
+
+Status Code: -200077
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 145, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 223, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+
+2022-03-24T11:56:19|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 44, in configureDAQ
+    channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.RSE,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\_task_modules\ai_channel_collection.py", line 2563, in add_ai_voltage_chan
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Requested value is not a supported value for this property. The property value may be invalid because it conflicts with another property.
+Property: DAQmx_AI_TermCfg
+Requested Value: DAQmx_Val_RSE
+Possible Values: DAQmx_Val_Diff
+Channel Name: Dev1/ai0
+
+Task Name: _unnamedTask<3>
+
+Status Code: -200077
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 145, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 223, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+
+2022-03-24T11:57:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 44, in configureDAQ
+    channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.DIFFERENTIAL,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\_task_modules\ai_channel_collection.py", line 2563, in add_ai_voltage_chan
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Requested value is not a supported value for this property. The property value may be invalid because it conflicts with another property.
+Property: DAQmx_AI_TermCfg
+Requested Value: DAQmx_Val_RSE
+Possible Values: DAQmx_Val_Diff
+Channel Name: Dev1/ai0
+
+Task Name: _unnamedTask<4>
+
+Status Code: -200077
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 145, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 223, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+
+2022-03-24T11:57:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 44, in configureDAQ
+    channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.DIFFERENTIAL,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\_task_modules\ai_channel_collection.py", line 2563, in add_ai_voltage_chan
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Requested value is not a supported value for this property. The property value may be invalid because it conflicts with another property.
+Property: DAQmx_AI_TermCfg
+Requested Value: DAQmx_Val_RSE
+Possible Values: DAQmx_Val_Diff
+Channel Name: Dev1/ai0
+
+Task Name: _unnamedTask<5>
+
+Status Code: -200077
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 145, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 223, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+

@@ -1,0 +1,10 @@
+N_scanPts:	101
+Nsamples:	1000
+startDelay:	1000.000000
+endDelay:	100000.000000
+t_AOM:	20000.000000
+plotPulseSequence:	True
+dataFileName:	D:\Code\qdSpectro_SPD\Saved_Data\20220708\ORD_fiber_100mW_sc01_top_0G_spd_2022-07-08_13h04m59s.txt
+microwavePower:	0
+microwaveFrequency	3141000000
+t_uW:	20000
