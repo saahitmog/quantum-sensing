@@ -51,7 +51,7 @@ PB_Q = 13
 #DAQ_SampleClk is the Peripheral Function Interface (PFI) terminal of the DAQ to which you have connected the output of the PB_DAQ PulseBlaster channel (i.e. the PulseBlaster channel which generates the TTL pulses that gate/act as a sample clock to time the data aquisition)
 #DAQ_StartTrig is the Peripheral Function Interface (PFI) terminal of the DAQ to which you have connected the output of the PB_STARTtrig PulseBlaster channel (i.e. the PulseBlaster channel which generates the TTL pulses that trigger the start of data aquisition at each experiment scan point)
 
-DAQ_APDInput = "Dev1/ai1"
+DAQ_APDInput = "Dev1/ai0"
 DAQ_APDTerm = "PFI0"
 DAQ_SampleClk = "PFI2"
 DAQ_StartTrig = "PFI4"
