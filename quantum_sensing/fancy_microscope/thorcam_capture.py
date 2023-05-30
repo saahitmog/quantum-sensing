@@ -176,12 +176,16 @@ class ThorCamCaptureMeasure(Measurement):
         S.New('save_h5', dtype=bool, initial=False, ro=False)
         S.New('camera_select', dtype=int, initial=0, ro=False)
         S.New('gain', dtype=int, initial=1, vmin=0, vmax=3)
-        S.New('exposure', dtype=float, unit='s', si=True, initial=0.011)
+        S.New('exposure', dtype=float, unit='s', si=True, initial=0.2)
         
         S.New('r_mod',dtype=float, initial=1.0, ro=False)
         S.New('g_mod',dtype=float, initial=1.0, ro=False)
         S.New('b_mod',dtype=float, initial=1.0, ro=False)
-                
+
+        S.New('x_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
+        S.New('y_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
+        S.New('r_pos', dtype=float, initial=0)
+        
         self.ui_filename = sibling_path(__file__,"thorcam_capture.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
         self.ui.setWindowTitle(self.name)
@@ -205,8 +209,9 @@ class ThorCamCaptureMeasure(Measurement):
         S.img_max.connect_to_widget(self.ui.max_doubleSpinBox)
         S.img_min.connect_to_widget(self.ui.min_doubleSpinBox)
 
-
-
+        S.x_pos.connect_to_widget(self.ui.movex_doubleSpinBox)
+        S.y_pos.connect_to_widget(self.ui.movey_doubleSpinBox)
+        S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
         
         cam_ui_connections = [
             ('exposure', 'exp_time_doubleSpinBox'),
