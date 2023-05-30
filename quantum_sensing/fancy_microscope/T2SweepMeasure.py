@@ -261,7 +261,8 @@ class T2SweepMeasure(Measurement):
                         self.ys[i] = signal[i]
                     else:
                         #self.ys[step] = sig_average / back_average
-                        self.ys[i] = np.divide(signal[i], background[i])
+                        # self.ys[i] = np.divide(signal[i], background[i])
+                        self.ys[i] = np.divide(signal[i]-background[i], signal[i]+background[i])
                 
                     #Average the y correctly 
                     self.average_y[i] = ((self.average_y[i] * j) + self.ys[i]) / (j+1)

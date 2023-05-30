@@ -999,5 +999,6 @@ def makeT2SweepMarker(inst, segmentLength, num):
 
 def makeXY8seq(t_delay,t_AOM,t_readoutDelay,t_pi,IQpadding, numberOfRepeats):
     return
+
 def makecorrelationSpectSeq(t_delay_betweenXY8seqs,t_delay, t_AOM,t_readoutDelay,t_pi,IQpadding,numberOfRepeats):
     return
