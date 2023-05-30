@@ -156,16 +156,16 @@ class ThorCamCaptureMeasure(Measurement):
     def save_image(self):
         print('thor_cam_capture save_image')
         S = self.settings
-        t0 = time.time();
-        fname = os.path.join(self.app.settings['save_dir'], "%i_%s" % (t0, self.name));
+        t0 = time.time()
+        fname = os.path.join(self.app.settings['save_dir'], "%i_%s" % (t0, self.name))
         
         if S['save_ini']:
-            self.app.settings_save_ini(fname + ".ini");
+            self.app.settings_save_ini(fname + ".ini")
         if S['save_png']:
-            self.imview.export(fname + ".png");
+            self.imview.export(fname + ".png")
         if S['save_tif']:
-            self.imview.export(fname + ".tif");
+            self.imview.export(fname + ".tif")
         if S['save_h5']:
             with h5_io.h5_base_file(app=self.app, measurement=self) as H:
-                M = h5_io.h5_create_measurement_group(measurement=self, h5group=H);
-                M.create_dataset('img', data=self.img, compression='gzip');
+                M = h5_io.h5_create_measurement_group(measurement=self, h5group=H)
+                M.create_dataset('img', data=self.img, compression='gzip')
