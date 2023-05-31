@@ -18,7 +18,7 @@ class Controller:
                  very_verbose=False):
         self.name = name
         self.stages = stages
-        self.reverse = reverse        
+        self.reverse = reverse
         self.verbose = verbose
         self.very_verbose = very_verbose
         if self.verbose: print("%s: opening..."%self.name, end='')
@@ -201,26 +201,30 @@ if __name__ == '__main__':
                             reverse=(False, False, False),
                             verbose=True,
                             very_verbose=False)
+    
+    x_enc = controller._get_encoder_counts(2)
+    y_enc = controller._get_encoder_counts(0)
+    print(x_enc, y_enc)
 
     # re-set zero:
-##    controller.move_um(channel, 10)
-##    controller._set_encoder_counts_to_zero(channel)
-##    controller.move_um(channel, 0)
+    #controller.move_um(channel, 10)
+    #controller._set_encoder_counts_to_zero(channel)
+    #controller.move_um(channel, 0)
 
-    print('\n# Position attribute = %0.2f'%controller.position_um[channel])
+    #print('\n# Position attribute = %0.2f'%controller.position_um)
 
     #channel 0 is Y, channel 1 is Z, channel 2 is X
 
-    print('\n# Home:')
-    controller.move_um(0, 10, relative=False, block=False)
+    #print('\n# Home:')
+    #controller.move_um(0, 0, relative=False, block=False)
     # controller.move_um(1, 0, relative=False, block=True)
-    controller.move_um(2, 10, relative=False, block=False)
+    #controller.move_um(2, 0, relative=False, block=False)
 
     def movestages(coord, offset):
         controller.move_um(2, offset[0] + coord[0], relative=False, block=True)
         controller.move_um(0, offset[1] + coord[1], relative=False, block=True)
 
-    offset = (0.8, -2.2)
+    #offset = (0.8, -2.2)
     #controller.move_um(0, -1, relative=False, block=True)
     #print('Moved to (0, 1)')
 
