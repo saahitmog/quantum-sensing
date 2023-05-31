@@ -221,7 +221,7 @@ def testMove(pidevice, posList):
                 # returned dictionary resemble the arguments. If it is called
                 # without an argument the keys are always strings.
 
-            position = pidevice.qPOS(axis)[axis]  # query single axis
+            #position = pidevice.qPOS(axis)[axis]  # query single axis
                 # position = pidevice.qPOS()[str(axis)] # query all axes
             #print('current position of axis {} is {:.2f}'.format(axis, position))
     #print('done')

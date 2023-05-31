@@ -215,6 +215,8 @@ class ThorCamCaptureMeasure(Measurement):
         S.x_pos.connect_to_widget(self.ui.movex_doubleSpinBox)
         S.y_pos.connect_to_widget(self.ui.movey_doubleSpinBox)
         S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
+        self.pos_buffer = {'x': None, 'y': None, 'r': None}
+        self.execute_move()
         
         cam_ui_connections = [
             ('exposure', 'exp_time_doubleSpinBox'),
@@ -248,12 +250,11 @@ class ThorCamCaptureMeasure(Measurement):
             self.cam_hw.settings.get_lq(lq_name).connect_to_widget(getattr(self.ui, widget_name))
 
         self.imview = pg.ImageView(view=pg.PlotItem())
-        
-
 
         def switch_camera_view():
             self.ui.plot_groupBox.layout().addWidget(self.imview)
-            self.imview.showMaximized() 
+            self.imview.showMaximized()
+
         self.ui.show_pushButton.clicked.connect(switch_camera_view)
 
         
@@ -448,13 +449,44 @@ class ThorCamCaptureMeasure(Measurement):
         return Image.fromarray(scaled_image)
     
     def execute_move(self):
-        x, y = self.settings.x_pos.val, self.settings.y_pos.val
-        
-        device = initializeController('LINEAR')
-        moveToPos(device, x, y)
-        closeDevice(device)
+        x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val
 
-        angle = self.settings.r_pos.val
-        device = initializeController('ROTATIONAL')
-        moveToAngle(device, angle)
-        closeDevice(device)
+        devices, moved = [], []
+        x_diff, y_diff, r_diff = self.pos_buffer['x'] is not None and x != self.pos_buffer['x'], \
+                                 self.pos_buffer['y'] is not None and y != self.pos_buffer['y'], \
+                                 self.pos_buffer['r'] is not None and r != self.pos_buffer['r']
+
+        if x_diff and y_diff:
+            device = initializeController('LINEAR')
+            devices.append(device)
+            moveToPos(device, x, y)
+            self.pos_buffer['x'], self.pos_buffer['y'] = x, y
+            moved.append('x')
+            moved.append('y')
+
+        elif x_diff:
+            device = initializeController('LINEAR')
+            devices.append(device)
+            moveToX(device, x)
+            self.pos_buffer['x'] = x
+            moved.append('x')
+
+        elif y_diff:
+            device = initializeController('LINEAR')
+            devices.append(device)
+            moveToY(device, y)
+            self.pos_buffer['y'] = y
+            moved.append('y')
+
+        if r_diff:
+            device = initializeController('ROTATIONAL')
+            devices.append(device)
+            moveToAngle(device, r)
+            self.pos_buffer['R'] = r
+            moved.append('r')
+        
+        for device in devices:
+            closeDevice(device)
+
+        print("Stages Moved")
+        print(f"Axes moved: {moved}")
