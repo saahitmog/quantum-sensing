@@ -2,18 +2,20 @@ from ScopeFoundry import Measurement
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 from ScopeFoundry import h5_io
 import pyqtgraph as pg
-#import scipy.misc
-import scipy
+
+import scipy.ndimage as sp_image
 import time
 #from imageio import imwrite
 #from libtiff import TIFF
 #import tifffile as tiff
 #import PIL.Image
 import numpy as np
-#from .tiffile import imsave as tif_imsave
 import os
+import sys
+sys.path.append('../')
+from movestages import *
 
-from thorlabs_tsi_sdk.tl_camera import TLCameraSDK, TLCamera, Frame
+from thorlabs_tsi_sdk.tl_camera import TLCamera, Frame
 from thorlabs_tsi_sdk.tl_camera_enums import SENSOR_TYPE
 from thorlabs_tsi_sdk.tl_mono_to_color_processor import MonoToColorProcessorSDK
 
@@ -23,7 +25,7 @@ try:
 except ImportError:
     import tkinter as tk
 from PIL import Image, ImageTk
-import typing
+#import typing
 import threading
 try:
     #  For Python 2.7 queue is named Queue
@@ -196,6 +198,7 @@ class ThorCamCaptureMeasure(Measurement):
         self.ui.interrupt_pushButton.clicked.connect(self.interrupt)
         self.ui.autowb_pushButton.clicked.connect(self.auto_white_balance)
         self.ui.save_pushButton.clicked.connect(self.save_image)
+        self.ui.move_pushButton.clicked.connect(self.execute_move)
         S.continuous.connect_to_widget(self.ui.continuous_checkBox)
         S.save_png.connect_to_widget(self.ui.save_png_checkBox)
         S.save_tif.connect_to_widget(self.ui.save_tif_checkBox)
@@ -256,23 +259,24 @@ class ThorCamCaptureMeasure(Measurement):
         
     def run(self):
         S = self.settings
-        sdk = TLCameraSDK()
-        camera_list = sdk.discover_available_cameras()
-        camera = sdk.open_camera(camera_list[S['camera_select']])
+        camera = self.cam_hw.cam
 
-        print(camera.gain_range)
+        # print(camera.gain_range)
 
         # create generic Tk App with just a LiveViewCanvas widget
         print("Generating app...")
-        root = tk.Tk()
-        root.title(camera.name)
+        #root = tk.Tk()
+        #root.title(camera.name)
         image_acquisition_thread = ImageAcquisitionThread(camera)
-        camera_widget = LiveViewCanvas(parent=root, image_queue=image_acquisition_thread.get_output_queue())
+        # camera_widget = LiveViewCanvas(parent=root, image_queue=image_acquisition_thread.get_output_queue())
 
         print("Setting camera parameters...")
         camera.frames_per_trigger_zero_for_unlimited = 0
         camera.arm(2)
         camera.issue_software_trigger()
+
+        self.cam_hw.set_exposure(S['exposure'])
+        self.cam_hw.set_gain(S['gain'])
 
         print("Starting image acquisition thread...")
         image_acquisition_thread.start()
@@ -289,13 +293,17 @@ class ThorCamCaptureMeasure(Measurement):
 
         while not self.interrupt_measurement_called:
             try:
-                # self.cam_hw.set_exposure(S['exposure'])
-                camera.exposure_time_us = int(1e6*S['exposure'])
-                # self.cam_hw.set_gain(S['gain'])
-                camera.gain = S['gain']
+                self.cam_hw.set_exposure(S['exposure'])
+                # camera.exposure_time_us = int(1e6*S['exposure'])
+                self.cam_hw.set_gain(S['gain'])
+                # camera.gain = S['gain']
                 self.img = image_acquisition_thread.get_output_queue().get_nowait()
+                print(self.img.size)
             except queue.Empty:
                 pass
+            else:
+                pass
+                print("Updated Image")
 
         # while not self.interrupt_measurement_called:
         #     #bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
@@ -344,13 +352,7 @@ class ThorCamCaptureMeasure(Measurement):
 
         print("Closing resources...")
         camera.disarm()
-        camera.dispose()
-        sdk.dispose()
         print("App terminated. Goodbye!")
-
-        
-
-
         
     
     def setup_figure(self):
@@ -365,14 +367,15 @@ class ThorCamCaptureMeasure(Measurement):
             #self.imview.setImage(self.img, axes={'y':0, 'x':1, 'c':2}, autoRange=False, levels=(self.settings.img_min.value,self.settings.img_max.value))
             #self.imview.setImage(self.img, axes={'y':0, 'x':1, 'c':2}, levels=(0.0, np.max([r.max(), g.max(), b.max()])))
             #self.img.resize()
-            image = np.asarray(self.img)
-            scipy.ndimage.zoom(image, 3)
+            #image = np.asarray(self.img)
+            image = np.array(self.img.getdata()).reshape(self.img.height, self.img.width)
+            #sp_image.zoom(image, 3)
             #self.imview.setImage(image, axes={'y':0, 'x':1, 'c':2}, autoLevels=True)
             #######self.imview.setImage(image, axes={'y':0, 'x':1}, autoLevels=True)
             #saturation = image[:,:,:3].max() / 255.0
             #self.imview.view.setTitle('{:2.0f}% max saturation'.format(saturation*100.0))
             #self.imview.setImage(image[:,:,:3], axes={'y':0, 'x':1, 'c':2}, autoLevels=True)
-            self.imview.setImage(image, axes={'y':0, 'x':1}, autoRange=False, levels=(self.settings.img_min.value,self.settings.img_max.value))
+            self.imview.setImage(image, autoRange=False, levels=(self.settings.img_min.value,self.settings.img_max.value))
     
     def auto_white_balance(self):
         #bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
@@ -407,19 +410,19 @@ class ThorCamCaptureMeasure(Measurement):
     def save_image(self):
         print('thor_cam_capture save_image')
         S = self.settings
-        t0 = time.time();
-        fname = os.path.join(self.app.settings['save_dir'], "%i_%s" % (t0, self.name));
+        t0 = time.time()
+        fname = os.path.join(self.app.settings['save_dir'], "%i_%s" % (t0, self.name))
         
         if S['save_ini']:
-            self.app.settings_save_ini(fname + ".ini");
+            self.app.settings_save_ini(fname + ".ini")
         if S['save_png']:
-            self.imview.export(fname + ".png");
+            self.imview.export(fname + ".png")
         if S['save_tif']:
-            self.imview.export(fname + ".tif");
+            self.imview.export(fname + ".tif")
         if S['save_h5']:
             with h5_io.h5_base_file(app=self.app, measurement=self) as H:
-                M = h5_io.h5_create_measurement_group(measurement=self, h5group=H);
-                M.create_dataset('img', data=self.img, compression='gzip');
+                M = h5_io.h5_create_measurement_group(measurement=self, h5group=H)
+                M.create_dataset('img', data=self.img, compression='gzip')
 
     def _get_color_image(self, frame):
         # type: (Frame) -> Image
@@ -443,3 +446,15 @@ class ThorCamCaptureMeasure(Measurement):
         # no coloring, just scale down image to 8 bpp and place into PIL Image object
         scaled_image = frame.image_buffer >> (self._bit_depth - 8)
         return Image.fromarray(scaled_image)
+    
+    def execute_move(self):
+        x, y = self.settings.x_pos.val, self.settings.y_pos.val
+        
+        device = initializeController('LINEAR')
+        moveToPos(device, x, y)
+        closeDevice(device)
+
+        angle = self.settings.r_pos.val
+        device = initializeController('ROTATIONAL')
+        moveToAngle(device, angle)
+        closeDevice(device)

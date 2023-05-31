@@ -1,0 +1,10 @@
+2023-05-30T16:32:22|INFO|ThorCamCaptureMeasure|Camera start_stop False
+2023-05-30T16:32:22|INFO|ThorCamCaptureMeasure|measurement Camera interrupt
+2023-05-30T16:32:22|INFO|ThorCamTestApp|setting up figures for Camera measurement Camera
+2023-05-30T16:32:31|INFO|ThorCamCaptureMeasure|Camera start_stop True
+2023-05-30T16:32:31|INFO|ThorCamCaptureMeasure|measurement Camera start
+2023-05-30T16:32:43|INFO|ThorCamCaptureMeasure|measurement Camera interrupt
+2023-05-30T16:32:43|INFO|ThorCamCaptureMeasure|Camera start_stop False
+2023-05-30T16:32:43|INFO|ThorCamCaptureMeasure|measurement Camera interrupt
+2023-05-30T16:32:49|INFO|ThorCamTestApp|on_close
+2023-05-30T16:32:49|INFO|ThorCamTestApp|disconnecting thor_cam

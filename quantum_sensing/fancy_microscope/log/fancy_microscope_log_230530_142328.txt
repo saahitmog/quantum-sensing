@@ -1,0 +1,9 @@
+2023-05-30T14:23:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 73, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 25, in setup
+    print(dict(self.hardware['thor_cam']))
+TypeError: 'ThorcamSCIHW' object is not iterable
+

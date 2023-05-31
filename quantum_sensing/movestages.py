@@ -26,7 +26,7 @@ __signature__ = 0x59b6d589fbcaf327eedc4f70f9f539cc
 
 
 import time
-from pipython import GCSDevice, pitools
+from pipython import GCSDevice
 from pipython.pidevice.gcs2 import gcs2pitools
 import sys
 
@@ -124,7 +124,7 @@ def moveToY(pidevice, ypos):
 def moveX(pidevice, posList):
     for axis in ['1']:
         for target in posList:
-            print('move axis {} to {:.2f}'.format(axis, target))
+            #print('move axis {} to {:.2f}'.format(axis, target))
             pidevice.MOV(axis, target)
 
                 # To check the "on target state" of an axis there is the GCS command
@@ -140,13 +140,13 @@ def moveX(pidevice, posList):
 
             position = pidevice.qPOS(axis)[axis]  # query single axis
                 # position = pidevice.qPOS()[str(axis)] # query all axes
-            print('current position of axis {} is {:.2f}'.format(axis, position))
-    print('done') 
+            #print('current position of axis {} is {:.2f}'.format(axis, position))
+    #print('done') 
    
 def moveY(pidevice, posList):
     for axis in ['2']:
         for target in posList:
-            print('move axis {} to {:.2f}'.format(axis, target))
+            #print('move axis {} to {:.2f}'.format(axis, target))
             pidevice.MOV(axis, target)
 
                 # To check the "on target state" of an axis there is the GCS command
@@ -162,8 +162,8 @@ def moveY(pidevice, posList):
 
             position = pidevice.qPOS(axis)[axis]  # query single axis
                 # position = pidevice.qPOS()[str(axis)] # query all axes
-            print('current position of axis {} is {:.2f}'.format(axis, position))
-    print('done')  
+            #print('current position of axis {} is {:.2f}'.format(axis, position))
+    #print('done')  
 
 def initializeController(stageType):
     if stageType not in ['LINEAR', 'ROTATIONAL']:
@@ -184,13 +184,14 @@ def initializeController(stageType):
         # identification string with a trailing line feed character which
         # we "strip" away.
 
-        print('connected: {}'.format(pidevice.qIDN().strip()))
+        #print('connected: {}'.format(pidevice.qIDN().strip()))
 
         # Show the version info which is helpful for PI support when there
         # are any issues.
 
         if pidevice.HasqVER():
-            print('version info:\n{}'.format(pidevice.qVER().strip()))
+            #print('version info:\n{}'.format(pidevice.qVER().strip()))
+            pass
 
         # In the module pipython.pitools there are some helper
         # functions to make using a PI device more convenient. The "startup"
@@ -199,14 +200,14 @@ def initializeController(stageType):
         # "stages" argument. The desired referencing method (see controller
         # user manual) is passed as "refmode" argument. All connected axes
         # will be stopped if they are moving and their servo will be enabled.
-        print('initialize connected stages...')
+        #print('initialize connected stages...')
         gcs2pitools.startup(pidevice, stages=STAGES[stageType], refmodes=REFMODES[stageType])
         return pidevice
 
 def testMove(pidevice, posList):
     for axis in pidevice.axes:
         for target in posList:
-            print('move axis {} to {:.2f}'.format(axis, target))
+            #print('move axis {} to {:.2f}'.format(axis, target))
             pidevice.MOV(axis, target)
 
                 # To check the "on target state" of an axis there is the GCS command
@@ -222,8 +223,9 @@ def testMove(pidevice, posList):
 
             position = pidevice.qPOS(axis)[axis]  # query single axis
                 # position = pidevice.qPOS()[str(axis)] # query all axes
-            print('current position of axis {} is {:.2f}'.format(axis, position))
-    print('done')
+            #print('current position of axis {} is {:.2f}'.format(axis, position))
+    #print('done')
+    
 def closeDevice(device):
     device.close()
 

@@ -63,16 +63,16 @@ class ThorcamSCIHW(HardwareComponent):
 
     def set_exposure(self, t):
         # t is in seconds
-        self.camera.exposure_time_us = int(t*1e6)
+        self.cam.exposure_time_us = int(t*1e6)
         self.settings['exposure'] = t
 
     def set_gain(self, g):
-        self.camera.gain = int(g)
+        self.cam.gain = int(g)
         self.settings['gain'] = g
 
     def disconnect(self):
         if hasattr(self, 'camera'):
-            self.camera.disarm()
+            self.cam.disarm()
 
         if hasattr(self, 'sdk'):
             self.cam.disarm()

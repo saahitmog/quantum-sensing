@@ -51,6 +51,13 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="move_pushButton">
+        <property name="text">
+         <string>Move</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
