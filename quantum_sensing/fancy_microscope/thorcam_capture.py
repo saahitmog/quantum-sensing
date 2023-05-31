@@ -186,7 +186,7 @@ class ThorCamCaptureMeasure(Measurement):
 
         S.New('x_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
         S.New('y_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
-        S.New('r_pos', dtype=float, initial=0)
+        S.New('r_pos', dtype=float, initial=-60)
         
         self.ui_filename = sibling_path(__file__,"thorcam_capture.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
@@ -217,6 +217,7 @@ class ThorCamCaptureMeasure(Measurement):
         S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
         self.execute_move()
+        print("Stage Position Initialized")
         
         cam_ui_connections = [
             ('exposure', 'exp_time_doubleSpinBox'),
@@ -452,9 +453,9 @@ class ThorCamCaptureMeasure(Measurement):
         x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val
 
         devices, moved = [], []
-        x_diff, y_diff, r_diff = self.pos_buffer['x'] is not None and x != self.pos_buffer['x'], \
-                                 self.pos_buffer['y'] is not None and y != self.pos_buffer['y'], \
-                                 self.pos_buffer['r'] is not None and r != self.pos_buffer['r']
+        x_diff, y_diff, r_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
+                                 self.pos_buffer['y'] is None or y != self.pos_buffer['y'], \
+                                 self.pos_buffer['r'] is None or r != self.pos_buffer['r']
 
         if x_diff and y_diff:
             device = initializeController('LINEAR')
@@ -482,11 +483,11 @@ class ThorCamCaptureMeasure(Measurement):
             device = initializeController('ROTATIONAL')
             devices.append(device)
             moveToAngle(device, r)
-            self.pos_buffer['R'] = r
+            self.pos_buffer['r'] = r
             moved.append('r')
         
         for device in devices:
             closeDevice(device)
 
-        print("Stages Moved")
-        print(f"Axes moved: {moved}")
+        if x_diff or y_diff or r_diff:
+            print("Stages Moved")

@@ -212,28 +212,34 @@ if __name__ == '__main__':
     #channel 0 is Y, channel 1 is Z, channel 2 is X
 
     print('\n# Home:')
-    controller.move_um(0, 0, relative=False, block=True)
+    controller.move_um(0, 10, relative=False, block=False)
     # controller.move_um(1, 0, relative=False, block=True)
-    controller.move_um(2, 0, relative=False, block=True)
+    controller.move_um(2, 10, relative=False, block=False)
 
     def movestages(coord, offset):
         controller.move_um(2, offset[0] + coord[0], relative=False, block=True)
         controller.move_um(0, offset[1] + coord[1], relative=False, block=True)
 
     offset = (0.8, -2.2)
+    #controller.move_um(0, -1, relative=False, block=True)
+    #print('Moved to (0, 1)')
 
-    movestages((0, 5), offset)
-    print('Moved to (0, 5)')
-    time.sleep(5)
-    movestages((0, 10), offset)
-    print('Moved to (0, 10)')
-    time.sleep(5)
-    movestages((5, 5), offset)
-    print('Moved to (5, 5)')
-    time.sleep(5)
-    movestages((0, 0), offset)
-    print('Moved to (0, 0)')
-    time.sleep(5)
+    #time.sleep(5)
+
+    #controller.move_um(2, 0.5, relative=False, block=True)
+    #print('Moved to (1, 1)')
+    #movestages((0, 5), offset)
+    #print('Moved to (0, 5)')
+    #time.sleep(5)
+    #movestages((0, 10), offset)
+    #print('Moved to (0, 10)')
+    #time.sleep(5)
+    #movestages((5, 5), offset)
+    #print('Moved to (5, 5)')
+    #time.sleep(5)
+    #movestages((0, 0), offset)
+    #print('Moved to (0, 0)')
+    #time.sleep(5)
 
     # print('\n# Some relative moves:')
     # for moves in range(3):
