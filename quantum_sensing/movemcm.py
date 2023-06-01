@@ -40,8 +40,9 @@ class Controller:
         self.position_um = 3*[None]
 
         supported_stages = { # 'Type': (_um_per_count, +- _position_limit_um, )
-                        'ZFM2020':( 0.2116667, 1e3 * 12.7),
-                        'ZFM2030':( 0.2116667, 1e3 * 12.7),
+                        'ZFM2020':(0.2116667, 1e3 * 12.7),
+                        'ZFM2030':(0.2116667, 1e3 * 12.7),
+                        'PLS-XY': (0.2116667, 1e3 * 12.7),
                         'MMP-2XY':(0.5, 1e3 * 25.4)}
         self.channels = []
         for channel, stage in enumerate(self.stages):
@@ -97,6 +98,7 @@ class Controller:
             print('%s(ch%s): getting encoder counts'%(self.name, channel))
         channel_byte = channel.to_bytes(1, byteorder='little')
         cmd = b'\x0a\x04' + channel_byte + b'\x00\x00\x00'
+        print(cmd)
         response = self._send(cmd, channel, response_bytes=12)
         assert response[6:7] == channel_byte # channel = selected
         encoder_counts = int.from_bytes(
@@ -197,7 +199,7 @@ class Controller:
 if __name__ == '__main__':
     channel = 2
     controller = Controller(which_port='COM5',
-                            stages=('ZFM2030', 'ZFM2030', 'ZFM2030'),
+                            stages=('PLS-XY', 'PLS-XY', 'ZFM2030'),
                             reverse=(False, False, False),
                             verbose=True,
                             very_verbose=False)
