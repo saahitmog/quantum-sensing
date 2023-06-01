@@ -18,7 +18,7 @@
    <item row="0" column="3">
     <widget class="QGroupBox" name="move_groupBox">
      <property name="title">
-      <string>Stage Controls</string>
+      <string>PI Stage Controls</string>
      </property>
      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
       <item row="0" column="1">

@@ -14,6 +14,7 @@ import os
 import sys
 sys.path.append('../')
 from movestages import *
+from movemcm import Controller as mcmctrl
 
 from thorlabs_tsi_sdk.tl_camera import TLCamera, Frame
 from thorlabs_tsi_sdk.tl_camera_enums import SENSOR_TYPE
@@ -110,7 +111,6 @@ class ImageAcquisitionThread(threading.Thread):
         self._stop_event = threading.Event()
 
     def get_output_queue(self):
-        # type: (type(None)) -> queue.Queue
         return self._image_queue
 
     def stop(self):
@@ -198,7 +198,7 @@ class ThorCamCaptureMeasure(Measurement):
         self.ui.interrupt_pushButton.clicked.connect(self.interrupt)
         self.ui.autowb_pushButton.clicked.connect(self.auto_white_balance)
         self.ui.save_pushButton.clicked.connect(self.save_image)
-        self.ui.move_pushButton.clicked.connect(self.execute_move)
+        self.ui.move_pushButton.clicked.connect(self.execute_movePI)
         S.continuous.connect_to_widget(self.ui.continuous_checkBox)
         S.save_png.connect_to_widget(self.ui.save_png_checkBox)
         S.save_tif.connect_to_widget(self.ui.save_tif_checkBox)
@@ -216,7 +216,7 @@ class ThorCamCaptureMeasure(Measurement):
         S.y_pos.connect_to_widget(self.ui.movey_doubleSpinBox)
         S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
-        self.execute_move()
+        self.execute_movePI()
         print("Stage Position Initialized")
         
         cam_ui_connections = [
@@ -449,7 +449,7 @@ class ThorCamCaptureMeasure(Measurement):
         scaled_image = frame.image_buffer >> (self._bit_depth - 8)
         return Image.fromarray(scaled_image)
     
-    def execute_move(self):
+    def execute_movePI(self):
         x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val
 
         devices, moved = [], []

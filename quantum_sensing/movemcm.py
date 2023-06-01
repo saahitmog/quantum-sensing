@@ -98,7 +98,7 @@ class Controller:
             print('%s(ch%s): getting encoder counts'%(self.name, channel))
         channel_byte = channel.to_bytes(1, byteorder='little')
         cmd = b'\x0a\x04' + channel_byte + b'\x00\x00\x00'
-        print(cmd)
+ 
         response = self._send(cmd, channel, response_bytes=12)
         assert response[6:7] == channel_byte # channel = selected
         encoder_counts = int.from_bytes(
@@ -207,9 +207,8 @@ if __name__ == '__main__':
 
     controller._set_encoder_counts_to_zero(channel)
     enc0 = controller._get_encoder_counts(channel)
-    #y_enc = controller._get_encoder_counts(0)
-    controller.move_um(channel, 1e3, relative=False, block=True)
-    enc = controller._get_encoder_counts(2)
+    controller.move_um(channel, 1e6, relative=False, block=True)
+    enc = controller._get_encoder_counts(channel)
     print(enc0, enc)
 
     # re-set zero:
