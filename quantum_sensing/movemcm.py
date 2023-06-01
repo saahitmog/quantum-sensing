@@ -81,15 +81,15 @@ class Controller:
         assert channel in self.channels, (
             '%s: channel \'%s\' is not available'%(self.name, channel))
         if self.very_verbose:
-            print('%s(ch%s): sending cmd: %s'%(self.name, channel, cmd))
+            print('%s(ch%s): sending cmd: %s'%(self.name, channel, cmd.hex()))
         self.port.write(cmd)
         if response_bytes is not None:
             response = self.port.read(response_bytes)
         else:
             response = None
         assert self.port.inWaiting() == 0
-        if self.very_verbose:
-            print('%s(ch%s): -> response: %s'%(self.name, channel, response))
+        if self.very_verbose and response is not None:
+            print('%s(ch%s): -> response: %s'%(self.name, channel, response.hex()))
         return response
 
     def _get_encoder_counts(self, channel):
@@ -200,11 +200,15 @@ if __name__ == '__main__':
                             stages=('ZFM2030', 'ZFM2030', 'ZFM2030'),
                             reverse=(False, False, False),
                             verbose=True,
-                            very_verbose=False)
+                            very_verbose=True)
     
-    x_enc = controller._get_encoder_counts(2)
-    y_enc = controller._get_encoder_counts(0)
-    print(x_enc, y_enc)
+
+    controller._set_encoder_counts_to_zero(channel)
+    enc0 = controller._get_encoder_counts(channel)
+    #y_enc = controller._get_encoder_counts(0)
+    controller.move_um(channel, 1e3, relative=False, block=True)
+    enc = controller._get_encoder_counts(2)
+    print(enc0, enc)
 
     # re-set zero:
     #controller.move_um(channel, 10)
