@@ -206,7 +206,7 @@ if __name__ == '__main__':
     controller._set_encoder_counts_to_zero(channel)
     enc0 = controller._get_encoder_counts(channel)
     #y_enc = controller._get_encoder_counts(0)
-    controller.move_um(channel, 1e3, relative=False, block=True)
+    controller.move_um(channel, 5e3, relative=False, block=True)
     enc = controller._get_encoder_counts(2)
     print(enc0, enc)
 
