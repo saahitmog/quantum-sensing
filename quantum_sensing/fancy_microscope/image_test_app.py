@@ -6,6 +6,7 @@ import pyqtgraph as pg
 import sys
 sys.path.append('../')
 from movestages import *
+import numpy as np
 
 class ImageTestApp(BaseMicroscopeApp):
 
@@ -16,7 +17,7 @@ class ImageTestApp(BaseMicroscopeApp):
 
 class ImageMeasure(Measurement):
     
-    name = 'Camera'
+    name = 'Image'
     
     def setup(self):
         
@@ -57,11 +58,9 @@ class ImageMeasure(Measurement):
         S.y_max.connect_to_widget(self.ui.ymax_doubleSpinBox)
         S.dx.connect_to_widget(self.ui.dx_doubleSpinBox)
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
-        #S.z_pos.connect_to_widget(self.ui.movez_doubleSpinBox)
-        #S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
 
-        #self._execute_movePI()
+        self._execute_move()
 
         self.graph_layout = pg.GraphicsLayoutWidget()
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
@@ -71,7 +70,11 @@ class ImageMeasure(Measurement):
         self.average_plotline = self.plot.plot()
         
     def run(self):
-        
+        S = self.settings
+        xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
+
+        xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
+        print(xy)
         
         print("App terminated. Goodbye!")
 
