@@ -24,7 +24,7 @@ class ThorCamHW(HardwareComponent):
             write_func = self.cam.set_exposure
             )
         
-        _min, _max,_inc =self.cam.get_exposure_limits()
+        _min, _max, _inc =self.cam.get_exposure_limits()
         self.settings.exp_time.change_min_max(_min, _max)
         
         self.settings.gain.connect_to_hardware(
@@ -36,7 +36,8 @@ class ThorCamHW(HardwareComponent):
             read_func = self.cam.get_pixelclock,
             write_func = self.cam.set_pixelclock
             )
-        _min, _max,_inc =self.cam.get_pixelclock_range()
+        
+        _min, _max, _inc =self.cam.get_pixelclock_range()
         self.settings.pixel_clock.change_min_max(_min, _max)
 
         self.settings.pixel_clock.add_listener(self.on_pixel_clock_update)
@@ -50,5 +51,5 @@ class ThorCamHW(HardwareComponent):
             del self.cam
             
     def on_pixel_clock_update(self):
-        _min, _max,_inc =self.cam.get_exposure_limits()
+        _min, _max, _inc = self.cam.get_exposure_limits()
         self.settings.exp_time.change_min_max(_min, _max)

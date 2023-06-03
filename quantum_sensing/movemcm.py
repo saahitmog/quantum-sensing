@@ -40,8 +40,10 @@ class Controller:
         self.position_um = 3*[None]
 
         supported_stages = { # 'Type': (_um_per_count, +- _position_limit_um, )
-                        'ZFM2020':( 0.2116667, 1e3 * 12.7),
-                        'ZFM2030':( 0.2116667, 1e3 * 12.7),
+                        'ZFM2020':(0.2116667, 1e3 * 12.7),
+                        'ZFM2030':(0.2116667, 1e3 * 12.7),
+                        'PLS-XY': (0.2116667, 1e3 * 12.7),
+                        'PLS-Z': ((0.2116667, 1e3 * 25.4)),
                         'MMP-2XY':(0.5, 1e3 * 25.4)}
         self.channels = []
         for channel, stage in enumerate(self.stages):
@@ -97,6 +99,7 @@ class Controller:
             print('%s(ch%s): getting encoder counts'%(self.name, channel))
         channel_byte = channel.to_bytes(1, byteorder='little')
         cmd = b'\x0a\x04' + channel_byte + b'\x00\x00\x00'
+ 
         response = self._send(cmd, channel, response_bytes=12)
         assert response[6:7] == channel_byte # channel = selected
         encoder_counts = int.from_bytes(
@@ -195,20 +198,18 @@ class Controller:
         return None
 
 if __name__ == '__main__':
-    channel = 2
+    channel = 1
     controller = Controller(which_port='COM5',
-                            stages=('ZFM2030', 'ZFM2030', 'ZFM2030'),
+                            stages=('PLS-XY', 'PLS-XY', 'ZFM2030'),
                             reverse=(False, False, False),
                             verbose=True,
-                            very_verbose=True)
+                            very_verbose=False)
     
-
+    um = 0
     controller._set_encoder_counts_to_zero(channel)
-    enc0 = controller._get_encoder_counts(channel)
-    #y_enc = controller._get_encoder_counts(0)
-    controller.move_um(channel, 5e3, relative=False, block=True)
-    enc = controller._get_encoder_counts(2)
-    print(enc0, enc)
+    controller.move_um(channel, um, relative=False, block=True)
+    enc = controller._get_encoder_counts(channel)
+    print(enc)
 
     # re-set zero:
     #controller.move_um(channel, 10)

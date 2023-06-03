@@ -1,0 +1,33 @@
+2023-06-02T14:21:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "thorcam_test_app.py", line 53, in <module>
+    app = ThorCamTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "thorcam_test_app.py", line 34, in setup
+    self.add_measurement(thorcam_capture.ThorCamCaptureMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 255, in setup
+    self._execute_movePI()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 503, in _execute_movePI
+    moveToPos(device, x, y)
+  File "..\movestages.py", line 115, in moveToPos
+    moveX(pidevice, [xpos])
+  File "..\movestages.py", line 133, in moveX
+    gcs2pitools.waitontarget(pidevice, axes=axis)
+  File "..\pipython\pidevice\gcs2\gcs2pitools.py", line 502, in waitontarget
+    waitonready(pidevice, timeout=timeout, predelay=predelay, polldelay=polldelay)
+  File "..\pipython\pidevice\gcs2\gcs2pitools.py", line 479, in waitonready
+    while not pidevice.IsControllerReady():
+  File "..\pipython\pidevice\common\gcsbasecommands.py", line 1462, in IsControllerReady
+    answer = self._msgs.read(chr(7))
+  File "..\pipython\pidevice\gcsmessages.py", line 153, in read
+    answer = self._read(stopon)
+  File "..\pipython\pidevice\gcsmessages.py", line 203, in _read
+    received = self._interface.read()
+  File "..\pipython\pidevice\interfaces\gcsdll.py", line 240, in read
+    if self._answersize:
+  File "..\pipython\pidevice\interfaces\gcsdll.py", line 222, in _answersize
+    if not getattr(self._handle, self._prefix + 'GcsGetAnswerSize')(self._id, ctypes.byref(size)):
+KeyboardInterrupt
+
