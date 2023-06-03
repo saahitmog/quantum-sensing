@@ -3,9 +3,10 @@ from ScopeFoundry import Measurement
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import pyqtgraph as pg
 
-import sys
+import sys, time
 sys.path.append('../')
-from movestages import *
+import movestages as pi_ctrl
+import numpy as np
 
 class ImageTestApp(BaseMicroscopeApp):
 
@@ -16,22 +17,13 @@ class ImageTestApp(BaseMicroscopeApp):
 
 class ImageMeasure(Measurement):
     
-    name = 'Camera'
+    name = 'Image'
     
     def setup(self):
         
         S = self.settings
 
-        S.New('photon_mode', dtype=bool, initial=False)
-        S.New('AWG_mode', dtype=bool, initial=True)
-        S.New('Start_Frequency', dtype=float, initial=3.088, spinbox_decimals=4, unit='GHz', spinbox_step=0.001)
-        S.New('End_Frequency', dtype=float, initial=3.11, spinbox_decimals=4, unit='GHz', spinbox_step=0.001)      
-        S.New('Vpp', dtype=float, initial=0.2, spinbox_decimals=3, spinbox_step=0.01, unit='V', si=True)
         S.New('N_pts', dtype=int, initial=100)
-        S.New('N_samples', dtype=int, initial=1000)
-        S.New('DAQtimeout', dtype=int, initial=10, unit='s')
-        S.New('t_duration', dtype=float, initial=0.0005, unit='s', si=True)
-        S.New('magnet_current', dtype=float, initial=0.6)
         S.New('Navg', dtype=int, initial=10)
 
         S.New('x_min', dtype=float, initial=0, vmin=0.0, vmax=18.0)
@@ -46,7 +38,7 @@ class ImageMeasure(Measurement):
         self.ui.setWindowTitle(self.name)
         
         S.activation.connect_to_widget(self.ui.start_box)
-        self.ui.interrupt_pushButton.clicked.connect(self.execute_move)
+        self.ui.interrupt_pushButton.clicked.connect(self._interrupt)
 
         S.N_pts.connect_to_widget(self.ui.N_pts_doubleSpinBox)
         S.Navg.connect_to_widget(self.ui.Navg_doubleSpinBox)
@@ -57,9 +49,9 @@ class ImageMeasure(Measurement):
         S.y_max.connect_to_widget(self.ui.ymax_doubleSpinBox)
         S.dx.connect_to_widget(self.ui.dx_doubleSpinBox)
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
-        self.pos_buffer = {'x': None, 'y': None}
+        self.pos_buffer = {'x': None, 'y': None, 'r': None}
 
-        #self._execute_move()
+        self.stage = self._initialize_stages()
 
         self.graph_layout = pg.GraphicsLayoutWidget()
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
@@ -69,52 +61,48 @@ class ImageMeasure(Measurement):
         self.average_plotline = self.plot.plot()
         
     def run(self):
-        
-        
-        print("App terminated. Goodbye!")
+        S = self.settings
+        xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
 
-    def _execute_move(self):
-        x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val
+        xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
 
-        devices, moved = [], []
-        x_diff, y_diff, r_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
-                                 self.pos_buffer['y'] is None or y != self.pos_buffer['y'], \
-                                 self.pos_buffer['r'] is None or r != self.pos_buffer['r']
+        for x, y in xy:
+            if self.interrupt_measurement_called:
+                print('Interrupted')
+                break
+            self._execute_move(x, y)
+            time.sleep(0.5)
+            # DO MEASUREMENT
+
+        self._execute_move(9, 9)
+        pi_ctrl.closeDevice(self.stage)
+        # print("Measurement Complete!")
+
+    def _initialize_stages(self):
+        return pi_ctrl.initializeController('LINEAR')
+
+    def _execute_move(self, x, y):
+
+        x_diff, y_diff= self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
+                                 self.pos_buffer['y'] is None or y != self.pos_buffer['y']
 
         if x_diff and y_diff:
-            device = initializeController('LINEAR')
-            devices.append(device)
-            moveToPos(device, x, y)
+            pi_ctrl.moveToPos(self.stage, x, y)
             self.pos_buffer['x'], self.pos_buffer['y'] = x, y
-            moved.append('x')
-            moved.append('y')
 
         elif x_diff:
-            device = initializeController('LINEAR')
-            devices.append(device)
-            moveToX(device, x)
+            pi_ctrl.moveToX(self.stage, x)
             self.pos_buffer['x'] = x
-            moved.append('x')
 
         elif y_diff:
-            device = initializeController('LINEAR')
-            devices.append(device)
-            moveToY(device, y)
+            pi_ctrl.moveToY(self.stage, y)
             self.pos_buffer['y'] = y
-            moved.append('y')
 
-        if r_diff:
-            device = initializeController('ROTATIONAL')
-            devices.append(device)
-            moveToAngle(device, r)
-            self.pos_buffer['r'] = r
-            moved.append('r')
-        
-        for device in devices:
-            closeDevice(device)
+        #if x_diff or y_diff:
+        #    print("Stages Updated")
 
-        if x_diff or y_diff or r_diff:
-            print("Stages Moved")
+    def _interrupt(self):
+        self.interrupt_measurement_called = True
         
 if __name__ == '__main__':
     
