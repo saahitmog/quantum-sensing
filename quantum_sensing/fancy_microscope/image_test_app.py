@@ -191,17 +191,10 @@ class ESRImageMeasure(Measurement):
         
     def run(self):
         S = self.settings
+        starttime = time.time()
         xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
 
         xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
-
-        for x, y in xy:
-            if self.interrupt_measurement_called:
-                print('Interrupted')
-                break
-            self._execute_move(x, y)
-            time.sleep(0.5)
-            # DO MEASUREMENT
 
         if(S.photon_mode.val):
             import DAQcontrol_SPD as DAQ  ## single_photon_stream => replaced with DAQcontrol_SPD by zhao 7/19/2022
