@@ -7,10 +7,10 @@ import sys, time, os, inspect, copy
 from datetime import datetime
 import numpy as np
 import pandas as pd
-import AWGcontrol as AWGctl
+# import AWGcontrol as AWGctl
 
 sys.path.append('../')
-import movestages as PIctrl
+#import movestages as PIctrl
 
 class ImageTestApp(BaseMicroscopeApp):
 
@@ -54,11 +54,21 @@ class ImageMeasure(Measurement):
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
         self.stage = self._initialize_stages()
-        
+        self.plotdata = []
+
+    def setup_figure(self):
+        self.graph_layout = pg.GraphicsLayoutWidget()
+        self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
+        self.plot = self.graph_layout.addPlot(title="X Position vs Y Position")
+
+        #self.plotline = self.plot.plot()
+        self.scatter = pg.ScatterPlotItem(size=10, brush=pg.mkBrush(255, 255, 0, 255))
+        self.plot.addItem(self.scatter)
+
     def run(self):
 
         S = self.settings
-
+        self.plotdata = []
         xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
         xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
 
@@ -77,8 +87,9 @@ class ImageMeasure(Measurement):
                 x, y = pix
                 self._execute_move(x, y)
                 # ---- DO MEASUREMENT ----
+                self.plotdata.append(pix.tolist())
                 self.set_progress((idx + 1) / xy.size * 100)
-
+                time.sleep(1)
             endtime = time.time()
             print(f'Measurement time: {endtime-starttime} s')
             print("Measurement Complete!")
@@ -88,13 +99,18 @@ class ImageMeasure(Measurement):
         finally:
             # ---- CLOSE EQUIPMENT ----
             self._execute_move(9, 9)
-            PIctrl.closeDevice(self.stage)
+            #PIctrl.closeDevice(self.stage)
+
+    def update_display(self):
+        self.scatter.clear()
+        self.scatter.addPoints(pos=self.plotdata)
 
     def _initialize_stages(self):
-        return PIctrl.initializeController('LINEAR')
+        return
+        #return PIctrl.initializeController('LINEAR')
 
     def _execute_move(self, x, y):
-
+        return
         x_diff, y_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
                          self.pos_buffer['y'] is None or y != self.pos_buffer['y']
 
@@ -113,7 +129,7 @@ class ImageMeasure(Measurement):
     def _interrupt(self):
         self.interrupt_measurement_called = True
 
-class ESRImageMeasure(Measurement):
+'''class ESRImageMeasure(Measurement):
     
     name = 'ESRImageTest'
     
@@ -161,6 +177,8 @@ class ESRImageMeasure(Measurement):
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
         self.stage = self._initialize_stages()
+
+        self.freqs, self.cutoff = []
 
     def setup_figure(self):
         self.graph_layout = pg.GraphicsLayoutWidget()
@@ -224,9 +242,7 @@ class ESRImageMeasure(Measurement):
             
             # SETUP AWG AND DAQ
             self._initialize_AWG()
-            
             task = DAQ.configureDAQ(S.N_samples.val * freqs.size)
-
             AWGctl.makeESRSweep(self.inst, S.t_duration.val, freqs, S.Vpp.val)
 
             for idx, pix in enumerate(xy):
@@ -266,7 +282,6 @@ class ESRImageMeasure(Measurement):
             PIctrl.closeDevice(self.stage)
             DAQ.closeDAQTask(task)
             self._close_AWG()
-    
 
             f = S['fname_format'].format(app=self,
                                          measurement=self,
@@ -282,6 +297,14 @@ class ESRImageMeasure(Measurement):
             return
         
         # print("Measurement Complete!")
+
+    def update_display(self):
+        S = self.settings
+        if(S.plotting_type.value == 'signal'):
+            self.plot.setTitle("Signal vs Frequency")
+        else:
+            self.plot.setTitle("Constrast vs Frequency")
+        self.current_plotline.setData(self.freqs[:self.cutoff], self.average_y[:self.cutoff])
 
     def _initialize_stages(self):
         return PIctrl.initializeController('LINEAR')
@@ -326,7 +349,7 @@ class ESRImageMeasure(Measurement):
         rc = self.admin.CloseInstrument(self.instId)
         AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
         rc = self.admin.Close()
-        AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
+        AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)'''
         
 if __name__ == '__main__':
     app = ImageTestApp(sys.argv)
