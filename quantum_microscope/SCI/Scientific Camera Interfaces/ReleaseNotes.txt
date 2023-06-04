@@ -1,0 +1,118 @@
+Thorlabs Scientific Camera Interfaces Release Notes
+
+KNOWN ISSUES/BUGS
+- Zelux firmware versions prior to v0.9.3 report black-level range as 0-4095, but it should be 0-511.
+- Quantalux firmware versions prior to v1.0.1 report an incorrect maximum-exposure time when operating in high-frame-rate mode.
+
+VERSION HISTORY
+
+2.0.2 (2021-02-25)
+ - fixed an issue where the least significant bits of Zelux image data were corrupted
+
+2.0.1 (2021-10-14)
+ - fixed issue with tl_camera_get_is_cooling_enabled function
+ - added additional PID for WFS12 camera
+
+2.0 (2021-08-05)
+ - Jumped to version 2.0 to signify a significant process change. All SDK dlls are now versioned the same as the SDK itself.
+ - Fixed memory leak and crashes.
+ - Fixed crashes related to pulling the USB plug while using a camera.
+ - Extensive code refactoring (no new APIs).
+ - Included an image-file writer used internally by ThorCam.
+ - Now compiled with C++17.
+ - Now compiled on Windows with C++ runtime version 2019.
+ - Added multiple VID/PID combinations to the discovery process.
+ - Simplified the SDK folder hierarchy.
+ - Improved error reporting in C camera interface, especially when calling tl_camera_get_last_error().
+ - Added user-store, on-camera memory API.
+ - Updated README files.
+
+Revision 1.5 (TBD)
+ - Zelux device module unified across Linux and Windows
+ - All .NET and C++/CLI DLLs are now signed with a strong name
+
+Revision 1.4 (2021-01-22)
+ - Windows and Linux SDK versions unified.
+ - Linux SDK overhaul 
+	- zipfile structure now mirrors the Windows zipfile.
+	- PDF API references now included
+	- C examples now included
+ - Zelux support for Linux now available
+ - Python 3.8 DLL discovery issue fixed 
+ 
+Revision H (2020-09-01) (WINDOWS)
+ - Added synchronous engineering command API
+
+Revision G (2020-06-05) (WINDOWS)
+ - Fixed missing DLLs in .NET and C camera interfaces
+ - Added setting gain to example applications for Python, C, and .NET.
+ - Added convert function to go from gain in decibels to gain index
+ - Fixed outdated DLL warnings in LabVIEW
+ - Documentation updates
+
+Revision F (2020-03-24) (WINDOWS)
+ - Added support for CS135 and Zelux cameras.
+
+Revision E (2019-07-03) (WINDOWS)
+ - Support added for polarization camera within LabVIEW, MATLAB, and .NET
+ - Updated examples for labview, matlab, and added .NET examples to include polarization processing
+
+Revision 1.3 (LINUX)
+ - A new version of the color processing components which includes:
+    - a new API method which enables the consumer to write color processing
+      output buffers with 16 bits per pixel plus a padding word.
+    - a new SSE optimized color processing pipeline.
+    - various bug fixes.
+ - A new polarization processor component for use with polarization cameras.
+    - the polarization C API is not officially released so it is subject to change 
+      as indicated by the leading 0 in its version number (0.24.0.0).
+ - Updated C camera SDK
+    - includes the latest API (breaking) changes 
+    - includes support for polarization cameras.
+    - a few bug fixes.
+ - New mono to color SDK
+    - a more user friendly component for color processing images from color sensor cameras.
+    - has a narrower and easier to use API than the general purpose color processing component.
+ - New Python SDK
+    - an SDK for customers writing applications in Python.
+    - include support for:
+        - monochrome image processing.
+        - color camera image processing.
+        - polarization camera image processing.
+
+Revision D (2019-05-20) (WINDOWS)
+ - Python support added.
+ - Updates to C Camera Interface to add the polar phase for polarization cameras.
+ - New color processing transform_48_to_64 added.
+ - Updates to C examples.
+ - Mono to color C examples added.
+ - Bug fixes.
+ 
+Revision 1.2 (LINUX)
+ - Fixed an issue with vector AVX2 demosaic.
+ 
+Revision C (2019-02-08) (WINDOWS)
+ - Fixed coloration-artifacts bug with ROI widths that are odd numbers on CCD scientific cameras.
+ - Fixed bug where serial numbers for some USB cameras appeared truncated.
+ - Fixed bug where on some computers, USB scientific cameras caused ThorCam to crash upon startup.
+
+Revision 1.1 (LINUX)
+ - Added revision history file.
+ - Updated installation instructions.
+ - Reorganized the archive.
+
+Revision 1.0 (LINUX)
+ - Initial Release
+
+Revision B (2018-10-22) (WINDOWS)
+ - Updated .NET and native camera DLLs with bug fixes and support for CS895CU and CS895MU compact-scientific cameras.
+ - Added new API in the C and .NET layers for querying the current image size, which is affected by ROI and binning settings.
+
+Revision A (2018-08-22) (WINDOWS)
+ - Unified scientific-camera interfaces into a single zip file
+ - Expose metadata block of memory in tl_camera_get_pending_frame_or_null and in the frame-available callback.
+ - Fixed minor MATLAB script bug related to software triggers.
+
+
+"Scientific Camera Interfaces.zip" ITN003652-SCS
+"Scientific_Camera_Interfaces-linux.zip" 100-ITN003839
