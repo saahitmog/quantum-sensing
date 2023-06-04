@@ -55,7 +55,6 @@ class ImageMeasure(Measurement):
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
 
-        self.stage = self._initialize_stages()
         self.plotdata = []
 
     def setup_figure(self):
@@ -63,45 +62,66 @@ class ImageMeasure(Measurement):
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title="X Position vs Y Position")
 
-        #self.plotline = self.plot.plot()
         self.scatter = pg.ScatterPlotItem(size=10, brush=pg.mkBrush(255, 255, 0, 255))
         self.plot.addItem(self.scatter)
 
     def run(self):
-
         S = self.settings
+        
         self.plotdata = []
         xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
         xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
+        N = S.Navg.val
+
+        print("Starting Measurement")
 
         try:
             starttime = time.time()
             # ---- SETUP EXPERIMENT ----
+            print('Setting up ...')
+            self.stage = self._initialize_stages()
             endtime = time.time()
-            print(f'Setup time: {endtime-starttime} s')    
+            print(f'Setup Complete! [Elapsed time: {endtime-starttime} s]')    
 
             starttime = time.time()
             # ---- DO EXPERIMENT ----
+            interrupted, delay = False, 0
+            print('Running Measurement ...')
+            
             for idx, pix in enumerate(xy):
-                if self.interrupt_measurement_called:
-                    print('Interrupted')
-                    break
+                
                 x, y = pix
                 self._execute_move(x, y)
-                # ---- DO MEASUREMENT ----
+                for n in range(N):
+                    # ---- DO MEASUREMENT ----
+                    if self.interrupt_measurement_called:
+                        print('Measurement Interrupted', end=' ')
+                        interrupted = True
+                        break
+                    prog = (N * idx + n + 1) / (xy.size / 2 * N)  * 100
+                    self.set_progress(prog)
+                    time.sleep(delay)
+
+                if interrupted:
+                    break
                 self.plotdata.append(pix.tolist())
-                self.set_progress((idx + 1) / xy.size * 100)
-                #time.sleep(1)
+
             endtime = time.time()
-            print(f'Measurement time: {endtime-starttime} s')
-            print("Measurement Complete!")
+            if not interrupted:
+                print("Measurement Complete!", end=' ')
+            print(f'[Elapsed time: {endtime-starttime} s]')
 
         except Exception as e:
             print(f'EXCEPTED ERROR: {e}')
+            
         finally:
             # ---- CLOSE EQUIPMENT ----
+            print('Finalizing Measurement ...')
+            starttime = time.time()
             self._execute_move(9, 9)
             PIctrl.closeDevice(self.stage)
+            endtime = time.time()
+            print(f'Finalization Complete! [Elapsed time: {endtime-starttime} s]')
 
     def update_display(self):
         self.scatter.clear()
