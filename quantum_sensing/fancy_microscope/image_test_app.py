@@ -95,8 +95,8 @@ class ImageMeasure(Measurement):
 
     def _execute_move(self, x, y):
 
-        x_diff, y_diff= self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
-                                 self.pos_buffer['y'] is None or y != self.pos_buffer['y']
+        x_diff, y_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
+                         self.pos_buffer['y'] is None or y != self.pos_buffer['y']
 
         if x_diff and y_diff:
             PIctrl.moveToPos(self.stage, x, y)
