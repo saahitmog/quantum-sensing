@@ -1,7 +1,0 @@
-2023-04-14T15:27:35|ERROR|ESRImageMeasure|ESRImage Failed to update figure1: 'ESRImageMeasure' object has no attribute 'average_x'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\ESRImage.py", line 384, in update_display\n    self.current_plotline.setData(self.average_x[:self.cutoff], self.ys[:self.cutoff])\n', "AttributeError: 'ESRImageMeasure' object has no attribute 'average_x'\n"]
-2023-04-14T15:27:35|ERROR|ESRImageMeasure|ESRImage Failed to update figure1: 'ESRImageMeasure' object has no attribute 'average_x'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\ESRImage.py", line 384, in update_display\n    self.current_plotline.setData(self.average_x[:self.cutoff], self.ys[:self.cutoff])\n', "AttributeError: 'ESRImageMeasure' object has no attribute 'average_x'\n"]
-2023-04-14T15:34:08|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
-    try:
-KeyboardInterrupt
-
