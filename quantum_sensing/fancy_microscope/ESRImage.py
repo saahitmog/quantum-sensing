@@ -395,7 +395,6 @@ import pandas as pd
 
 import os
 import inspect
-from System import Array, Char, Int16
 import time
 
 datapath = os.path.dirname(sys.argv[0])
