@@ -10,19 +10,18 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setGeometry(100, 100, 600, 500)
-        icon = QIcon("skin.png")
-        self.setWindowIcon(icon)
+        #icon = QIcon("skin.png")
+        #self.setWindowIcon(icon)
 
         self.xs = np.arange(0, 18.1, 6)
         self.ys = np.arange(0, 18.1, 9)
-        self.data = np.array([])
+        self.sweep = np.linspace(0, 100)
+        self.data = np.empty((self.xs.size, self.ys.size, self.sweep.size))
 
         self.ui()
         self.show()
  
     def ui(self):
-
-        xd, yd = np.arange(10), np.arange(10)
 
         widget = pg.GraphicsLayoutWidget()
         
@@ -31,9 +30,15 @@ class Window(QMainWindow):
                 plot = widget.addPlot(row=y, col=x)
                 plot.setTitle(f'{x}, {y}')
                 plotline = plot.plot()
-                plotline.setData(xd*i, yd*j)
+                plotline.setData(self.sweep, self.data[i, j])
 
         self.setCentralWidget(widget)
+
+    def _fill(self):
+        rng = np.random.default_rng()
+        for i in self.data:
+            for j in self.data[i]:
+                self.data[i, j] = rng.random(size=self.sweep.size)
  
 App = QApplication(sys.argv)
 window = Window()
