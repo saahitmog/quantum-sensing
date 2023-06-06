@@ -17,6 +17,7 @@ class Window(QMainWindow):
         self.ys = np.arange(0, 18.1, 9)
         self.sweep = np.linspace(0, 100)
         self.data = np.empty((self.xs.size, self.ys.size, self.sweep.size))
+        self._fill()
 
         self.ui()
         self.show()
@@ -37,8 +38,9 @@ class Window(QMainWindow):
     def _fill(self):
         rng = np.random.default_rng()
         for i in self.data:
-            for j in self.data[i]:
-                self.data[i, j] = rng.random(size=self.sweep.size)
+            for j in i:
+                rand = rng.random(size=self.sweep.size)
+                np.copyto(j, rand)
  
 App = QApplication(sys.argv)
 window = Window()
