@@ -1,47 +1,38 @@
 import sys
 import numpy as np
- 
-import pyqtgraph as pg
-from PyQt5.QtGui import *
- 
- 
-class Window(QMainWindow):
- 
-    def __init__(self):
-        super().__init__()
-        self.setGeometry(100, 100, 600, 500)
-        #icon = QIcon("skin.png")
-        #self.setWindowIcon(icon)
+from memory_profiler import profile
+import cProfile
 
-        self.xs = np.arange(0, 18.1, 6)
-        self.ys = np.arange(0, 18.1, 9)
-        self.sweep = np.linspace(0, 100)
-        self.data = np.empty((self.xs.size, self.ys.size, self.sweep.size))
-        self._fill()
+#@profile
+def sine(segmentLength, sinCycles, amp):
 
-        self.ui()
-        self.show()
- 
-    def ui(self):
+    t = np.arange(segmentLength, step=1)
+    omegaSin = 2 * np.pi * sinCycles
+    sq = np.concatenate((np.ones(int(segmentLength/2), dtype=int), np.zeros(int(segmentLength/2), dtype=int)))
+    sn = np.sin(omegaSin*t/segmentLength)
+    rawSignal = sq * amp * sn
+    dacSignal = np.uint8((rawSignal/amp*127)+127)
+    del t, sq, sn, rawSignal
+    return dacSignal
 
-        widget = pg.GraphicsLayoutWidget()
-        
-        for i, x in enumerate(self.xs):
-            for j, y in enumerate(self.ys):
-                plot = widget.addPlot(row=y, col=x)
-                plot.setTitle(f'{x}, {y}')
-                plotline = plot.plot()
-                plotline.setData(self.sweep, self.data[i, j])
+@profile
+def ESRSweep(freqs):
+    seg = 8998848
+    waveform = np.array([], dtype=np.uint8)
+    for f in freqs:
+        waveform = np.append(waveform, sine(seg, f*seg, 1))
+    return waveform
 
-        self.setCentralWidget(widget)
+#@profile
+def test(N):
+    #x = np.linspace(0, N-1, N)
+    #y = np.array(range(N))
+    z = np.arange(N, step=1)
 
-    def _fill(self):
-        rng = np.random.default_rng()
-        for i in self.data:
-            for j in i:
-                rand = rng.random(size=self.sweep.size)
-                np.copyto(j, rand)
- 
-App = QApplication(sys.argv)
-window = Window()
-sys.exit(App.exec())
+if __name__ == '__main__':
+    #cProfile.run('sinePulse(8998848, 8998848*3, 1)', sort='cumtime')
+    #cProfile.run('')
+    freqs = np.linspace(2.5, 3, 100)
+    result = ESRSweep(freqs)
+
+    #cProfile.run('ESRSweep(np.linspace(2.5, 3, 100))')

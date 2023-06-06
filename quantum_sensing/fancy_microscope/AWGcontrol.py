@@ -645,6 +645,16 @@ def sinePulse(segmentLength, squareCycles, sinCycles, duty, amp):
 
     return(dacSignal)
 
+def fastsine(seg, cyc, amp):
+    t = np.arange(seg, step=1)
+    omegaSin = 2 * np.pi * cyc
+    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(segmentLength/2), dtype=int)))
+    sn = np.sin(omegaSin*t/seg)
+    rawSignal = sq * amp * sn
+    dacSignal = np.uint8((rawSignal/amp*127)+127)
+    del t, sq, sn, rawSignal
+    return dacSignal
+
 def rabiPulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
     time = np.linspace(0, segmentLength-1, segmentLength)
     omegaSin = 2 * np.pi * sinCycles
@@ -769,10 +779,14 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     squares = int((1/(duration)) * segmentLength / 9e9)
     duty = 0.5
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
-    waveform=[]
+    '''waveform=[]
     for i in range(len(freqs)):
-        waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))
+        waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))'''
     
+    waveform = np.array([], dtype=np.uint8)
+    for f in freqs:
+        waveform = np.append(waveform, fastsine(segmentLength, f*segmentLength, 1))
+
     lasttime=starttime
     currtime=time.time()
     print('----> Calculate sequence:', currtime-lasttime, ' seconds')
@@ -800,10 +814,6 @@ def makeESRSweepMarker(inst, segmentLength, num):
     waveform = np.zeros(segmentLength)
 
     duration = 500
-
-    # for i in range(0, int(duration*segmentLength/1e6)):
-    #     waveform[i] += 1
-
     delay = 400000
     tot = 500000
     duration2 = 100
@@ -827,7 +837,6 @@ def makeESRSweepMarker(inst, segmentLength, num):
         totalWaveform[i] += 1
 
     markerWave = np.uint8(totalWaveform)
-    # print(markerWave.tobytes()[:1000])
     
     prefix = ':MARK:DATA 0,#'
     # print(prefix, end=' .. ')
