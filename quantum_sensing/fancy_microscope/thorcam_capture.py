@@ -236,7 +236,7 @@ class ThorCamCaptureMeasure(Measurement):
                               verbose=False,
                               very_verbose=False,
                               hang_time = 5)
-        self.home_MCM()
+        # self.home_MCM()
         self._execute_movePI()
 
         print("Stage Position Initialized")

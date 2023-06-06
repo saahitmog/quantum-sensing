@@ -1,0 +1,13 @@
+2023-06-05T17:10:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 80, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 40, in setup
+    self.add_measurement(RabiImageMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\RabiMappingMeasure.py", line 41, in setup
+    settings.New('MW_delay', dtype=float, initial=0.0005, unit='s', si=True)
+NameError: name 'settings' is not defined
+

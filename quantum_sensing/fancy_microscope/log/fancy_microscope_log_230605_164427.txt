@@ -1,0 +1,9 @@
+2023-06-05T16:46:00|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\T1MappingMeasure.py", line 101, in run
+    fn = os.path.noin(self.app.settings['save_dir'], f)
+AttributeError: module 'ntpath' has no attribute 'noin'
+
