@@ -1,0 +1,13 @@
+2023-06-05T12:01:01|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "image_test_app.py", line 384, in <module>
+    app = ImageTestApp(sys.argv)
+  File "C:\ProgramData\Anaconda3\lib\site-packages\ScopeFoundry\base_app.py", line 351, in __init__
+    self.setup()
+  File "image_test_app.py", line 20, in setup
+    self.add_measurement(ImageMeasure(self))
+  File "C:\ProgramData\Anaconda3\lib\site-packages\ScopeFoundry\measurement.py", line 107, in __init__
+    self.setup()
+  File "image_test_app.py", line 58, in setup
+    S.res.conect_to_widget(self.ui.res)
+AttributeError: 'LoggedQuantity' object has no attribute 'conect_to_widget'
+

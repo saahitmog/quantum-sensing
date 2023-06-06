@@ -92,7 +92,6 @@ def getSlotId(admin):
         print(e)
     return slotId
 
-
 def loadDLL():
 
     # Load .NET DLL into memory
@@ -114,7 +113,6 @@ def loadDLL():
     from TaborElec.Proteus.CLI.Admin import IProteusInstrument  # @UnusedImport @UnresolvedImport @IgnorePep8
 
     return CProteusAdmin(OnLoggerEvent)
-
 
 def SendBinScpi(inst, prefix, path, query_err=False):
 
@@ -143,7 +141,6 @@ def SendBinScpi(inst, prefix, path, query_err=False):
         print(e)
 
     return err_code, resp_str
-
 
 def SendScpi(inst, line, query_err=False, print_line=True):
 
@@ -278,7 +275,6 @@ def instrumentCallsFast(inst, waveform, vpp=0.001, offset=0):
     # connect ouput
     SendScpi(inst, ":OUTP ON", query_syst_err)
 
-
 def makeMarker(inst, segmentLength):
     #MARKER CODE >>>>
     SendScpi(inst, ":MARK OFF")
@@ -365,7 +361,6 @@ def makeESRMarker(inst, segmentLength):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
-      
 
 def makeRabiMarker(inst, segmentLength):
     segmentLength = int(segmentLength/8)
@@ -504,7 +499,6 @@ def makeT1Marker(inst, segmentLength, t_delay, t_readoutDelay, t_AOM):
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
     
-
 def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     starttime=time.time()
     query_syst_err = True  
@@ -686,7 +680,6 @@ def T1Pulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
 def squareWave(segmentLength):
     time = np.linspace(0, segmentLength-1, segmentLength)
     return scaleWaveform(sg.square(time*(2*np.pi)/1e3),"P9082M")
-
 
 def sinePulseOffset(segmentLength, squareCycles, sinCycles, duty, amp, offset):
     time = np.linspace(0, segmentLength-1, segmentLength)

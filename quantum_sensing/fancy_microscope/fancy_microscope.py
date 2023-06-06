@@ -30,12 +30,14 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         # self.add_measurement(LaserQuantumOptimizer(self))
         from ESRMeasure import ESRMeasure
         from RabiMeasure import RabiMeasure
+        from RabiMappingMeasure import RabiImageMeasure
         from T1Measure import T1Measure
 
         import thorcam_sci.thorcam_sci_liveview
         from thorcam_capture import ThorCamCaptureMeasure
         self.add_measurement(ESRMeasure(self))
         self.add_measurement(RabiMeasure(self))
+        self.add_measurement(RabiImageMeasure(self))
         self.add_measurement(T1Measure(self))
 
         self.add_measurement(ThorCamCaptureMeasure(self))
@@ -44,10 +46,13 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         from ESRSweepMeasure import ESRSweepMeasure
         self.add_measurement(ESRSweepMeasure(self))
 
-        from T1Image import T1ImageMeasure
+        #from T1Image import T1ImageMeasure
+        from T1MappingMeasure import T1ImageMeasure
         self.add_measurement(T1ImageMeasure(self))
 
-        from ESRImage import ESRImageMeasure
+        #from ESRImage import ESRImageMeasure
+
+        from ESRMappingMeasure import ESRImageMeasure
         self.add_measurement(ESRImageMeasure(self))
 
         from T2SweepMeasure import T2SweepMeasure
@@ -55,6 +60,9 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
 
         from T2Measure import T2Measure
         self.add_measurement(T2Measure(self))
+
+        from T2MappingMeasure import T2ImageMeasure
+        self.add_measurement(T2ImageMeasure(self))
 
         #self.add_measurement(thorcam_sci.thorcam_sci_liveview.ThorcamSCILiveView(self))
         # Connect to custom gui
