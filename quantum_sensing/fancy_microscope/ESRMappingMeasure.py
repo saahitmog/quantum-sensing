@@ -60,7 +60,7 @@ class ESRImageMeasure(Measurement):
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
 
-        self.sweep, self.cutoff = [], 0
+        self.sweep, self.xs, self.ys = [], [], []
         self.xy, self.dims = np.array([]), (1,1)
 
     def setup_figure(self):
@@ -79,7 +79,8 @@ class ESRImageMeasure(Measurement):
         starttime = time.time()
         xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
 
-        self.dims = (np.arange(xmin, xmax+dx, dx).size, np.arange(ymin, ymax+dy, dy).size)
+        self.xs, self.ys = np.arange(xmin, xmax+dx, dx), np.arange(ymin, ymax+dy, dy)
+        self.dims = (self.xs.size, self.ys.size)
         self.xy = xy = np.mgrid[xmin:xmax+dx:dx, ymin:ymax+dy:dy].reshape(2,-1).T
         self.num_pts = xy.size / 2
         print(xy)
