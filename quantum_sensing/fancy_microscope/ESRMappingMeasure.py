@@ -61,17 +61,26 @@ class ESRImageMeasure(Measurement):
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
 
         self.sweep, self.xs, self.ys = [], [], []
-        self.xy, self.dims = np.array([]), (1,1)
+        self.pix, self.dims, self._plotdata = np.array([]), (1,1), 
 
     def setup_figure(self):
 
-        self.graph_layout = pg.GraphicsLayoutWidget()
+        '''self.graph_layout = pg.GraphicsLayoutWidget()
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title="Signal vs Frequency")
         self.plotdata = []
 
         self.current_plotline = self.plot.plot()
-        self.average_plotline = self.plot.plot()
+        self.average_plotline = self.plot.plot()'''
+
+        self.widget = pg.GraphicsLayoutWidget()
+        # self.plots = np.empty(self.dims)
+        self.plots = np.empty(self.dims)
+        for i, x in enumerate(self.xs):
+            for j, y in enumerate(self.ys):
+                plot = self.widget.addPlot(row=y, col=x)
+                plot.setTitle(f'{x}, {y}')
+                self.plots[i, j] = plot.plot()
         
     def run(self):
         S = self.settings
@@ -81,9 +90,10 @@ class ESRImageMeasure(Measurement):
 
         self.xs, self.ys = np.arange(xmin, xmax+dx, dx), np.arange(ymin, ymax+dy, dy)
         self.dims = (self.xs.size, self.ys.size)
-        self.xy = xy = np.mgrid[xmin:xmax+dx:dx, ymin:ymax+dy:dy].reshape(2,-1).T
+        self.pix = xy = np.mgrid[xmin:xmax+dx:dx, ymin:ymax+dy:dy].reshape(2,-1).T
         self.num_pts = xy.size / 2
-        print(xy)
+
+        self.setup_figure()
 
         if(S.photon_mode.val):
             import DAQcontrol_SPD as DAQ  ## single_photon_stream => replaced with DAQcontrol_SPD by zhao 7/19/2022
@@ -125,6 +135,7 @@ class ESRImageMeasure(Measurement):
         signal = np.zeros(sweep.shape, dtype=float)
         background = np.zeros(sweep.shape, dtype=float)
         self.data = np.zeros(sweep.shape, dtype=float)
+        buffer = np.zeros(sweep.shape, dtype=float)
 
         try:
             # ---- SETUP EXPERIMENT ----
@@ -135,16 +146,52 @@ class ESRImageMeasure(Measurement):
             task = DAQ.configureDAQ(S.N_samples.val * sweep.size)
             AWGctl.makeESRSweep(self.inst, S.t_duration.val, sweep, S.Vpp.val)
 
-            for idx, pix in enumerate(xy):
-                if self.interrupt_measurement_called:
-                    print('Interrupted')
-                    break
+            interrupted, prog, N = False, 0, S.Navg.val
+
+            for i, x in enumerate(self.xs):
+                if interrupted: break
+                for j, y in enumerate(self.ys):
+                    if interrupted: break
+                    self._execute_move(x, y)
+                    print(f'Current Pixel: {(x, y)}')
+
+                    for n in range(N):
+                        if self.interrupt_measurement_called:
+                            interrupted = True
+                            print('Interrupted')
+                            break
+                        counts = DAQ.readDAQ(task, S.N_samples.val * 2 * sweep.size, S.DAQtimeout.val)
+
+                        for f in range(sweep.size):
+                            signal[f] = np.mean(counts[2*f::2*sweep.size])
+                            background[f] = np.mean(counts[2*f+1::2*sweep.size])
+
+                        # print(signal.shape)
+
+                        if S.plotting_type.val == 'signal':
+                            buffer = signal
+                        else:
+                            buffer = np.divide(signal, background)
+
+                        np.copyto(self._plotdata[i, j], buffer)
+                        prog += 1
+                        self.set_progress(prog / (self.pix / 2 * N))
+
+                M['data'] = self._plotdata
+
+            '''for _, pix in enumerate(xy):
+                if interrupted: break
                 x, y = pix
                 self._execute_move(x, y)
                 print(f'Current Pixel: {pix}')
 
                 
                 for n in range(S.Navg.val):
+
+                    if self.interrupt_measurement_called:
+                        interrupted = True
+                        print('Interrupted')
+                        break
 
                     print(f'Averaging Run {n+1}: Reading From DAQ ...')
                     counts = DAQ.readDAQ(task, S.N_samples.val * 2 * sweep.size, S.DAQtimeout.val)
@@ -163,21 +210,12 @@ class ESRImageMeasure(Measurement):
                         self.plotdata[i] = ((self.plotdata[i] * n) + self.data[i]) / (n+1)
                         #if idx == 0:
                             #self.cutoff += 1
-                    
-                    '''signal = np.mean([counts[2*i::2*sweep.size] for i in range(sweep.size)])
-                    background = np.mean([counts[2*i+1::2*sweep.size] for i in range(sweep.size)])
-
-                    if S.plotting_type.val == 'signal':
-                        self.data = signal
-                    else:
-                        self.data = np.divide(signal, background)
-                    self.plotdata = ((self.plotdata * n) + self.data) / (n+1)
                         
-                    self.set_progress((idx * S.Navg.val + n + 1) / (pixels * S.Navg.val) * 100)'''
+                    self.set_progress((_ * S.Navg.val + n + 1) / (pixels * S.Navg.val) * 100)
                     M['run_'+str(pix)+'_'+str(n)+'_data'] = self.data
                     # Save the signal and background arrays to the dictionary
                     save_dict['Signal Run '+str(pix)+'_'+str(n)] = copy.deepcopy(signal)
-                    save_dict['Background Run '+str(pix)+'_'+str(n)] = copy.deepcopy(background)
+                    save_dict['Background Run '+str(pix)+'_'+str(n)] = copy.deepcopy(background)'''
 
         except Exception as e:
             # print('EXCEPTED ERROR:' + str(e))
@@ -206,15 +244,21 @@ class ESRImageMeasure(Measurement):
         # print("Measurement Complete!")
 
     def update_display(self):
-        S = self.settings
-        self.ui.num_pts.setText(str(int(self.xy.size/2)))
+        S, x, y = self.settings, self.dims[0], self.dims[1]
+        self.ui.num_pts.setText(str(int(self.pix.size/2)))
         self.ui.res.setText(f'{self.dims[0]} X {self.dims[1]}')
+
         if(S.plotting_type.value == 'signal'):
             self.plot.setTitle("Signal vs Frequency")
         else:
             self.plot.setTitle("Constrast vs Frequency")
-        #self.current_plotline.setData(self.sweep[:self.cutoff], self.plotdata[:self.cutoff])
-        self.current_plotline.setData(self.sweep, self.plotdata)
+
+        #self.current_plotline.setData(self.sweep, self.plotdata)
+        for i in range(x):
+            for j in range(y):
+                self.plots[i, j].setData(self.sweep, self._plotdata[i, j])
+
+
 
     def _initialize_stages(self):
         return PIctrl.initializeController('LINEAR')
