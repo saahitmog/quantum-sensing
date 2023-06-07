@@ -648,7 +648,7 @@ def sinePulse(segmentLength, squareCycles, sinCycles, duty, amp):
 def fastsine(seg, cyc, amp):
     t = np.arange(seg, step=1)
     omegaSin = 2 * np.pi * cyc
-    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(segmentLength/2), dtype=int)))
+    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(seg/2), dtype=int)))
     sn = np.sin(omegaSin*t/seg)
     rawSignal = sq * amp * sn
     dacSignal = np.uint8((rawSignal/amp*127)+127)
