@@ -780,7 +780,9 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
     duty = 0.5'''
+
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
+    
     '''waveform=[]
     for i in range(len(freqs)):
         waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))'''
