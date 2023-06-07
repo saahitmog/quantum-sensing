@@ -79,6 +79,8 @@ class ImageMeasure(Measurement):
         print(xy)
         N = S.Navg.val
 
+        self.xs, self.ys = np.arange(xmin, xmax+dx, dx), np.arange(ymin, ymax+dy, dy)
+
         print("Starting Measurement")
 
         try:
@@ -93,8 +95,15 @@ class ImageMeasure(Measurement):
             # ---- DO EXPERIMENT ----
             interrupted, delay = False, 0
             print('Running Measurement ...')
+
+            for i, x in enumerate(self.xs):
+                if interrupted: break
+                for j, y in enumerate(self.ys):
+                    if interrupted: break
+                    self._execute_move(x, y)
+                    print(f'Current Pixel: {(x, y)}')
             
-            for idx, pix in enumerate(xy):
+            '''for idx, pix in enumerate(xy):
                 
                 x, y = pix
                 self._execute_move(x, y)
@@ -115,7 +124,7 @@ class ImageMeasure(Measurement):
             endtime = time.time()
             if not interrupted:
                 print("Measurement Complete!", end=' ')
-            print(f'[Elapsed time: {endtime-starttime} s]')
+            print(f'[Elapsed time: {endtime-starttime} s]')'''
 
         except Exception as e:
             print(f'EXCEPTED ERROR: {e}')

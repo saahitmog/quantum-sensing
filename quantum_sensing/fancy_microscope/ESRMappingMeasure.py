@@ -61,7 +61,7 @@ class ESRImageMeasure(Measurement):
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
 
         self.sweep, self.xs, self.ys = [], [], []
-        self.pix, self.dims, self._plotdata = np.array([]), (1,1), 
+        self.pix, self.dims, self._plotdata = np.array([]), (1,1), np.empty(())
 
     def setup_figure(self):
 
@@ -94,6 +94,8 @@ class ESRImageMeasure(Measurement):
         self.num_pts = xy.size / 2
 
         self.setup_figure()
+
+        self._plotdata = np.empty((self.dims[0], self.dims[1], self.sweep.size))
 
         if(S.photon_mode.val):
             import DAQcontrol_SPD as DAQ  ## single_photon_stream => replaced with DAQcontrol_SPD by zhao 7/19/2022
