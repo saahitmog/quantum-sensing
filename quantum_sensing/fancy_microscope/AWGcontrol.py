@@ -16,6 +16,7 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
+from multiprocessing import Pool
 
 import os
 import inspect
@@ -530,6 +531,7 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     lasttime=currtime
     currtime=time.time()
     print('Write segment:', currtime-lasttime, ' seconds')
+    print(f'Write speed: {dacSignal.nbytes / (currtime-lasttime)} GB/s')
 
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
 
@@ -771,21 +773,25 @@ def makeT1SeqMarker(inst, t_delay,t_AOM,t_readoutDelay,t_pi, freq, vpp=0.001):
 
 def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     starttime=time.time()
-    segmentLength = 4999936
+    # segmentLength = 4999936
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
 
-    cycles = freqs * segmentLength * 1e9 / 9e9
+    '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
-    duty = 0.5
+    duty = 0.5'''
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
     '''waveform=[]
     for i in range(len(freqs)):
         waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))'''
     
-    waveform = np.array([], dtype=np.uint8)
+    '''waveform = np.array([], dtype=np.uint8)
     for f in freqs:
-        waveform = np.append(waveform, fastsine(segmentLength, f*segmentLength, 1))
+        waveform = np.append(waveform, fastsine(segmentLength, f*segmentLength, 1))'''
+    
+    args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
+    with Pool() as pool:
+        waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()   
 
     lasttime=starttime
     currtime=time.time()
