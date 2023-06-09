@@ -16,6 +16,7 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
+from multiprocessing import Pool
 
 import os
 import inspect
@@ -92,7 +93,6 @@ def getSlotId(admin):
         print(e)
     return slotId
 
-
 def loadDLL():
 
     # Load .NET DLL into memory
@@ -114,7 +114,6 @@ def loadDLL():
     from TaborElec.Proteus.CLI.Admin import IProteusInstrument  # @UnusedImport @UnresolvedImport @IgnorePep8
 
     return CProteusAdmin(OnLoggerEvent)
-
 
 def SendBinScpi(inst, prefix, path, query_err=False):
 
@@ -143,7 +142,6 @@ def SendBinScpi(inst, prefix, path, query_err=False):
         print(e)
 
     return err_code, resp_str
-
 
 def SendScpi(inst, line, query_err=False, print_line=True):
 
@@ -278,7 +276,6 @@ def instrumentCallsFast(inst, waveform, vpp=0.001, offset=0):
     # connect ouput
     SendScpi(inst, ":OUTP ON", query_syst_err)
 
-
 def makeMarker(inst, segmentLength):
     #MARKER CODE >>>>
     SendScpi(inst, ":MARK OFF")
@@ -365,7 +362,6 @@ def makeESRMarker(inst, segmentLength):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
-      
 
 def makeRabiMarker(inst, segmentLength):
     segmentLength = int(segmentLength/8)
@@ -504,7 +500,6 @@ def makeT1Marker(inst, segmentLength, t_delay, t_readoutDelay, t_AOM):
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
     
-
 def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     starttime=time.time()
     query_syst_err = True  
@@ -536,6 +531,7 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     lasttime=currtime
     currtime=time.time()
     print('Write segment:', currtime-lasttime, ' seconds')
+    print(f'Write speed: {dacSignal.nbytes / (currtime-lasttime)} GB/s')
 
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
 
@@ -651,6 +647,16 @@ def sinePulse(segmentLength, squareCycles, sinCycles, duty, amp):
 
     return(dacSignal)
 
+def fastsine(seg, cyc, amp):
+    t = np.arange(seg, step=1)
+    omegaSin = 2 * np.pi * cyc
+    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(segmentLength/2), dtype=int)))
+    sn = np.sin(omegaSin*t/seg)
+    rawSignal = sq * amp * sn
+    dacSignal = np.uint8((rawSignal/amp*127)+127)
+    del t, sq, sn, rawSignal
+    return dacSignal
+
 def rabiPulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
     time = np.linspace(0, segmentLength-1, segmentLength)
     omegaSin = 2 * np.pi * sinCycles
@@ -686,7 +692,6 @@ def T1Pulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
 def squareWave(segmentLength):
     time = np.linspace(0, segmentLength-1, segmentLength)
     return scaleWaveform(sg.square(time*(2*np.pi)/1e3),"P9082M")
-
 
 def sinePulseOffset(segmentLength, squareCycles, sinCycles, duty, amp, offset):
     time = np.linspace(0, segmentLength-1, segmentLength)
@@ -768,18 +773,28 @@ def makeT1SeqMarker(inst, t_delay,t_AOM,t_readoutDelay,t_pi, freq, vpp=0.001):
 
 def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     starttime=time.time()
-    segmentLength = 4999936
+    # segmentLength = 4999936
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
 
-    cycles = freqs * segmentLength * 1e9 / 9e9
+    '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
-    duty = 0.5
+    duty = 0.5'''
+
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
-    waveform=[]
-    for i in range(len(freqs)):
-        waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))
     
+    '''waveform=[]
+    for i in range(len(freqs)):
+        waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))'''
+    
+    '''waveform = np.array([], dtype=np.uint8)
+    for f in freqs:
+        waveform = np.append(waveform, fastsine(segmentLength, f*segmentLength, 1))'''
+    
+    args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
+    with Pool() as pool:
+        waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()   
+
     lasttime=starttime
     currtime=time.time()
     print('----> Calculate sequence:', currtime-lasttime, ' seconds')
@@ -807,10 +822,6 @@ def makeESRSweepMarker(inst, segmentLength, num):
     waveform = np.zeros(segmentLength)
 
     duration = 500
-
-    # for i in range(0, int(duration*segmentLength/1e6)):
-    #     waveform[i] += 1
-
     delay = 400000
     tot = 500000
     duration2 = 100
@@ -834,7 +845,6 @@ def makeESRSweepMarker(inst, segmentLength, num):
         totalWaveform[i] += 1
 
     markerWave = np.uint8(totalWaveform)
-    # print(markerWave.tobytes()[:1000])
     
     prefix = ':MARK:DATA 0,#'
     # print(prefix, end=' .. ')
