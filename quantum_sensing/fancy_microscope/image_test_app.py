@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 # import AWGcontrol as AWGctl
 
+import movestages as PIctrl
+import numpy as np
 sys.path.append('../')
 #import movestages as PIctrl
 
@@ -20,6 +22,7 @@ class ImageTestApp(BaseMicroscopeApp):
         self.add_measurement(ImageMeasure(self))
 
 class ImageMeasure(Measurement):
+    
     name = 'Image'
     
     def setup(self):
@@ -35,6 +38,8 @@ class ImageMeasure(Measurement):
         S.New('y_max', dtype=float, initial=18.0, vmin=0.0, vmax=18.0)
         S.New('dx', dtype=float, initial=0.1, vmin=1e-2, vmax=18.0)
         S.New('dy', dtype=float, initial=0.1, vmin=1e-2, vmax=18.0)
+        S.New('res', dtype=str, initial='', ro=True)
+        S.New('num_pts', dtype=int, initial=1, ro=True)
         
         self.ui_filename = sibling_path(__file__,"image_test.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
@@ -52,6 +57,8 @@ class ImageMeasure(Measurement):
         S.y_max.connect_to_widget(self.ui.ymax_doubleSpinBox)
         S.dx.connect_to_widget(self.ui.dx_doubleSpinBox)
         S.dy.connect_to_widget(self.ui.dy_doubleSpinBox)
+        S.res.connect_to_widget(self.ui.res)
+        S.num_pts.connect_to_widget(self.ui.num_pts)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
         self.stage = self._initialize_stages()
         self.plotdata = []
@@ -61,45 +68,71 @@ class ImageMeasure(Measurement):
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title="X Position vs Y Position")
 
-        #self.plotline = self.plot.plot()
         self.scatter = pg.ScatterPlotItem(size=10, brush=pg.mkBrush(255, 255, 0, 255))
         self.plot.addItem(self.scatter)
 
     def run(self):
-
         S = self.settings
+        
         self.plotdata = []
         xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
-        xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
+        xy = np.mgrid[xmin:xmax+dx:dx, ymin:ymax+dy:dy].reshape(2,-1).T
+        print(xy)
+        N = S.Navg.val
+
+        print("Starting Measurement")
 
         try:
             starttime = time.time()
             # ---- SETUP EXPERIMENT ----
+            print('Setting up ...')
+            self.stage = self._initialize_stages()
             endtime = time.time()
-            print(f'Setup time: {endtime-starttime} s')    
+            print(f'Setup Complete! [Elapsed time: {endtime-starttime} s]')    
 
             starttime = time.time()
             # ---- DO EXPERIMENT ----
+            interrupted, delay = False, 0
+            print('Running Measurement ...')
+            
             for idx, pix in enumerate(xy):
-                if self.interrupt_measurement_called:
-                    print('Interrupted')
-                    break
+                
                 x, y = pix
                 self._execute_move(x, y)
                 # ---- DO MEASUREMENT ----
                 self.plotdata.append(pix.tolist())
                 self.set_progress((idx + 1) / xy.size * 100)
                 time.sleep(1)
+                for n in range(N):
+                    # ---- DO MEASUREMENT ----
+                    if self.interrupt_measurement_called:
+                        print('Measurement Interrupted', end=' ')
+                        interrupted = True
+                        break
+                    prog = (N * idx + n + 1) / (xy.size / 2 * N)  * 100
+                    self.set_progress(prog)
+                    time.sleep(delay)
+
+                if interrupted:
+                    break
+                self.plotdata.append(pix.tolist())
+
             endtime = time.time()
-            print(f'Measurement time: {endtime-starttime} s')
-            print("Measurement Complete!")
+            if not interrupted:
+                print("Measurement Complete!", end=' ')
+            print(f'[Elapsed time: {endtime-starttime} s]')
 
         except Exception as e:
             print(f'EXCEPTED ERROR: {e}')
+
         finally:
             # ---- CLOSE EQUIPMENT ----
+            print('Finalizing Measurement ...')
+            starttime = time.time()
             self._execute_move(9, 9)
-            #PIctrl.closeDevice(self.stage)
+            PIctrl.closeDevice(self.stage)
+            endtime = time.time()
+            print(f'Finalization Complete! [Elapsed time: {endtime-starttime} s]')
 
     def update_display(self):
         self.scatter.clear()
@@ -110,7 +143,6 @@ class ImageMeasure(Measurement):
         #return PIctrl.initializeController('LINEAR')
 
     def _execute_move(self, x, y):
-        return
         x_diff, y_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
                          self.pos_buffer['y'] is None or y != self.pos_buffer['y']
 
@@ -181,6 +213,7 @@ class ImageMeasure(Measurement):
         self.freqs, self.cutoff = []
 
     def setup_figure(self):
+
         self.graph_layout = pg.GraphicsLayoutWidget()
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title="Signal vs Frequency")
@@ -190,11 +223,10 @@ class ImageMeasure(Measurement):
         
     def run(self):
         S = self.settings
+        starttime = time.time()
         xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
-        xy = np.mgrid[xmin:xmax:dx, ymin:ymax:dy].reshape(2,-1).T
 
-        starttime=time.time()
-        self.set_progress(0)
+        xy = np.mgrid[xmin:xmax+dx:dx, ymin:ymax:dy].reshape(2,-1).T
 
         if(S.photon_mode.val):
             import DAQcontrol_SPD as DAQ  ## single_photon_stream => replaced with DAQcontrol_SPD by zhao 7/19/2022
@@ -326,6 +358,9 @@ class ImageMeasure(Measurement):
             PIctrl.moveToY(self.stage, y)
             self.pos_buffer['y'] = y
 
+        #if x_diff or y_diff:
+        #    print("Stages Updated")
+
     def _interrupt(self):
         self.interrupt_measurement_called = True
 
@@ -352,5 +387,6 @@ class ImageMeasure(Measurement):
         AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)'''
         
 if __name__ == '__main__':
+    
     app = ImageTestApp(sys.argv)
     sys.exit(app.exec_())
