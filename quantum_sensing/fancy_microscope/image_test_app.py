@@ -7,10 +7,12 @@ import sys, time, os, inspect, copy
 from datetime import datetime
 import numpy as np
 import pandas as pd
-import AWGcontrol as AWGctl
+# import AWGcontrol as AWGctl
 
 import movestages as PIctrl
 import numpy as np
+sys.path.append('../')
+#import movestages as PIctrl
 
 class ImageTestApp(BaseMicroscopeApp):
 
@@ -58,9 +60,8 @@ class ImageMeasure(Measurement):
         S.res.connect_to_widget(self.ui.res)
         S.num_pts.connect_to_widget(self.ui.num_pts)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
-
+        self.stage = self._initialize_stages()
         self.plotdata = []
-
 
     def setup_figure(self):
         self.graph_layout = pg.GraphicsLayoutWidget()
@@ -79,6 +80,8 @@ class ImageMeasure(Measurement):
         print(xy)
         N = S.Navg.val
 
+        self.xs, self.ys = np.arange(xmin, xmax+dx, dx), np.arange(ymin, ymax+dy, dy)
+
         print("Starting Measurement")
 
         try:
@@ -93,11 +96,22 @@ class ImageMeasure(Measurement):
             # ---- DO EXPERIMENT ----
             interrupted, delay = False, 0
             print('Running Measurement ...')
+
+            for i, x in enumerate(self.xs):
+                if interrupted: break
+                for j, y in enumerate(self.ys):
+                    if interrupted: break
+                    self._execute_move(x, y)
+                    print(f'Current Pixel: {(x, y)}')
             
-            for idx, pix in enumerate(xy):
+            '''for idx, pix in enumerate(xy):
                 
                 x, y = pix
                 self._execute_move(x, y)
+                # ---- DO MEASUREMENT ----
+                self.plotdata.append(pix.tolist())
+                self.set_progress((idx + 1) / xy.size * 100)
+                time.sleep(1)
                 for n in range(N):
                     # ---- DO MEASUREMENT ----
                     if self.interrupt_measurement_called:
@@ -115,7 +129,7 @@ class ImageMeasure(Measurement):
             endtime = time.time()
             if not interrupted:
                 print("Measurement Complete!", end=' ')
-            print(f'[Elapsed time: {endtime-starttime} s]')
+            print(f'[Elapsed time: {endtime-starttime} s]')'''
 
         except Exception as e:
             print(f'EXCEPTED ERROR: {e}')
@@ -134,7 +148,8 @@ class ImageMeasure(Measurement):
         self.scatter.addPoints(pos=self.plotdata)
 
     def _initialize_stages(self):
-        return PIctrl.initializeController('LINEAR')
+        return
+        #return PIctrl.initializeController('LINEAR')
 
     def _execute_move(self, x, y):
         x_diff, y_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
@@ -155,7 +170,7 @@ class ImageMeasure(Measurement):
     def _interrupt(self):
         self.interrupt_measurement_called = True
 
-class ESRImageMeasure(Measurement):
+'''class ESRImageMeasure(Measurement):
     
     name = 'ESRImageTest'
     
@@ -378,7 +393,7 @@ class ESRImageMeasure(Measurement):
         rc = self.admin.CloseInstrument(self.instId)
         AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
         rc = self.admin.Close()
-        AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
+        AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)'''
         
 if __name__ == '__main__':
     

@@ -531,7 +531,7 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     lasttime=currtime
     currtime=time.time()
     print('Write segment:', currtime-lasttime, ' seconds')
-    print(f'Write speed: {dacSignal.nbytes / (currtime-lasttime)} GB/s')
+    print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
 
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
 
@@ -564,27 +564,52 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     currtime=time.time()
     print('Set settings and toggle output:', currtime-lasttime, ' seconds')
 
-    #MARKER CODE >>>>
-    # SendScpi(inst, ":MARK OFF")
-      
-    # # enble marker 1 CH 1
-    # offTime = offset
-    # onTime = int(len(dacSignal)/8)-offset
-    # markerWave = []
-    # for i in range(0,offTime):
-    #     markerWave.append(0)
-    # for i in range(0,onTime):
-    #     markerWave.append(1)  
-    # markerWave = np.uint8(markerWave)
-       
-    # prefix = ':MARK:DATA 0,#'
-    # print(prefix, end=' .. ')
-    # res = inst.WriteBinaryData(prefix, markerWave.tobytes())
-    # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
+def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
+    starttime=time.time()
+    query_syst_err = True  
+    
+    dacSignal = waveform
+    
+    # ---------------------------------------------------------------------
+    # DAC functions CH 1 
+    # ---------------------------------------------------------------------
 
-    # SendScpi(inst, ":MARK:VOLT:PTOP 1.2")
-    # # SendScpi(inst, ":MARK:SEL 1")
-    # SendScpi(inst, ":MARK ON")
+    # select channel
+    SendScpi(inst, ":INST:CHAN 1", query_syst_err)
+
+
+    # load I waveform into instrument
+    segNum = 1
+    SendScpi(inst, ":TRACe:DEF {0},{1}".format(segNum, len(dacSignal)), query_syst_err)
+    SendScpi(inst, ":TRACe:SEL {0}".format(segNum), query_syst_err)
+
+    prefix = ':TRACe:DATA'
+
+    lasttime=starttime
+    currtime=time.time()
+    print('Setup segment:', currtime-lasttime, ' seconds')
+
+    f=open(".waveform","wb")
+    dacSignal.tofile(f)
+    f.close()
+    res = inst.WriteBinaryData(prefix, '.waveform')
+
+    lasttime=currtime
+    currtime=time.time()
+    print('Write segment:', currtime-lasttime, ' seconds')
+    print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
+    SendScpi(inst, ":SOUR:VOLT {0}".format(vpp))
+    #SendScpi(inst, ":VOLT?")
+
+    # sel segment 1 - play I
+    SendScpi(inst, ":SOUR:FUNC:MODE:SEGM {0}".format(segNum), query_syst_err) 
+
+    # connect ouput
+    SendScpi(inst, ":OUTP ON", query_syst_err)
+
+    lasttime=currtime
+    currtime=time.time()
+    print('Set settings and toggle output:', currtime-lasttime, ' seconds')
 
 def enableTrigger(inst, trig_lev, trig_channel):
     SendScpi(inst, ":TRIG:SOUR:ENAB TRG{0}".format(trig_channel)) # Set tigger enable signal to TRIG1 (CH specific)
@@ -650,7 +675,7 @@ def sinePulse(segmentLength, squareCycles, sinCycles, duty, amp):
 def fastsine(seg, cyc, amp):
     t = np.arange(seg, step=1)
     omegaSin = 2 * np.pi * cyc
-    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(segmentLength/2), dtype=int)))
+    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(seg/2), dtype=int)))
     sn = np.sin(omegaSin*t/seg)
     rawSignal = sq * amp * sn
     dacSignal = np.uint8((rawSignal/amp*127)+127)
@@ -777,6 +802,10 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
 
+    SendScpi(inst, ':TRACe:FREE?', print_line=True)
+    SendScpi(inst, ':TRAC:DEL:ALL')
+    SendScpi(inst, ':TRACe:FREE?', print_line=True)
+
     '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
     duty = 0.5'''
@@ -798,8 +827,9 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     lasttime=starttime
     currtime=time.time()
     print('----> Calculate sequence:', currtime-lasttime, ' seconds')
+    print(f'{np.uint8(waveform).nbytes * 1e-9}')
     
-    instrumentCalls(inst, np.uint8(waveform), vpp)
+    testinstrumentCalls(inst, np.uint8(waveform), vpp)
     lasttime=currtime
     currtime=time.time()
     print('----> Waveform call:', currtime-lasttime, ' seconds')
@@ -809,7 +839,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     print('----> Marker call:', currtime-lasttime, ' seconds')
 
 def makeESRSweepMarker(inst, segmentLength, num):
-    segmentLength = int(segmentLength/8)
+    segmentLength = segmentLength//8
     #MARKER CODE >>>>
     SendScpi(inst, ":MARK OFF")
     SendScpi(inst, ":MARK:SEL 1")
@@ -818,14 +848,14 @@ def makeESRSweepMarker(inst, segmentLength, num):
     # SendScpi(inst, ":MARK:OFFS 0")
 
     #enble marker 1 CH 1
-    time = np.linspace(0, segmentLength-1, segmentLength)
-    waveform = np.zeros(segmentLength)
+    # time = np.linspace(0, segmentLength-1, segmentLength)
+
+    waveform = np.zeros(segmentLength, dtype=np.uint8)
 
     duration = 500
-    delay = 400000
-    tot = 500000
+    delay = 400_000
+    tot = 500_000
     duration2 = 100
-
 
     for i in range(int((delay-duration2)*segmentLength/1e6), int(delay*segmentLength/1e6)):
         waveform[i] += 2
@@ -833,24 +863,24 @@ def makeESRSweepMarker(inst, segmentLength, num):
     for i in range(int(tot*segmentLength/1e6)+int((delay-duration2)*segmentLength/1e6), int(tot*segmentLength/1e6)+int(delay*segmentLength/1e6)):
         waveform[i] += 2
 
-    for i in range(0, segmentLength):
-        waveform[i] += 4
+    waveform += 4
 
-
-    totalWaveform = []
-    for i in range(num):
-        totalWaveform = np.append(totalWaveform, waveform)
+    totalWaveform = np.array([waveform]*num, dtype=np.uint8).flatten()
 
     for i in range(0, int(duration*segmentLength/1e6)):
         totalWaveform[i] += 1
 
     markerWave = np.uint8(totalWaveform)
-    
+    del totalWaveform
+
     prefix = ':MARK:DATA 0,#'
     # print(prefix, end=' .. ')
-    res = inst.WriteBinaryData(prefix, markerWave.tobytes())
+    
+    f = open(".marker","wb")
+    markerWave.tofile(f)
+    f.close()
+    res = inst.WriteBinaryData(prefix, '.marker')
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
-
     # res = SendScpi(inst, ":SYST:ERR?", False, False)
     # print(res[1])
 
@@ -875,6 +905,9 @@ def makeESRSweepMarker(inst, segmentLength, num):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
+
+def helper(wv):
+    return wv
 
 def makeT2Seq(inst, t_delay,t_AOM,t_readoutDelay, t_pi, freq, vpp=0.001, IQpadding=0, numberOfPiPulses=1):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal

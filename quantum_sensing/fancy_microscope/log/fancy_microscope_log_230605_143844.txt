@@ -1,5 +1,0 @@
-2023-06-05T14:53:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
-    def eventFilter(self, obj, event):
-KeyboardInterrupt
-
