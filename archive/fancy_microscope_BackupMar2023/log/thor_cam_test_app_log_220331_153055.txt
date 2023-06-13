@@ -1,5 +1,0 @@
-2022-03-31T15:30:56|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop False
-2022-03-31T15:30:56|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture interrupt
-2022-03-31T15:30:56|INFO|ThorCamTestApp|setting up figures for thor_cam_capture measurement thor_cam_capture
-2022-03-31T15:31:15|INFO|ThorCamTestApp|on_close
-2022-03-31T15:31:15|INFO|ThorCamTestApp|disconnecting thor_cam
