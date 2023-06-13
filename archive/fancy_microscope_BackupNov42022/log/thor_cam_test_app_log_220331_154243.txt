@@ -1,9 +1,0 @@
-2022-03-31T15:42:43|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "thorcam_test_app.py", line 53, in <module>
-    app = ThorCamTestApp(sys.argv)
-  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
-    self.setup()
-  File "thorcam_test_app.py", line 28, in setup
-    import thorcam_sci_hw
-ModuleNotFoundError: No module named 'thorcam_sci_hw'
-

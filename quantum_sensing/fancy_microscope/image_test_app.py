@@ -7,10 +7,12 @@ import sys, time, os, inspect, copy
 from datetime import datetime
 import numpy as np
 import pandas as pd
-import AWGcontrol as AWGctl
+# import AWGcontrol as AWGctl
 
 import movestages as PIctrl
 import numpy as np
+sys.path.append('../')
+#import movestages as PIctrl
 
 class ImageTestApp(BaseMicroscopeApp):
 
@@ -58,9 +60,8 @@ class ImageMeasure(Measurement):
         S.res.connect_to_widget(self.ui.res)
         S.num_pts.connect_to_widget(self.ui.num_pts)
         self.pos_buffer = {'x': None, 'y': None, 'r': None}
-
+        self.stage = self._initialize_stages()
         self.plotdata = []
-
 
     def setup_figure(self):
         self.graph_layout = pg.GraphicsLayoutWidget()
@@ -107,6 +108,10 @@ class ImageMeasure(Measurement):
                 
                 x, y = pix
                 self._execute_move(x, y)
+                # ---- DO MEASUREMENT ----
+                self.plotdata.append(pix.tolist())
+                self.set_progress((idx + 1) / xy.size * 100)
+                time.sleep(1)
                 for n in range(N):
                     # ---- DO MEASUREMENT ----
                     if self.interrupt_measurement_called:
@@ -143,7 +148,8 @@ class ImageMeasure(Measurement):
         self.scatter.addPoints(pos=self.plotdata)
 
     def _initialize_stages(self):
-        return PIctrl.initializeController('LINEAR')
+        return
+        #return PIctrl.initializeController('LINEAR')
 
     def _execute_move(self, x, y):
         x_diff, y_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
@@ -164,7 +170,7 @@ class ImageMeasure(Measurement):
     def _interrupt(self):
         self.interrupt_measurement_called = True
 
-class ESRImageMeasure(Measurement):
+'''class ESRImageMeasure(Measurement):
     
     name = 'ESRImageTest'
     
@@ -387,7 +393,7 @@ class ESRImageMeasure(Measurement):
         rc = self.admin.CloseInstrument(self.instId)
         AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
         rc = self.admin.Close()
-        AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
+        AWGctl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)'''
         
 if __name__ == '__main__':
     

@@ -1,9 +1,0 @@
-2022-11-04T17:22:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "fancy_microscope.py", line 48, in <module>
-    app = FancyMicroscopeApp(sys.argv)
-  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
-    self.setup()
-  File "fancy_microscope.py", line 22, in setup
-    self.add_hardware(VirtualFunctionGenHW(self))
-NameError: name 'VirtualFunctionGenHW' is not defined
-
