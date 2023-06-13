@@ -1,5 +1,5 @@
 from ScopeFoundry import HardwareComponent
-import uc480
+from uc480 import uc480
 
 class ThorCamHW(HardwareComponent):
     
@@ -14,7 +14,7 @@ class ThorCamHW(HardwareComponent):
     def connect(self):
         
         # create instance and connect to library
-        self.cam = uc480.uc480()
+        self.cam = uc480()
         
         # connect to first available camera
         self.cam.connect()
