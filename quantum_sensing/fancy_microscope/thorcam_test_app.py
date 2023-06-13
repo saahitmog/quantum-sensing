@@ -25,8 +25,8 @@ class ThorCamTestApp(BaseMicroscopeApp):
         #self.settings.New('test1', dtype=int, initial=0)
         
         #Add Hardware components
-        from thorcam_sci import thorcam_sci_hw
-        self.add_hardware(thorcam_sci_hw.ThorcamSCIHW(self))
+        from thorcam_sci import thorcam_sci_hw as camHW
+        self.add_hardware(camHW.ThorcamSCIHW(self))
 
 
         #Add Measurement components

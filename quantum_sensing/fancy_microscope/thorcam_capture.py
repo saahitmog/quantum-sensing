@@ -197,7 +197,7 @@ class ThorCamCaptureMeasure(Measurement):
         S.New('x_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
         S.New('y_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
         S.New('z_pos', dtype=float, initial=0.0, vmin=-10, vmax=0) # vmin TEMPORARY VALUE
-        S.New('r_pos', dtype=float, initial=-60)
+        S.New('r_pos', dtype=float, initial=-30)
         
         self.ui_filename = sibling_path(__file__,"thorcam_capture.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
@@ -210,7 +210,7 @@ class ThorCamCaptureMeasure(Measurement):
         self.ui.autowb_pushButton.clicked.connect(self.auto_white_balance)
         self.ui.save_pushButton.clicked.connect(self.save_image)
         self.ui.move_pushButton.clicked.connect(self.execute_move)
-        self.ui.home_pushButton.clicked.connect(self.home_MCM )
+        #self.ui.home_pushButton.clicked.connect(self.home_MCM )
         S.continuous.connect_to_widget(self.ui.continuous_checkBox)
         S.save_png.connect_to_widget(self.ui.save_png_checkBox)
         S.save_tif.connect_to_widget(self.ui.save_tif_checkBox)
@@ -228,7 +228,7 @@ class ThorCamCaptureMeasure(Measurement):
         S.y_pos.connect_to_widget(self.ui.movey_doubleSpinBox)
         S.z_pos.connect_to_widget(self.ui.movez_doubleSpinBox)
         S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
-        self.pos_buffer = {'x': None, 'y': None, 'r': None, 'z': None}
+        self.pos_buffer = {'x': 18, 'y': 18, 'r': -30, 'z': None}
 
         self.ctrl = mcmctrl(which_port='COM5',
                               stages=('PLS-XY', 'PLS-XY', 'PLS-XY'),
@@ -237,9 +237,9 @@ class ThorCamCaptureMeasure(Measurement):
                               very_verbose=False,
                               hang_time = 5)
         # self.home_MCM()
-        self._execute_movePI()
+        #self._execute_movePI()
 
-        print("Stage Position Initialized")
+        #print("Stage Position Initialized")
         
         cam_ui_connections = [
             ('exposure', 'exp_time_doubleSpinBox'),
@@ -249,7 +249,7 @@ class ThorCamCaptureMeasure(Measurement):
         self.cam_hw = self.app.hardware['thor_cam']
 
         # setup color processing if necessary
-        self._camera = self.cam_hw.cam
+        #self._camera = self.cam_hw.cam
         # print(self.cam_hw)
 
         # if self._camera.camera_sensor_type != SENSOR_TYPE.BAYER:
@@ -269,8 +269,8 @@ class ThorCamCaptureMeasure(Measurement):
         #     self._is_color = True 
         self._is_color = False   
      
-        for lq_name, widget_name in cam_ui_connections:                          
-            self.cam_hw.settings.get_lq(lq_name).connect_to_widget(getattr(self.ui, widget_name))
+        '''for lq_name, widget_name in cam_ui_connections:                          
+            self.cam_hw.settings.get_lq(lq_name).connect_to_widget(getattr(self.ui, widget_name))'''
 
         self.imview = pg.ImageView(view=pg.PlotItem())
 
@@ -473,7 +473,7 @@ class ThorCamCaptureMeasure(Measurement):
         return Image.fromarray(scaled_image)
     
     def execute_move(self):
-        #self._execute_movePI()
+        self._execute_movePI()
 
         channel = 1
         enc = self.ctrl._get_encoder_counts(channel)
@@ -484,7 +484,7 @@ class ThorCamCaptureMeasure(Measurement):
         enc = self.ctrl._get_encoder_counts(channel)
         self.pos_buffer['z'] = self.settings.z_pos.val = self.ctrl._encoder_counts_to_um(channel, enc)
 
-    def home_MCM(self):
+    '''def home_MCM(self):
         channel = 0
         self.ctrl._set_encoder_counts_to_zero(channel)
         self.ctrl.move_um(channel, 1e3 * 30, relative=False, block=True)
@@ -501,7 +501,7 @@ class ThorCamCaptureMeasure(Measurement):
         self.ctrl._set_encoder_counts_to_zero(channel)
         self.ctrl.move_um(channel, 1e3 * 30, relative=False, block=True)
         self.ctrl._set_encoder_counts_to_zero(channel)
-        self.pos_buffer['z'] = 0
+        self.pos_buffer['z'] = 0'''
 
     def _execute_movePI(self):
         x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val

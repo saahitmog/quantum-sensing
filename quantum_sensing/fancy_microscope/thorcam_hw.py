@@ -1,5 +1,7 @@
 from ScopeFoundry import HardwareComponent
-from uc480 import uc480
+import uc480
+
+from thorlabs_tsi_sdk.tl_camera import TLCameraSDK
 
 class ThorCamHW(HardwareComponent):
     
@@ -11,13 +13,20 @@ class ThorCamHW(HardwareComponent):
         self.settings.New('gain', dtype=int, initial=100, vmin=0, vmax=100)
         self.settings.New('pixel_clock', dtype=int, initial=10, unit='MHz')
         
+        
     def connect(self):
         
+        '''sdk = TLCameraSDK()
+        camera_list = sdk.discover_available_cameras()
+        print(camera_list)'''
+
         # create instance and connect to library
-        self.cam = uc480()
+        self.cam = uc480.uc480()
         
         # connect to first available camera
         self.cam.connect()
+
+        print('reached here')
         
         self.settings.exp_time.connect_to_hardware(
             read_func = self.cam.get_exposure,
