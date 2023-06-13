@@ -17,42 +17,43 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         #print("Adding Hardware Components")
         #from ScopeFoundryHW.virtual_function_gen import VirtualFunctionGenHW
         # from custommeasure import PMD24HW
-        import thorcam_sci.thorcam_sci_hw
+        #import thorcam_sci.thorcam_sci_hw
+        from thorcam_hw import ThorCamHW
         # self.add_hardware(PMD24HW(self))
         #self.add_hardware(VirtualFunctionGenHW(self))
 
-        #self.add_hardware(thorcam_sci.thorcam_sci_hw.ThorcamSCIHW(self))
+        self.add_hardware(ThorCamHW(self))
         # cam not working disconnected?
 
         #Add measurement components
         print("Create Measurement objects")
         # from custommeasure import LaserQuantumOptimizer
         # self.add_measurement(LaserQuantumOptimizer(self))
-        from ESRMeasure import ESRMeasure
-        from RabiMeasure import RabiMeasure
-        from RabiMappingMeasure import RabiImageMeasure
-        from T1Measure import T1Measure
+        #from ESRMeasure import ESRMeasure
+        #from RabiMeasure import RabiMeasure
+        #from RabiMappingMeasure import RabiImageMeasure
+        #from T1Measure import T1Measure
 
         #import thorcam_sci.thorcam_sci_liveview
-        #from thorcam_capture import ThorCamCaptureMeasure
-        self.add_measurement(ESRMeasure(self))
-        self.add_measurement(RabiMeasure(self))
-        self.add_measurement(RabiImageMeasure(self))
-        self.add_measurement(T1Measure(self))
+        from thorcam_capture import ThorCamCaptureMeasure
+        #self.add_measurement(ESRMeasure(self))
+        #self.add_measurement(RabiMeasure(self))
+        #self.add_measurement(RabiImageMeasure(self))
+        #self.add_measurement(T1Measure(self))
 
-        #self.add_measurement(ThorCamCaptureMeasure(self))
+        self.add_measurement(ThorCamCaptureMeasure(self))
         # cam not working disconnected?
 
-        from ESRSweepMeasure import ESRSweepMeasure
-        self.add_measurement(ESRSweepMeasure(self))
+        #from ESRSweepMeasure import ESRSweepMeasure
+        #self.add_measurement(ESRSweepMeasure(self))
 
         #from T1Image import T1ImageMeasure
-        from T1MappingMeasure import T1ImageMeasure
-        self.add_measurement(T1ImageMeasure(self))
+        #from T1MappingMeasure import T1ImageMeasure
+        #self.add_measurement(T1ImageMeasure(self))
 
         #from ESRImage import ESRImageMeasure
 
-        from ESRMappingMeasure import ESRImageMeasure
+        '''from ESRMappingMeasure import ESRImageMeasure
         self.add_measurement(ESRImageMeasure(self))
 
         from T2SweepMeasure import T2SweepMeasure
@@ -62,7 +63,7 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         self.add_measurement(T2Measure(self))
 
         from T2MappingMeasure import T2ImageMeasure
-        self.add_measurement(T2ImageMeasure(self))
+        self.add_measurement(T2ImageMeasure(self))'''
 
         #self.add_measurement(thorcam_sci.thorcam_sci_liveview.ThorcamSCILiveView(self))
         # Connect to custom gui
