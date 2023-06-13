@@ -1,0 +1,13 @@
+2023-06-02T16:44:47|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "image_test_app.py", line 100, in <module>
+    app = ImageTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "image_test_app.py", line 16, in setup
+    self.add_measurement(ImageMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "image_test_app.py", line 37, in setup
+    S.x_pos.connect_to_widget(self.ui.movex_doubleSpinBox)
+AttributeError: 'QWidget' object has no attribute 'movex_doubleSpinBox'
+

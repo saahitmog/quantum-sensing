@@ -1,0 +1,16 @@
+2023-05-31T13:20:38|ERROR|thorlabs_tsi_sdk.tl_camera|Could not get camera sensor type; tl_camera_get_camera_sensor_type() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2023-05-31T13:20:38|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 270, in run
+    image_acquisition_thread = ImageAcquisitionThread(camera)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 91, in __init__
+    if self._camera.camera_sensor_type != SENSOR_TYPE.BAYER:
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 1695, in camera_sensor_type
+    raise exception
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 1691, in camera_sensor_type
+    _create_c_failure_message(self._sdk, "tl_camera_get_camera_sensor_type", error_code))
+thorlabs_tsi_sdk.tl_camera.TLCameraError: tl_camera_get_camera_sensor_type() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+

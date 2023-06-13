@@ -1,0 +1,14 @@
+2022-04-07T13:04:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 244, in start_stop
+    self._start()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 134, in _start
+    raise RuntimeError("Cannot start a new measurement while still measuring")
+RuntimeError: Cannot start a new measurement while still measuring
+
+2022-04-07T13:04:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 244, in start_stop
+    self._start()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 134, in _start
+    raise RuntimeError("Cannot start a new measurement while still measuring")
+RuntimeError: Cannot start a new measurement while still measuring
+

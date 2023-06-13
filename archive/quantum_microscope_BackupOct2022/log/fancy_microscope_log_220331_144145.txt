@@ -1,0 +1,1 @@
+2022-03-31T14:42:07|ERROR|FancyMicroscopeApp|tried to disconnect thorcam_sci: 'TLCameraSDK' object has no attribute 'close'

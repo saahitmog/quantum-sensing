@@ -1,0 +1,45 @@
+2022-03-31T15:43:43|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop False
+2022-03-31T15:43:43|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture interrupt
+2022-03-31T15:43:44|INFO|ThorCamTestApp|setting up figures for thor_cam_capture measurement thor_cam_capture
+2022-03-31T15:43:57|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop True
+2022-03-31T15:43:57|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture start
+2022-03-31T15:43:57|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop False
+2022-03-31T15:43:57|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture interrupt
+2022-03-31T15:43:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 77, in run
+    bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
+AttributeError: 'TLCamera' object has no attribute 'acquire'
+
+2022-03-31T15:44:03|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop True
+2022-03-31T15:44:03|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture start
+2022-03-31T15:44:03|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 77, in run
+    bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
+AttributeError: 'TLCamera' object has no attribute 'acquire'
+
+2022-03-31T15:44:03|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop False
+2022-03-31T15:44:03|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture interrupt
+2022-03-31T15:44:04|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop True
+2022-03-31T15:44:04|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture start
+2022-03-31T15:44:04|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 77, in run
+    bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
+AttributeError: 'TLCamera' object has no attribute 'acquire'
+
+2022-03-31T15:44:04|INFO|ThorCamCaptureMeasure|thor_cam_capture start_stop False
+2022-03-31T15:44:04|INFO|ThorCamCaptureMeasure|measurement thor_cam_capture interrupt
+2022-03-31T16:03:36|INFO|ThorCamTestApp|on_close
+2022-03-31T16:03:36|INFO|ThorCamTestApp|disconnecting thor_cam
+2022-03-31T16:03:36|ERROR|ThorCamTestApp|tried to disconnect thor_cam: 'TLCameraSDK' object has no attribute 'close'

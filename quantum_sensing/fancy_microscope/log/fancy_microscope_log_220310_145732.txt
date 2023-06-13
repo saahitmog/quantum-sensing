@@ -1,0 +1,44 @@
+2022-03-10T14:57:37|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:38|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 250, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-10T14:57:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 50, in configureDAQ
+    readTask.timing.ai_conv_src = DAQ_SampleClk
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\nidaqmx\_task_modules\timing.py", line 442, in ai_conv_src
+    check_for_error(error_code)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\nidaqmx\errors.py", line 127, in check_for_error
+    raise DaqError(error_buffer.value.decode("utf-8"), error_code)
+nidaqmx.errors.DaqError: Specified property is not supported by the device or is not applicable to the task.
+Property: DAQmx_AIConv_Src
+
+Task Name: _unnamedTask<0>
+
+Status Code: -200452
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 142, in run
+    task = DAQ.configureDAQ(self.settings.N_samples.value)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\DAQ_Analog.py", line 64, in configureDAQ
+    sys.exit()
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 220, in run
+    DAQ.closeDAQTask(task)
+UnboundLocalError: local variable 'task' referenced before assignment
+

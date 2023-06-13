@@ -1,0 +1,14 @@
+2022-11-09T16:24:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 48, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 28, in setup
+    from ESRMeasure import ESRMeasure
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\ESRMeasure.py", line 20, in <module>
+    import AWGcontrol as AWGctl
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\AWGcontrol.py", line 404
+    pulseProfile[(int) i] = 1
+                       ^
+SyntaxError: invalid syntax
+

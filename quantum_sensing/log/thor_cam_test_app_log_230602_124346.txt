@@ -1,0 +1,13 @@
+2023-06-02T12:43:59|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope\thorcam_test_app.py", line 53, in <module>
+    app = ThorCamTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope\thorcam_test_app.py", line 34, in setup
+    self.add_measurement(thorcam_capture.ThorCamCaptureMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 227, in setup
+    print(self.z_ctrl._get_encoder_counts())
+TypeError: _get_encoder_counts() missing 1 required positional argument: 'channel'
+

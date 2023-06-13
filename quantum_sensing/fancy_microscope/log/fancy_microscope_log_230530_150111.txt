@@ -1,0 +1,30 @@
+2023-05-30T15:02:35|ERROR|thorlabs_tsi_sdk.tl_camera|Could not get gain range; tl_camera_get_gain_range() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2023-05-30T15:02:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 264, in run
+    print(camera.gain_range)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 1269, in gain_range
+    raise exception
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 1265, in gain_range
+    raise TLCameraError(_create_c_failure_message(self._sdk, "tl_camera_get_gain_range", error_code))
+thorlabs_tsi_sdk.tl_camera.TLCameraError: tl_camera_get_gain_range() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+
+2023-05-30T15:03:10|ERROR|thorlabs_tsi_sdk.tl_camera|Could not get gain range; tl_camera_get_gain_range() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2023-05-30T15:03:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 264, in run
+    print(camera.gain_range)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 1269, in gain_range
+    raise exception
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 1265, in gain_range
+    raise TLCameraError(_create_c_failure_message(self._sdk, "tl_camera_get_gain_range", error_code))
+thorlabs_tsi_sdk.tl_camera.TLCameraError: tl_camera_get_gain_range() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+
+2023-05-30T15:03:17|ERROR|thorlabs_tsi_sdk.tl_camera|Could not disarm camera; tl_camera_disarm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2023-05-30T15:03:17|ERROR|FancyMicroscopeApp|tried to disconnect thor_cam: tl_camera_disarm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.

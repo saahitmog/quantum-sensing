@@ -1,0 +1,2 @@
+2022-04-07T13:39:04|ERROR|thorlabs_tsi_sdk.tl_camera|Camera SDK destruction failed; tl_camera_close_sdk() returned non-zero error code: 1004; error message: Cameras must be closed before closing the SDK. Error: Invalid operation.
+2022-04-07T13:39:04|ERROR|thorlabs_tsi_sdk.tl_mono_to_color_processor|Could not dispose MonoToColorProcessor instance; exception: access violation writing 0x0000000000000000

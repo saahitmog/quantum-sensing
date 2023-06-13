@@ -1,0 +1,11 @@
+2022-02-04T15:09:52|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 34, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 17, in setup
+    from ScopeFoundryHW.ni_daq.hw.ni_dac_hw import NI_DAC_HW
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundryHW\ni_daq\__init__.py", line 4, in <module>
+    from ScopeFoundryHW.ni_daq.hw.ni_adc_hw import NI_ADC_HW
+ModuleNotFoundError: No module named 'ScopeFoundryHW.ni_daq.hw'
+

@@ -1,0 +1,9 @@
+2022-03-30T12:50:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 42, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 23, in setup
+    self.add_hardware(thorcam_sci.ThorcamSCIHW(self))
+AttributeError: module 'thorcam_sci' has no attribute 'ThorcamSCIHW'
+

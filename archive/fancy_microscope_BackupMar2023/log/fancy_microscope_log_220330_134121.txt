@@ -1,0 +1,41 @@
+2022-03-30T13:41:41|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 272, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-30T13:41:41|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 272, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]
+2022-03-30T13:41:41|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\h5py\_hl\files.py", line 199, in make_fid
+    fid = h5f.open(name, h5f.ACC_RDWR, fapl=fapl)
+  File "h5py\_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py\_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py\h5f.pyx", line 88, in h5py.h5f.open
+OSError: Unable to open file (unable to open file: name = 'C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\data2\220330_134141_ESR_measurement_emm.h5', errno = 2, error message = 'No such file or directory', flags = 1, o_flags = 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\h5py\_hl\files.py", line 202, in make_fid
+    fid = h5f.open(name, h5f.ACC_RDONLY, fapl=fapl)
+  File "h5py\_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py\_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py\h5f.pyx", line 88, in h5py.h5f.open
+OSError: Unable to open file (unable to open file: name = 'C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\data2\220330_134141_ESR_measurement_emm.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 102, in run
+    h5_file = h5_io.h5_base_file(self.app, fname=fn, measurement=self)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\h5_io.py", line 65, in h5_base_file
+    h5_file = h5py.File(fname)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\h5py\_hl\files.py", line 408, in __init__
+    swmr=swmr)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\h5py\_hl\files.py", line 204, in make_fid
+    fid = h5f.create(name, h5f.ACC_EXCL, fapl=fapl, fcpl=fcpl)
+  File "h5py\_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py\_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py\h5f.pyx", line 108, in h5py.h5f.create
+OSError: Unable to create file (unable to open file: name = 'C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\data2\220330_134141_ESR_measurement_emm.h5', errno = 2, error message = 'No such file or directory', flags = 15, o_flags = 502)
+
+2022-03-30T13:41:41|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'xs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\ScopeFoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 272, in update_display\n    self.current_plotline.setData(self.xs, self.ys)\n', "AttributeError: 'ESRMeasure' object has no attribute 'xs'\n"]

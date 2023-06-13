@@ -1,0 +1,11 @@
+2022-02-11T16:07:14|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 40, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 26, in setup
+    from custommeasure2 import ESRMeasure
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 266, in <module>
+    import DAQ_Analog as DAQ #NOTE THIS CHANGE FROM PHOTODIODE CODE
+ModuleNotFoundError: No module named 'DAQ_Analog'
+

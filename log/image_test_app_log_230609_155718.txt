@@ -1,0 +1,9 @@
+2023-06-09T15:57:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/measurement.py", line 230, in _thread_run
+    self.run()
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 64, in run
+    xmin, ymin, xmax, ymax, dx, dy = S.x_min.val, S.y_min.val, S.x_max.val, S.y_max.val, S.dx.val, S.dy.val
+AttributeError: 'LQCollection' object has no attribute 'x_min'
+

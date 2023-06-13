@@ -1,0 +1,15 @@
+2023-06-09T17:26:31|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 142, in <module>
+    app = ImageTestApp(sys.argv)
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/base_app.py", line 351, in __init__
+    self.setup()
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 17, in setup
+    self.add_measurement(TestMeasure(self))
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/measurement.py", line 107, in __init__
+    self.setup()
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 57, in setup
+    S.plotting_type.connect_to_widget(self.ui.plot_ComboBox)
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/logged_quantity.py", line 560, in connect_to_widget
+    assert self.choices is not None
+AssertionError
+

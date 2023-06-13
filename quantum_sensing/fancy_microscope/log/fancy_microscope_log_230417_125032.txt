@@ -1,0 +1,94 @@
+2023-04-17T12:52:10|ERROR|ESRMeasure|ESR Failed to update figure1: 'ESRMeasure' object has no attribute 'average_x'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\ESRMeasure.py", line 348, in update_display\n    self.current_plotline.setData(self.average_x[:self.cutoff], self.average_y[:self.cutoff])\n', "AttributeError: 'ESRMeasure' object has no attribute 'average_x'\n"]
+2023-04-17T12:52:10|ERROR|ESRMeasure|ESR Failed to update figure1: 'ESRMeasure' object has no attribute 'average_x'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\ESRMeasure.py", line 348, in update_display\n    self.current_plotline.setData(self.average_x[:self.cutoff], self.average_y[:self.cutoff])\n', "AttributeError: 'ESRMeasure' object has no attribute 'average_x'\n"]
+2023-04-18T12:40:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
+    try:
+KeyboardInterrupt
+
+2023-04-18T12:40:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 273, in _on_display_update_timer
+    self.update_display()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\RabiMeasure.py", line 354, in update_display
+    self.plot.setTitle("Contrast vs Duration")
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\PlotItem\PlotItem.py", line 1121, in setTitle
+    self.titleLabel.setText(title, **args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\pyqtgraph\graphicsItems\LabelItem.py", line 68, in setText
+    self.item.setHtml(full)
+KeyboardInterrupt
+
+2023-04-18T12:40:20|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 244, in start_stop
+    self._start()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 134, in _start
+    raise RuntimeError("Cannot start a new measurement while still measuring")
+RuntimeError: Cannot start a new measurement while still measuring
+
+2023-04-18T12:40:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
+    try:
+KeyboardInterrupt
+
+2023-04-18T12:40:36|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
+    try:
+KeyboardInterrupt
+
+2023-04-18T12:43:28|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-18T12:43:32|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-18T12:44:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-18T12:45:00|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-18T12:48:02|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
+    try:
+KeyboardInterrupt
+
+2023-04-18T12:48:02|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
+    try:
+KeyboardInterrupt
+
+2023-04-18T16:08:49|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-18T16:10:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-24T19:05:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\helper_funcs.py", line 93, in eventFilter
+    def eventFilter(self, obj, event):
+KeyboardInterrupt
+
+2023-04-24T19:15:02|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 244, in start_stop
+    self._start()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 134, in _start
+    raise RuntimeError("Cannot start a new measurement while still measuring")
+RuntimeError: Cannot start a new measurement while still measuring
+
+2023-04-24T19:37:58|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 244, in start_stop
+    self._start()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 134, in _start
+    raise RuntimeError("Cannot start a new measurement while still measuring")
+RuntimeError: Cannot start a new measurement while still measuring
+

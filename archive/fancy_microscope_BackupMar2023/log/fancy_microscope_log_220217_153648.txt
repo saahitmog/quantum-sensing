@@ -1,0 +1,120 @@
+2022-02-17T15:37:02|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:06|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:10|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:17|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:21|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:25|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+
+2022-02-17T15:37:29|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\backend_bases.py", line 1194, in _on_timer
+    ret = func(*args, **kwargs)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1442, in _step
+    still_going = Animation._step(self, *args)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1173, in _step
+    self._draw_next_frame(framedata, self._blit)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1192, in _draw_next_frame
+    self._draw_frame(framedata)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\matplotlib\animation.py", line 1742, in _draw_frame
+    self._drawn_artists = self._func(framedata, *self._args)
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 259, in animate
+    counts = data[:self.settings.N_samples * 2]
+TypeError: unsupported operand type(s) for *: 'LoggedQuantity' and 'int'
+

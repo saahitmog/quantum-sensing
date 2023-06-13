@@ -1,0 +1,9 @@
+2022-10-26T12:24:11|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 48, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 29, in setup
+    from custommeasure2 import RabiMeasure
+ImportError: cannot import name 'RabiMeasure'
+
