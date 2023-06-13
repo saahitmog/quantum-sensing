@@ -1,0 +1,9 @@
+2022-03-31T15:43:13|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "thorcam_test_app.py", line 53, in <module>
+    app = ThorCamTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "thorcam_test_app.py", line 29, in setup
+    self.add_hardware(thorcam_sci_hw.ThorCamSCIHW(self))
+AttributeError: module 'thorcam_sci.thorcam_sci_hw' has no attribute 'ThorCamSCIHW'
+

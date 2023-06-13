@@ -1,0 +1,13 @@
+N_scanPts:	101
+Navg:	100
+Nsamples:	10000
+startFreq:	2870000000.000000
+endFreq:	2970000000.000000
+microwavePower:	0.800000
+t_duration:	50000.000000
+shotByShotNormalization:	False
+randomize:	True
+plotPulseSequence:	True
+saveSpacing_inScanPts:	2
+saveSpacing_inAverages:	1
+dataFileName:	D:\Code\qdSpectro_PMT\Saved_Data\20220210ESR_uscope_10x_10mW_35deg_QD02_0deg_25G_0degPol_pmt_test_2022-02-11_17h37m02s.txt

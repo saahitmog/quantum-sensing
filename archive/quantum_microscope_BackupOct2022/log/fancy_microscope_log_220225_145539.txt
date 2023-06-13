@@ -1,0 +1,40 @@
+2022-02-25T14:55:51|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 333, in run
+    self.current_run = np.zeros(freqs.shape, dtype=float)
+NameError: name 'freqs' is not defined
+
+2022-02-25T14:55:51|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'freqs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 629, in update_display\n    self.current_plotline.setData(self.freqs, self.current_run)\n', "AttributeError: 'ESRMeasure' object has no attribute 'freqs'\n"]
+2022-02-25T14:55:55|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 333, in run
+    self.current_run = np.zeros(freqs.shape, dtype=float)
+NameError: name 'freqs' is not defined
+
+2022-02-25T14:55:55|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'freqs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 629, in update_display\n    self.current_plotline.setData(self.freqs, self.current_run)\n', "AttributeError: 'ESRMeasure' object has no attribute 'freqs'\n"]
+2022-02-25T14:55:56|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 333, in run
+    self.current_run = np.zeros(freqs.shape, dtype=float)
+NameError: name 'freqs' is not defined
+
+2022-02-25T14:55:56|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'freqs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 629, in update_display\n    self.current_plotline.setData(self.freqs, self.current_run)\n', "AttributeError: 'ESRMeasure' object has no attribute 'freqs'\n"]
+2022-02-25T14:55:57|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 333, in run
+    self.current_run = np.zeros(freqs.shape, dtype=float)
+NameError: name 'freqs' is not defined
+
+2022-02-25T14:55:57|ERROR|ESRMeasure|ESR_measurement Failed to update figure1: 'ESRMeasure' object has no attribute 'freqs'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\custommeasure2.py", line 629, in update_display\n    self.current_plotline.setData(self.freqs, self.current_run)\n', "AttributeError: 'ESRMeasure' object has no attribute 'freqs'\n"]

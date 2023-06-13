@@ -1,0 +1,15 @@
+N_timePts:	201
+Navg:	1
+Nsamples:	10000
+startPulseDuration:	10.000000
+endPulseDuration:	10010.000000
+microwavePower:	1.000000
+microwaveFrequency	2945000000.000000
+t_AOM:	4000.000000
+t_readoutDelay:	100.000000
+shotByShotNormalization:	False
+randomize:	True
+plotPulseSequence:	True
+saveSpacing_inScanPts:	2
+saveSpacing_inAverages:	3
+dataFileName:	D:\Code\qdSpectro_PMT\Saved_Data\20220218\Rabi_uscope_10x_10mW_0degPol_s35mm_35deg_45deg_123G_020MW_pmt_2022-02-18_17h57m19s.txt

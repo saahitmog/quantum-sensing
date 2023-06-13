@@ -1,0 +1,13 @@
+2023-06-02T16:49:44|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "image_test_app.py", line 107, in <module>
+    app = ImageTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "image_test_app.py", line 18, in setup
+    self.add_measurement(ImageMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "image_test_app.py", line 48, in setup
+    self.ui.plot_GroupBox.layout().addWidget(self.graph_layout)
+AttributeError: 'QWidget' object has no attribute 'plot_GroupBox'
+

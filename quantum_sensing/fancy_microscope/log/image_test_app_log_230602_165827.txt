@@ -1,0 +1,15 @@
+2023-06-02T16:58:27|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "image_test_app.py", line 114, in <module>
+    app = ImageTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "image_test_app.py", line 18, in setup
+    self.add_measurement(ImageMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "image_test_app.py", line 36, in setup
+    S.activation.connect_to_widget(self.ui.start_pushButton)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\logged_quantity.py", line 549, in connect_to_widget
+    raise ValueError("Unknown widget type")
+ValueError: Unknown widget type
+

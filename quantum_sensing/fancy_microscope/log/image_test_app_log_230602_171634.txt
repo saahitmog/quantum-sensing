@@ -1,0 +1,7 @@
+2023-06-02T17:16:56|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "image_test_app.py", line 82, in execute_move
+    self._execute_movePI()
+  File "image_test_app.py", line 85, in _execute_movePI
+    x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val
+AttributeError: 'LQCollection' object has no attribute 'x_pos'
+

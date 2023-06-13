@@ -1,0 +1,13 @@
+N_scanPts:	101
+Navg:	1
+Nsamples:	1000
+startFreq:	3130000000.000000
+endFreq:	3150000000.000000
+microwavePower:	0.300000
+t_duration:	400000.000000
+shotByShotNormalization:	False
+randomize:	True
+plotPulseSequence:	True
+saveSpacing_inScanPts:	2
+saveSpacing_inAverages:	1
+dataFileName:	D:\Code\qdSpectro_SPD\Saved_Data\20220614\ESR_uscope_10x_10mW_35deg_cat14_top_47.7deg_115G_0degPol_spd_2022-06-15_15h36m20s.txt

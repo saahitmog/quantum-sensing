@@ -1,0 +1,51 @@
+2023-06-09T17:34:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 141, in <module>
+    app = ImageTestApp(sys.argv)
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/base_app.py", line 351, in __init__
+    self.setup()
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 17, in setup
+    self.add_measurement(TestMeasure(self))
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/measurement.py", line 107, in __init__
+    self.setup()
+  File "/home/smogan/Berkeley/Research/quantum-sensing/quantum_sensing/fancy_microscope/test_app.py", line 43, in setup
+    self.ui = load_qt_ui_file(self.ui_filename)
+  File "/home/smogan/.local/lib/python3.10/site-packages/ScopeFoundry/helper_funcs.py", line 64, in load_qt_ui_file
+    ui = uic.loadUi(ui_filename)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/__init__.py", line 241, in loadUi
+    return DynamicUILoader(package).loadUi(uifile, baseinstance, resource_suffix)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/Loader/loader.py", line 66, in loadUi
+    return self.parse(filename, resource_suffix)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 1037, in parse
+    actor(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 828, in createUserInterface
+    self.traverseWidgetTree(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 806, in traverseWidgetTree
+    handler(self, child)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 503, in createLayout
+    self.traverseWidgetTree(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 806, in traverseWidgetTree
+    handler(self, child)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 546, in handleItem
+    self.traverseWidgetTree(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 806, in traverseWidgetTree
+    handler(self, child)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 273, in createWidget
+    self.traverseWidgetTree(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 806, in traverseWidgetTree
+    handler(self, child)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 503, in createLayout
+    self.traverseWidgetTree(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 806, in traverseWidgetTree
+    handler(self, child)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 546, in handleItem
+    self.traverseWidgetTree(elem)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 806, in traverseWidgetTree
+    handler(self, child)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 264, in createWidget
+    self.stack.push(self.setupObject(widget_class, parent, elem))
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/uiparser.py", line 228, in setupObject
+    obj = self.factory.createQObject(clsname, name, args, is_attribute)
+  File "/home/smogan/.local/lib/python3.10/site-packages/PyQt5/uic/objcreator.py", line 116, in createQObject
+    raise NoSuchWidgetError(classname)
+PyQt5.uic.exceptions.NoSuchWidgetError: Unknown Qt widget: pyqtgraph.SpinBox
+

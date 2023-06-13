@@ -1,0 +1,10 @@
+2022-04-06T12:51:33|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 77, in run
+    bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
+AttributeError: 'TLCamera' object has no attribute 'acquire'
+
+2022-04-06T12:51:40|ERROR|FancyMicroscopeApp|tried to disconnect thor_cam: 'TLCameraSDK' object has no attribute 'close'

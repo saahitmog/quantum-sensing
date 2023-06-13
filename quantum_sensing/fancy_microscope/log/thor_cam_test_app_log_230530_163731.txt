@@ -1,0 +1,11 @@
+2023-05-30T16:37:37|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "thorcam_test_app.py", line 53, in <module>
+    app = ThorCamTestApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "thorcam_test_app.py", line 33, in setup
+    import thorcam_capture
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 14, in <module>
+    from movestages import *
+ModuleNotFoundError: No module named 'movestages'
+

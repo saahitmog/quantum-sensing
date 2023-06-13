@@ -1,0 +1,14 @@
+2022-04-06T15:12:50|ERROR|thorlabs_tsi_sdk.tl_camera|Could not arm camera; tl_camera_arm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+2022-04-06T15:12:50|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
+    self.measurement._thread_run()
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
+    self.run()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\thorcam_capture.py", line 118, in run
+    self._camera.arm(2)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 800, in arm
+    raise exception
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\thorlabs_tsi_sdk\tl_camera.py", line 794, in arm
+    raise TLCameraError(_create_c_failure_message(self._sdk, "tl_camera_arm", error_code))
+thorlabs_tsi_sdk.tl_camera.TLCameraError: tl_camera_arm() returned non-zero error code: 1003; error message: Camera handle is not valid. Check that the camera handle is not null and that the camera has not been closed. Error: Invalid parameter. Check documentation for detailed parameter information.
+

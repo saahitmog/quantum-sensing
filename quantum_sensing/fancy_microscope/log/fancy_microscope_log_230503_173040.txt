@@ -1,0 +1,7 @@
+2023-05-03T17:31:35|ERROR|T2Measure|T2 Failed to update figure1: 'T2Measure' object has no attribute 'average_x'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\T2Measure.py", line 359, in update_display\n    self.current_plotline.setData(self.average_x[:self.cutoff], self.average_y[:self.cutoff])\n', "AttributeError: 'T2Measure' object has no attribute 'average_x'\n"]
+2023-05-03T17:31:35|ERROR|T2Measure|T2 Failed to update figure1: 'T2Measure' object has no attribute 'average_x'. ['Traceback (most recent call last):\n', '  File "C:\\Users\\ZHao\\.conda\\envs\\scopefoundry\\lib\\site-packages\\ScopeFoundry\\measurement.py", line 273, in _on_display_update_timer\n    self.update_display()\n', '  File "C:\\Users\\Public\\quantum_sensing\\quantum_sensing\\fancy_microscope\\T2Measure.py", line 359, in update_display\n    self.current_plotline.setData(self.average_x[:self.cutoff], self.average_y[:self.cutoff])\n', "AttributeError: 'T2Measure' object has no attribute 'average_x'\n"]
+2023-05-03T17:32:24|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 272, in _on_display_update_timer
+    try:
+KeyboardInterrupt
+

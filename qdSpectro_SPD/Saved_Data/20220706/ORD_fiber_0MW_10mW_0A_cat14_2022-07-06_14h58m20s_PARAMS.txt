@@ -1,0 +1,7 @@
+N_scanPts:	100
+Nsamples:	10000
+startDelay:	1000.000000
+endDelay:	100000.000000
+t_uW:	20000.000000
+plotPulseSequence:	True
+dataFileName:	D:\Code\qdSpectro_SPD\Saved_Data\20220706\ORD_fiber_0MW_10mW_0A_cat14_2022-07-06_14h58m20s.txt

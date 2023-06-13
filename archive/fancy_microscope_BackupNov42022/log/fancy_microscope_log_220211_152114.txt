@@ -1,0 +1,17 @@
+2022-02-11T15:21:16|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
+  File "fancy_microscope.py", line 40, in <module>
+    app = FancyMicroscopeApp(sys.argv)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
+    self.setup()
+  File "fancy_microscope.py", line 27, in setup
+    self.add_measurement(ESRMeasure(self))
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 93, in __init__
+    self.setup()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 22, in setup
+    self.on_new_history_len()
+  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\custommeasure2.py", line 71, in on_new_history_len
+    self.optimize_history = np.ones((N, len(self.states)), dtype=float)
+  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\numpy\core\numeric.py", line 192, in ones
+    a = empty(shape, dtype, order)
+TypeError: 'float' object cannot be interpreted as an integer
+
