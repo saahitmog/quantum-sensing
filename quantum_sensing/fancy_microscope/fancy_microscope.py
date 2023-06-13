@@ -21,7 +21,7 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         # self.add_hardware(PMD24HW(self))
         #self.add_hardware(VirtualFunctionGenHW(self))
 
-        #self.add_hardware(thorcam_sci.thorcam_sci_hw.ThorcamSCIHW(self))
+        self.add_hardware(thorcam_sci.thorcam_sci_hw.ThorcamSCIHW(self))
         # cam not working disconnected?
 
         #Add measurement components
@@ -34,13 +34,13 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         from T1Measure import T1Measure
 
         #import thorcam_sci.thorcam_sci_liveview
-        #from thorcam_capture import ThorCamCaptureMeasure
+        from thorcam_capture import ThorCamCaptureMeasure
         self.add_measurement(ESRMeasure(self))
         self.add_measurement(RabiMeasure(self))
         self.add_measurement(RabiImageMeasure(self))
         self.add_measurement(T1Measure(self))
 
-        #self.add_measurement(ThorCamCaptureMeasure(self))
+        self.add_measurement(ThorCamCaptureMeasure(self))
         # cam not working disconnected?
 
         from ESRSweepMeasure import ESRSweepMeasure
