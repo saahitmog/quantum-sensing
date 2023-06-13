@@ -1,9 +1,0 @@
-2022-03-30T12:50:53|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "fancy_microscope.py", line 43, in <module>
-    app = FancyMicroscopeApp(sys.argv)
-  File "C:\Users\ZHao\.conda\envs\ScopeFoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
-    self.setup()
-  File "fancy_microscope.py", line 20, in setup
-    import thorcam_sc
-ModuleNotFoundError: No module named 'thorcam_sc'
-

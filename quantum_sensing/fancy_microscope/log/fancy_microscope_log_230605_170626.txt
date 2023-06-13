@@ -1,9 +1,0 @@
-2023-06-05T17:07:35|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 25, in run
-    self.measurement._thread_run()
-  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\measurement.py", line 179, in _thread_run
-    self.run()
-  File "C:\Users\Public\quantum_sensing\quantum_sensing\fancy_microscope\RabiMappingMeasure.py", line 111, in run
-    sweep, step = np.linspace(S.Start_Tau.value, S.End_Tau.value, num = S.N_pts.value, retstep = True)
-AttributeError: 'LQCollection' object has no attribute 'Start_Tau'
-
