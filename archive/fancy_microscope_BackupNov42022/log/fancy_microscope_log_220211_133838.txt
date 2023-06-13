@@ -1,9 +1,0 @@
-2022-02-11T13:38:39|CRITICAL|root|Unhandled exception:Traceback (most recent call last):
-  File "fancy_microscope.py", line 36, in <module>
-    app = FancyMicroscopeApp(sys.argv)
-  File "C:\Users\ZHao\.conda\envs\scopefoundry\lib\site-packages\ScopeFoundry\base_app.py", line 332, in __init__
-    self.setup()
-  File "fancy_microscope.py", line 22, in setup
-    from .custommeasure import LaserQuantumOptimizer
-ModuleNotFoundError: No module named '__main__.custommeasure'; '__main__' is not a package
-
