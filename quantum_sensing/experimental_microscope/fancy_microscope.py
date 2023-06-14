@@ -1,5 +1,6 @@
 
 from ScopeFoundry import BaseMicroscopeApp
+import os, sys
 
 class FancyMicroscopeApp(BaseMicroscopeApp):
 
@@ -8,7 +9,7 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
     name = 'fancy_microscope'
     
     # You must define a setup function that adds all the 
-    #capablities of the microscope and sets default settings
+    # capablities of the microscope and sets default settings
     def setup(self):
         
         #Add App wide settings
@@ -16,34 +17,31 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         #Add hardware components
         print("Adding Hardware Components")
         
-        import thorcam_sci.thorcam_sci_hw.ThorcamSCIHW as camHW
-        self.add_hardware(camHW(self))
+        from thorcam_sci.thorcam_sci_hw import ThorcamSCIHW as camHW
         from stageHW import stageHW
-        self.add_hardware(stageHW(self))
+        with hide():
+            self.add_hardware(camHW(self))
+            self.add_hardware(stageHW(self))
 
         #Add measurement components
         print("Create Measurement objects")
         # from custommeasure import LaserQuantumOptimizer
         # self.add_measurement(LaserQuantumOptimizer(self))
 
-
-
         from ESR import ESRMeasure
         self.add_measurement(ESRMeasure(self))
 
-        
         #from RabiMeasure import RabiMeasure
         #from RabiMappingMeasure import RabiImageMeasure
         #from T1Measure import T1Measure
 
-        #import thorcam_sci.thorcam_sci_liveview
-        #from thorcam_capture import ThorCamCaptureMeasure
+        from thorcam_capture import ThorCamCaptureMeasure
         
         #self.add_measurement(RabiMeasure(self))
         #self.add_measurement(RabiImageMeasure(self))
         #self.add_measurement(T1Measure(self))
 
-        #self.add_measurement(ThorCamCaptureMeasure(self))
+        self.add_measurement(ThorCamCaptureMeasure(self))
         # cam not working disconnected?
 
         #from ESRSweepMeasure import ESRSweepMeasure
@@ -75,6 +73,15 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         # show ui
         self.ui.show()
         self.ui.activateWindow()
+
+class hide:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
 
 
 if __name__ == '__main__':

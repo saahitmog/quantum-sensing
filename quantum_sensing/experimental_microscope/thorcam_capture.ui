@@ -15,70 +15,6 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,1">
 
-   <item row="0" column="3">
-    <widget class="QGroupBox" name="move_groupBox">
-     <property name="title">
-      <string>PI Stage Controls</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="movex_doubleSpinBox"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>X-Position</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="movey_doubleSpinBox"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_11">
-        <property name="text">
-         <string>Y-Position</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="movez_doubleSpinBox"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Z-Position</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="mover_doubleSpinBox"/>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>R-Position</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QPushButton" name="move_pushButton">
-        <property name="text">
-         <string>Move</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QPushButton" name="home_pushButton">
-        <property name="text">
-         <string>Home MCM</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-
    <item row="0" column="2">
     <widget class="QGroupBox" name="run_groupBox">
      <property name="title">
@@ -116,7 +52,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" colspan="4">
+   <item row="1" column="0" colspan="3">
     <widget class="QGroupBox" name="plot_groupBox">
      <property name="title">
       <string>Image</string>
@@ -161,12 +97,6 @@
       </item>
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="exp_time_doubleSpinBox">
-        <property name="maximum">
-         <double>450.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.300000000000000</double>
-        </property>
        </widget>
       </item>
       <item row="3" column="1">

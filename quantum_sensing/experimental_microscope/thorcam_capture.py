@@ -4,17 +4,13 @@ from ScopeFoundry import h5_io
 import pyqtgraph as pg
 
 import scipy.ndimage as sp_image
-import time
+import time, os, sys
 #from imageio import imwrite
 #from libtiff import TIFF
 #import tifffile as tiff
 #import PIL.Image
 import numpy as np
-import os
-import sys
-sys.path.append('../')
-from movestages import *
-from movemcm import Controller as mcmctrl
+
 
 from thorlabs_tsi_sdk.tl_camera import TLCamera, Frame
 from thorlabs_tsi_sdk.tl_camera_enums import SENSOR_TYPE
@@ -33,17 +29,6 @@ try:
     import Queue as queue
 except ImportError:
     import queue
-
-from multiprocessing import Process
-import sys
-import uuid
-
-def globalize(func):
-  def result(*args, **kwargs):
-    return func(*args, **kwargs)
-  result.__name__ = result.__qualname__ = uuid.uuid4().hex
-  setattr(sys.modules[result.__module__], result.__name__, result)
-  return result
 
 """ LiveViewCanvas
 
@@ -179,25 +164,22 @@ class ThorCamCaptureMeasure(Measurement):
     def setup(self):
         
         S = self.settings
+        self.cam_hw = self.app.hardware['thor_cam']
         #S.New('bg_subtract', dtype=bool, initial=False, ro=False)
         #S.New('acquire_bg',  dtype=bool, initial=False, ro=False)
         S.New('continuous', dtype=bool, initial=True, ro=False)
         S.New('save_png', dtype=bool, initial=False, ro=False)
-        S.New('save_tif', dtype=bool, initial=True, ro=False)
-        S.New('save_ini', dtype=bool, initial=True, ro=False)
+        S.New('save_tif', dtype=bool, initial=False, ro=False)
+        S.New('save_ini', dtype=bool, initial=False, ro=False)
         S.New('save_h5', dtype=bool, initial=False, ro=False)
         S.New('camera_select', dtype=int, initial=0, ro=False)
-        S.New('gain', dtype=int, initial=1, vmin=0, vmax=3)
-        S.New('exposure', dtype=float, unit='s', si=True, initial=0.2)
+        S.New('gain', dtype=int, initial=self.cam_hw.settings['gain'], vmin=0, vmax=3)
+        S.New('exposure', dtype=float, unit='s', si=True, initial=self.cam_hw.settings['exposure'], vmin=0, vmax=2)
         
         S.New('r_mod',dtype=float, initial=1.0, ro=False)
         S.New('g_mod',dtype=float, initial=1.0, ro=False)
         S.New('b_mod',dtype=float, initial=1.0, ro=False)
 
-        S.New('x_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
-        S.New('y_pos', dtype=float, initial=9.0, vmin=0.0, vmax=18.0)
-        S.New('z_pos', dtype=float, initial=0.0, vmin=-10, vmax=0) # vmin TEMPORARY VALUE
-        S.New('r_pos', dtype=float, initial=-60)
         
         self.ui_filename = sibling_path(__file__,"thorcam_capture.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
@@ -209,8 +191,6 @@ class ThorCamCaptureMeasure(Measurement):
         self.ui.interrupt_pushButton.clicked.connect(self.interrupt)
         self.ui.autowb_pushButton.clicked.connect(self.auto_white_balance)
         self.ui.save_pushButton.clicked.connect(self.save_image)
-        self.ui.move_pushButton.clicked.connect(self.execute_move)
-        self.ui.home_pushButton.clicked.connect(self.home_MCM )
         S.continuous.connect_to_widget(self.ui.continuous_checkBox)
         S.save_png.connect_to_widget(self.ui.save_png_checkBox)
         S.save_tif.connect_to_widget(self.ui.save_tif_checkBox)
@@ -223,30 +203,11 @@ class ThorCamCaptureMeasure(Measurement):
         S.New('img_min', dtype=float, initial=0, ro=False)
         S.img_max.connect_to_widget(self.ui.max_doubleSpinBox)
         S.img_min.connect_to_widget(self.ui.min_doubleSpinBox)
-
-        S.x_pos.connect_to_widget(self.ui.movex_doubleSpinBox)
-        S.y_pos.connect_to_widget(self.ui.movey_doubleSpinBox)
-        S.z_pos.connect_to_widget(self.ui.movez_doubleSpinBox)
-        S.r_pos.connect_to_widget(self.ui.mover_doubleSpinBox)
-        self.pos_buffer = {'x': None, 'y': None, 'r': None, 'z': None}
-
-        self.ctrl = mcmctrl(which_port='COM5',
-                              stages=('PLS-XY', 'PLS-XY', 'PLS-XY'),
-                              reverse=(False, False, False),
-                              verbose=False,
-                              very_verbose=False,
-                              hang_time = 5)
-        # self.home_MCM()
-        self._execute_movePI()
-
-        print("Stage Position Initialized")
         
         cam_ui_connections = [
             ('exposure', 'exp_time_doubleSpinBox'),
             ('gain', 'gain_doubleSpinBox')]#,
             #('pixel_clock', 'pixel_clock_doubleSpinBox')]
-        
-        self.cam_hw = self.app.hardware['thor_cam']
 
         # setup color processing if necessary
         self._camera = self.cam_hw.cam
@@ -280,7 +241,6 @@ class ThorCamCaptureMeasure(Measurement):
 
         self.ui.show_pushButton.clicked.connect(switch_camera_view)
 
-        
     def run(self):
         S = self.settings
         camera = self.cam_hw.cam
@@ -288,13 +248,13 @@ class ThorCamCaptureMeasure(Measurement):
         # print(camera.gain_range)
 
         # create generic Tk App with just a LiveViewCanvas widget
-        print("Generating app...")
+        #print("Generating app...")
         #root = tk.Tk()
         #root.title(camera.name)
         image_acquisition_thread = ImageAcquisitionThread(camera)
         # camera_widget = LiveViewCanvas(parent=root, image_queue=image_acquisition_thread.get_output_queue())
 
-        print("Setting camera parameters...")
+        #print("Setting camera parameters...")
         camera.frames_per_trigger_zero_for_unlimited = 0
         camera.arm(2)
         camera.issue_software_trigger()
@@ -302,7 +262,7 @@ class ThorCamCaptureMeasure(Measurement):
         self.cam_hw.set_exposure(S['exposure'])
         self.cam_hw.set_gain(S['gain'])
 
-        print("Starting image acquisition thread...")
+        #print("Starting image acquisition thread...")
         image_acquisition_thread.start()
 
         # print("App starting")
@@ -318,16 +278,10 @@ class ThorCamCaptureMeasure(Measurement):
         while not self.interrupt_measurement_called:
             try:
                 self.cam_hw.set_exposure(S['exposure'])
-                # camera.exposure_time_us = int(1e6*S['exposure'])
                 self.cam_hw.set_gain(S['gain'])
-                # camera.gain = S['gain']
                 self.img = image_acquisition_thread.get_output_queue().get_nowait()
-                print(self.img.size)
             except queue.Empty:
                 pass
-            else:
-                pass
-                print("Updated Image")
 
         # while not self.interrupt_measurement_called:
         #     #bgraimg = self.cam_hw.cam.acquire() # self.img is in BGRA order
@@ -370,23 +324,17 @@ class ThorCamCaptureMeasure(Measurement):
         #         # No point in keeping this image around when the queue is full, let's skip to the next one
         #         continue
         
-        print("Waiting for image acquisition thread to finish...")
         image_acquisition_thread.stop()
         image_acquisition_thread.join()
 
-        print("Closing resources...")
         camera.disarm()
-        self.z_ctrl.close()
-        print("App terminated. Goodbye!")
         
-    
     def setup_figure(self):
         #self.clear_qt_attr('graph_layout')
         #self.graph_layout=pg.GraphicsLayoutWidget(border=(100,100,100))
         #self.ui.plot_groupBox.layout().addWidget(self.graph_layout)        
         self.ui.plot_groupBox.layout().addWidget(self.imview)
         
-    
     def update_display(self):
         if hasattr(self, "img"):
             #self.imview.setImage(self.img, axes={'y':0, 'x':1, 'c':2}, autoRange=False, levels=(self.settings.img_min.value,self.settings.img_max.value))
@@ -471,77 +419,3 @@ class ThorCamCaptureMeasure(Measurement):
         # no coloring, just scale down image to 8 bpp and place into PIL Image object
         scaled_image = frame.image_buffer >> (self._bit_depth - 8)
         return Image.fromarray(scaled_image)
-    
-    def execute_move(self):
-        #self._execute_movePI()
-
-        channel = 1
-        enc = self.ctrl._get_encoder_counts(channel)
-        um = self.ctrl._encoder_counts_to_um(channel, enc)
-        if np.isclose(um, self.settings.z_pos.val * 1e3, atol=5):
-            return
-        self.ctrl.move_um(channel, self.settings.z_pos.val * 1e3, relative=False)
-        enc = self.ctrl._get_encoder_counts(channel)
-        self.pos_buffer['z'] = self.settings.z_pos.val = self.ctrl._encoder_counts_to_um(channel, enc)
-
-    def home_MCM(self):
-        channel = 0
-        self.ctrl._set_encoder_counts_to_zero(channel)
-        self.ctrl.move_um(channel, 1e3 * 30, relative=False, block=True)
-        self.ctrl._set_encoder_counts_to_zero(channel)
-        self.ctrl.move_um(channel, 1e3 * -15.45, relative=False, block=True)
-
-        channel = 2
-        self.ctrl._set_encoder_counts_to_zero(channel)
-        self.ctrl.move_um(channel, 1e3 * 30, relative=False, block=True)
-        self.ctrl._set_encoder_counts_to_zero(channel)
-        self.ctrl.move_um(channel, 1e3 * -15.6, relative=False, block=True)
-
-        channel = 1
-        self.ctrl._set_encoder_counts_to_zero(channel)
-        self.ctrl.move_um(channel, 1e3 * 30, relative=False, block=True)
-        self.ctrl._set_encoder_counts_to_zero(channel)
-        self.pos_buffer['z'] = 0
-
-    def _execute_movePI(self):
-        x, y, r = self.settings.x_pos.val, self.settings.y_pos.val, self.settings.r_pos.val
-
-        devices, moved = [], []
-        x_diff, y_diff, r_diff = self.pos_buffer['x'] is None or x != self.pos_buffer['x'], \
-                                 self.pos_buffer['y'] is None or y != self.pos_buffer['y'], \
-                                 self.pos_buffer['r'] is None or r != self.pos_buffer['r']
-
-        if x_diff and y_diff:
-            device = initializeController('LINEAR')
-            devices.append(device)
-            moveToPos(device, x, y)
-            self.pos_buffer['x'], self.pos_buffer['y'] = x, y
-            moved.append('x')
-            moved.append('y')
-
-        elif x_diff:
-            device = initializeController('LINEAR')
-            devices.append(device)
-            moveToX(device, x)
-            self.pos_buffer['x'] = x
-            moved.append('x')
-
-        elif y_diff:
-            device = initializeController('LINEAR')
-            devices.append(device)
-            moveToY(device, y)
-            self.pos_buffer['y'] = y
-            moved.append('y')
-
-        if r_diff:
-            device = initializeController('ROTATIONAL')
-            devices.append(device)
-            moveToAngle(device, r)
-            self.pos_buffer['r'] = r
-            moved.append('r')
-        
-        for device in devices:
-            closeDevice(device)
-
-        if x_diff or y_diff or r_diff:
-            print("Stages Moved")

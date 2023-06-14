@@ -39,7 +39,7 @@ class ThorcamSCIHW(HardwareComponent):
         #self.settings.New('pixel_clock', dtype=int, initial=10, unit='MHz')
         self.settings.New('exposure', dtype=float, unit='s', si=True, initial=0.011)
 
-        self.cam = self.connect()
+        # self.cam = self.connect()
 
     def connect(self):
         try:

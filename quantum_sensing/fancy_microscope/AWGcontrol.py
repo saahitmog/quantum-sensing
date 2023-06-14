@@ -332,6 +332,8 @@ def makeESRMarker(inst, segmentLength):
 
     markerWave = np.uint8(waveform)
     # print(markerWave.tobytes()[:1000])
+
+    print(waveform.size)
     
     prefix = ':MARK:DATA 0,#'
     # print(prefix, end=' .. ')
@@ -362,6 +364,13 @@ def makeESRMarker(inst, segmentLength):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
+
+    try:
+        prev = np.load('esr.npy')
+    except:
+        prev = np.array([])
+    wv = np.append(prev, markerWave)
+    np.save('esr', wv)
 
 def makeRabiMarker(inst, segmentLength):
     segmentLength = int(segmentLength/8)
@@ -564,6 +573,36 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     currtime=time.time()
     print('Set settings and toggle output:', currtime-lasttime, ' seconds')
 
+def testWrite(inst):
+    print('Setup segment:')
+    amp = 0.2
+    segmentLength = 8998848
+    freq = 0.2
+    query_syst_err = True
+
+    cycles = freq * segmentLength // 9
+    print('Frequency: {0} GHz'.format(freq))
+    waveform = fastsine(segmentLength, cycles, 1)
+
+    SendScpi(inst, ":INST:CHAN 1", query_syst_err)
+    SendScpi(inst, ":TRACe:DEF {0},{1}".format(1, segmentLength), query_syst_err)
+    SendScpi(inst, ":TRACe:SEL {0}".format(1), query_syst_err)
+
+    print('Write segment:')
+    prefix = ':TRAC:DATA 0,#'
+    cmd = prefix+str(len(str(waveform.nbytes)))+str(waveform.nbytes)+np.array2string(np.unpackbits(waveform).flatten(), separator='')[1:-1]
+    #inst.WriteBinaryData(prefix, waveform.tobytes())
+    
+
+    SendScpi(inst, cmd)
+    SendScpi(inst, ":SOUR:VOLT {0}".format(0.2))
+    SendScpi(inst, ":SOUR:FUNC:MODE:SEGM {0}".format(1), query_syst_err) 
+    SendScpi(inst, ":OUTP ON", query_syst_err)
+
+    time.sleep(15)
+
+    SendScpi(inst, ":OUTP OFF", query_syst_err)
+
 def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
     starttime=time.time()
     query_syst_err = True  
@@ -583,21 +622,26 @@ def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
     SendScpi(inst, ":TRACe:DEF {0},{1}".format(segNum, len(dacSignal)), query_syst_err)
     SendScpi(inst, ":TRACe:SEL {0}".format(segNum), query_syst_err)
 
-    prefix = ':TRACe:DATA'
+    prefix = ':TRAC:DATA 0,#'
 
     lasttime=starttime
     currtime=time.time()
     print('Setup segment:', currtime-lasttime, ' seconds')
 
-    f=open(".waveform","wb")
-    dacSignal.tofile(f)
+    try:
+        os.remove('.waveform')
+    except OSError:
+        pass
+
+    f = open('.waveform', 'w+b')
+    f.write(waveform.tobytes())
     f.close()
     res = inst.WriteBinaryData(prefix, '.waveform')
 
     lasttime=currtime
     currtime=time.time()
     print('Write segment:', currtime-lasttime, ' seconds')
-    print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
+    #print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
     SendScpi(inst, ":SOUR:VOLT {0}".format(vpp))
     #SendScpi(inst, ":VOLT?")
 
@@ -740,7 +784,10 @@ def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
     squares = int((1/(duration)) * segmentLength / 9e9)
     duty = 0.5
     print('Frequency: {0} GHz'.format(freq))
-    instrumentCalls(inst, sinePulse(segmentLength, squares, cycles, duty, 1), vpp)
+    #instrumentCalls(inst, sinePulse(segmentLength, squares, cycles, duty, 1), vpp)
+    waveform = fastsine(segmentLength, cycles, 1)
+    
+    testinstrumentCalls(inst, waveform, vpp)
     lasttime=starttime
     currtime=time.time()
     print('----> Total Waveform call:', currtime-lasttime, ' seconds')
@@ -748,6 +795,7 @@ def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
     lasttime=currtime
     currtime=time.time()
     print('----> Marker call:', currtime-lasttime, ' seconds')
+
 
 def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
@@ -800,7 +848,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     starttime=time.time()
     # segmentLength = 4999936
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
-    segmentLength = int((2*duration/0.001)*segmentLength
+    segmentLength = int((2*duration/0.001)*segmentLength)
 
     '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
@@ -816,7 +864,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     for f in freqs:
         waveform = np.append(waveform, fastsine(segmentLength, f*segmentLength, 1))'''
     
-    args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
+    args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs//9, np.ones(freqs.shape)]).T
     with Pool() as pool:
         waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()   
 
@@ -824,8 +872,9 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     currtime=time.time()
     print('----> Calculate sequence:', currtime-lasttime, ' seconds')
     print(f'{np.uint8(waveform).nbytes * 1e-9}')
-    
-    testinstrumentCalls(inst, np.uint8(waveform), vpp)
+
+    instrumentCalls(inst, waveform, vpp)
+    print(waveform.size)
     lasttime=currtime
     currtime=time.time()
     print('----> Waveform call:', currtime-lasttime, ' seconds')
@@ -866,16 +915,13 @@ def makeESRSweepMarker(inst, segmentLength, num):
     for i in range(0, int(duration*segmentLength/1e6)):
         totalWaveform[i] += 1
 
-    markerWave = np.uint8(totalWaveform)
-    del totalWaveform
-
     prefix = ':MARK:DATA 0,#'
     # print(prefix, end=' .. ')
-    
-    f = open(".marker","wb")
+    print(totalWaveform.size)
+    '''f = open(".marker","wb")
     markerWave.tofile(f)
-    f.close()
-    res = inst.WriteBinaryData(prefix, '.marker')
+    f.close()'''
+    res = inst.WriteBinaryData(prefix, totalWaveform.tobytes())
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
     # res = SendScpi(inst, ":SYST:ERR?", False, False)
     # print(res[1])
@@ -901,6 +947,8 @@ def makeESRSweepMarker(inst, segmentLength, num):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
+
+    np.save('sweep', totalWaveform)
 
 def makeT2Seq(inst, t_delay,t_AOM,t_readoutDelay, t_pi, freq, vpp=0.001, IQpadding=0, numberOfPiPulses=1):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal

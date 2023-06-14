@@ -18,6 +18,7 @@ from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 from ScopeFoundry import h5_io
 import SRScontrol as SRSctl
 import AWGcontrol as AWGctl
+from traceback import print_exc
 
 class ESRMeasure(Measurement):
 
@@ -228,7 +229,7 @@ class ESRMeasure(Measurement):
                     #Get new frequency value
                     f = sweep[step]
                     if(mode == 'AWG'):
-                        AWGctl.makeSingleESRSeqMarker(inst, self.settings.t_duration.value, f, self.settings.Vpp.value) 
+                        AWGctl.makeSingleESRSeqMarker(inst, self.settings.t_duration.value, f, self.settings.Vpp.value)
                     else:    
                         #init RF generator with new frequency
                         SRSctl.setSRS_Freq(my_SRS, f, 'GHz')
@@ -292,6 +293,7 @@ class ESRMeasure(Measurement):
                 save_dict['Background Run ' + str(int(j))] = copy.deepcopy(background)
         except Exception as err:
             print('EXCEPTED ERROR:'+str(err))
+            print_exc()
         finally:
             closeExp()
             # if(self.settings.AWG_mode.value):
