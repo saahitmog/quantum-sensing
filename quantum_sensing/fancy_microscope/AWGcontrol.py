@@ -800,11 +800,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     starttime=time.time()
     # segmentLength = 4999936
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
-    segmentLength = int((2*duration/0.001)*segmentLength)
-
-    SendScpi(inst, ':TRACe:FREE?', print_line=True)
-    SendScpi(inst, ':TRAC:DEL:ALL')
-    SendScpi(inst, ':TRACe:FREE?', print_line=True)
+    segmentLength = int((2*duration/0.001)*segmentLength
 
     '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
@@ -905,9 +901,6 @@ def makeESRSweepMarker(inst, segmentLength, num):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
-
-def helper(wv):
-    return wv
 
 def makeT2Seq(inst, t_delay,t_AOM,t_readoutDelay, t_pi, freq, vpp=0.001, IQpadding=0, numberOfPiPulses=1):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal

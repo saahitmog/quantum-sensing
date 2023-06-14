@@ -1,5 +1,4 @@
 from ScopeFoundry import HardwareComponent
-import os, sys
 import movestages as PIctrl
 
 class stageHW(HardwareComponent):
