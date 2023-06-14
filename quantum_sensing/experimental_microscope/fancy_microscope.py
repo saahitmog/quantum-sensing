@@ -14,28 +14,31 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         #Add App wide settings
         
         #Add hardware components
-        #print("Adding Hardware Components")
-        #from ScopeFoundryHW.virtual_function_gen import VirtualFunctionGenHW
-        # from custommeasure import PMD24HW
-        #import thorcam_sci.thorcam_sci_hw
-        # self.add_hardware(PMD24HW(self))
-        #self.add_hardware(VirtualFunctionGenHW(self))
-
-        #self.add_hardware(thorcam_sci.thorcam_sci_hw.ThorcamSCIHW(self))
-        # cam not working disconnected?
+        print("Adding Hardware Components")
+        
+        import thorcam_sci.thorcam_sci_hw.ThorcamSCIHW as camHW
+        self.add_hardware(camHW(self))
+        from stageHW import stageHW
+        self.add_hardware(stageHW(self))
 
         #Add measurement components
         print("Create Measurement objects")
         # from custommeasure import LaserQuantumOptimizer
         # self.add_measurement(LaserQuantumOptimizer(self))
-        #from ESRMeasure import ESRMeasure
+
+
+
+        from ESR import ESRMeasure
+        self.add_measurement(ESRMeasure(self))
+
+        
         #from RabiMeasure import RabiMeasure
         #from RabiMappingMeasure import RabiImageMeasure
         #from T1Measure import T1Measure
 
         #import thorcam_sci.thorcam_sci_liveview
         #from thorcam_capture import ThorCamCaptureMeasure
-        #self.add_measurement(ESRMeasure(self))
+        
         #self.add_measurement(RabiMeasure(self))
         #self.add_measurement(RabiImageMeasure(self))
         #self.add_measurement(T1Measure(self))
