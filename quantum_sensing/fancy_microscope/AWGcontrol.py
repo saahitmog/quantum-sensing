@@ -848,7 +848,11 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     starttime=time.time()
     # segmentLength = 4999936
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
+<<<<<<< HEAD
     segmentLength = int((2*duration/0.001)*segmentLength)
+=======
+    segmentLength = int((2*duration/0.001)*segmentLength
+>>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
     '''cycles = freqs * segmentLength * 1e9 / 9e9
     squares = int((1/(duration)) * segmentLength / 9e9)
@@ -948,8 +952,11 @@ def makeESRSweepMarker(inst, segmentLength, num):
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
 
+<<<<<<< HEAD
     np.save('sweep', totalWaveform)
 
+=======
+>>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 def makeT2Seq(inst, t_delay,t_AOM,t_readoutDelay, t_pi, freq, vpp=0.001, IQpadding=0, numberOfPiPulses=1):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength *= 2
