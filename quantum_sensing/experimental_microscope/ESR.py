@@ -63,25 +63,15 @@ class ESRMeasure(Measurement):
     def run(self):
         self.set_progress(0)
         S = self.settings
-<<<<<<< HEAD
         # self._make_savefiles_()
-=======
-        self._make_savefiles_()
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
         print(f"{S.plotting_type.val} mode")
 
         self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
-<<<<<<< HEAD
         self.plotdata = np.empty_like(self.sweep)
 
         try:
             self._initialize_()
-=======
-
-        try:
-            self.__initialize()
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
             if S.sweep.val: self._run_sweep_()
             else: self._run_()
 
@@ -89,15 +79,9 @@ class ESRMeasure(Measurement):
             print(e)
 
         finally:
-<<<<<<< HEAD
             self._finalize_()
             # self._save_data_()
             print('done')
-=======
-            self.__finalize()
-            self._save_data_()
-            pass
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
         return
         
     def update_display(self):
@@ -105,11 +89,7 @@ class ESRMeasure(Measurement):
             self.plot.setTitle("Signal vs Frequency")
         else:
             self.plot.setTitle("Contrast vs Frequency")
-<<<<<<< HEAD
         #self.plotline.setData(self.sweep, self.plotdata)
-=======
-        self.plotline.setData(self.sweep, self.plotdata)
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
     def _run_sweep_(self):
         S = self.settings
@@ -119,7 +99,6 @@ class ESRMeasure(Measurement):
         AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
 
         for n in range(S.Navg.val):
-<<<<<<< HEAD
             if self.interrupt_measurement_called:
                     print('interrupted')
                     break
@@ -127,12 +106,6 @@ class ESRMeasure(Measurement):
             for i in range(self.sweep.size):
                 signal[i] = np.mean(counts[2*i::2*self.sweep.size])
                 background[i] = np.mean(counts[2*i+1::2*self.sweep.size])
-=======
-            counts = DAQ.readDAQ(task, S.N_samples.val*2*self.sweep.size, S.DAQtimeout.val)
-            for i in range(self.sweep.size):
-                signal[i] = np.mean(counts[2*i::2*n])
-                background[i] = np.mean(counts[2*i+1::2*n])
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
             if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
             self.plotdata = ((self.plotdata*n) + signal) / (n+1)
@@ -142,7 +115,6 @@ class ESRMeasure(Measurement):
         #Configure the DAQ
         S = self.settings
         self.task = task = DAQ.configureDAQ(S.N_samples.val)
-<<<<<<< HEAD
         interrupted = False
         for n in range(S.Navg.val):
             if interrupted: break
@@ -152,12 +124,6 @@ class ESRMeasure(Measurement):
                     print('interrupted')
                     break
                 #print('.', end='')
-=======
-
-        for n in range(S.Navg.val):
-            for i, f in enumerate(self.sweep):
-                print('.', end='')
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
                 AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
                 counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
                 signal = np.mean(counts[0::2])
@@ -165,21 +131,13 @@ class ESRMeasure(Measurement):
                 if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
                 self.plotdata[i] = (self.plotdata[i]*n + signal) / (n+1)
                 self.set_progress((n*self.sweep.size+i+1)/(S.Navg.val*self.sweep.size) * 100)
-<<<<<<< HEAD
             #print('')
-=======
-            print('')
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
     def _interrupt_(self):
         self.interrupt_measurement_called = True
 
     def _start_(self):
-<<<<<<< HEAD
         self.activation.update_value(True)
-=======
-        self.activation.update_value(not self.activation.val)
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
     def _initialize_(self):
         self.admin = admin = AWGctrl.loadDLL()

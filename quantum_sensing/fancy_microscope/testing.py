@@ -1,16 +1,10 @@
 #import AWGcontrol as AWGctrl
-import numpy as np, multiprocessing as mp
+import numpy as np
 import matplotlib.pyplot as plt
-from cProfile import run
-from memory_profiler import profile
 import time
 import AWGcontrol as AWGctl
 
 if __name__ == '__main__':
-    #run('orig(100)', sort='cumtime')
-    #run('fast(100)', sort='cumtime')
-    #fast(500)
-    #orig(100)
     admin = AWGctl.loadDLL()
     slotId = AWGctl.getSlotId(admin)
     if not slotId:
@@ -23,4 +17,19 @@ if __name__ == '__main__':
         else:
             instId = inst.InstrId
     AWGctl.instrumentSetup(inst)
-    AWGctl.testWrite(inst)
+
+    freq, vpp = 4.5e9, 1.2
+    AWGctl.SendScpi(inst, ":INST:CHAN 1")
+    AWGctl.SendScpi(inst, ":MODE NCO")
+    AWGctl.SendScpi(inst, f":NCO:CFR1 {freq}")
+    AWGctl.SendScpi(inst, f":SOUR:VOLT {vpp}")
+
+    AWGctl.SendScpi(inst, ":OUTP ON")
+
+    #freqs = np.array([0.1]) np.arange(0.1, 1.1, 0.1)
+    #AWGctl.makeESRSweep(inst, 0.0005, freqs, 0.2)
+
+    time.sleep(120)
+
+    AWGctl.SendScpi(inst, ":OUTP OFF")
+    #AWGctl.SendScpi(inst, ":MARK OFF")
