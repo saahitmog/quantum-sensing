@@ -12,5 +12,5 @@ def my_method_decorator(*args, **kwargs) -> bool:
     print('doin stuffs')
 
 if __name__ == '__main__':
-    with timer(): my_method_decorator()
+    with timer('Timer test: '): my_method_decorator()
 

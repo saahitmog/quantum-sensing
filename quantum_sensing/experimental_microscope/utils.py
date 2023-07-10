@@ -13,9 +13,11 @@ class hide:
         sys.stdout = self._original_stdout
 
 class timer:
-    def __enter__(self, msg: str = ''):
-        self.start_time = time.perf_counter()
+    def __init__(self, msg: str = ''):
         self.msg = msg
+
+    def __enter__(self):
+        self.start_time = time.perf_counter()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         t = time.perf_counter()-self.start_time
