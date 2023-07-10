@@ -53,8 +53,8 @@ PB_Q = 13
 
 DAQ_APDInput = "Dev1/ai0"
 DAQ_APDTerm = "PFI0"
-DAQ_SampleClk = "PFI4"
-DAQ_StartTrig = "PFI2"
+DAQ_SampleClk = "PFI2"
+DAQ_StartTrig = "PFI4"
 # DAQ_StartTrig = "PFI3"
 
 #Enter below the maximum sampling rate of your National Instruments DAQ in samples per channel per second:
