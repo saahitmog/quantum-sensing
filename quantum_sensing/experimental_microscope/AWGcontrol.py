@@ -26,6 +26,7 @@ from System import Array, Char, Int16
 from scipy import constants
 from scipy import signal as sg
 import time
+from utils import *
 
 datapath = os.path.dirname(sys.argv[0])
 maxScpiResponse = 65535
@@ -801,30 +802,17 @@ def makeT1SeqMarker(inst, t_delay,t_AOM,t_readoutDelay,t_pi, freq, vpp=0.001):
     makeT1Marker(inst, segmentLength, t_delay*1e3/hscale, t_readoutDelay*1e3/hscale, t_AOM*1e3/hscale)
 
 def makeESRSweep(inst, duration, freqs, vpp = 0.001):
-    starttime=time.time()
-    # segmentLength = 4999936
-    segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
+    segmentLength = 8998848 # this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
 
-    print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
+    print(f'Sweeping Frequencies {freqs[0]} GHz to {freqs[-1]} GHz at {len(freqs)} points')
     
     args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
-    with Pool() as pool:
-        waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()   
-
-    lasttime=starttime
-    currtime=time.time()
-    print('----> Calculate sequence:', currtime-lasttime, ' seconds')
-    # print(f'{np.uint8(waveform).nbytes * 1e-9}')
+    with timer('----> Calculate waveform: '), Pool() as pool:
+        waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()
     
-    testinstrumentCalls(inst, np.uint8(waveform), vpp)
-    lasttime=currtime
-    currtime=time.time()
-    print('----> Waveform call:', currtime-lasttime, ' seconds')
-    makeESRSweepMarker(inst, segmentLength, len(freqs))
-    lasttime=currtime
-    currtime=time.time()
-    print('----> Marker call:', currtime-lasttime, ' seconds')
+    with timer('----> Waveform call: '): testinstrumentCalls(inst, np.uint8(waveform), vpp)
+    with timer('----> Marker call: '): makeESRSweepMarker(inst, segmentLength, len(freqs))
 
 def makeESRSweepMarker(inst, segmentLength, num):
     segmentLength = segmentLength//8

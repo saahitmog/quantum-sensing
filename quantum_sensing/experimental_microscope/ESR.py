@@ -62,28 +62,28 @@ class ESRMeasure(Measurement):
         self.plotline = self.plot.plot()
 
     def run(self):
-        self.set_progress(0)
-        S = self.settings
-        # self._make_savefiles_()
+        with timer('--> Measurement Complete: '):
+            self.set_progress(0)
+            S = self.settings
+            # self._make_savefiles_()
 
-        print(f"{S.plotting_type.val} mode")
+            print(f"ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
 
-        self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
-        self.plotdata = np.empty_like(self.sweep)
+            self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
+            self.plotdata = np.empty_like(self.sweep)
 
-        try:
-            with timer('----> Initialization: '), hide(): self._initialize_()
-            if S.sweep.val: self._run_sweep_()
-            else: self._run_()
+            try:
+                with timer('--> Initialization AWG/DAQ: '), hide(): self._initialize_()
+                if S.sweep.val: self._run_sweep_()
+                else: self._run_()
 
-        except Exception:
-            traceback.print_exc()
+            except Exception:
+                traceback.print_exc()
 
-        finally:
-            self._finalize_()
-            # self._save_data_()
-            print('done')
-        return
+            finally:
+                self._finalize_()
+                # self._save_data_()
+            return
         
     @ignore(RuntimeWarning)
     def update_display(self):
@@ -127,7 +127,6 @@ class ESRMeasure(Measurement):
                     break
                 #print('.', end='')
                 AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
-                print('here')
                 counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
                 signal = np.mean(counts[0::2])
                 background = np.mean(counts[1::2])
