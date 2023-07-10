@@ -10,6 +10,7 @@ import pandas as pd
 
 import AWGcontrol as AWGctrl
 import DAQ_Analog as DAQ
+from utils import hide, ignore
 
 class ESRMeasure(Measurement):
     
@@ -71,7 +72,6 @@ class ESRMeasure(Measurement):
         self.plotdata = np.empty_like(self.sweep)
 
         try:
-            from utils import hide
             with hide(): self._initialize_()
             if S.sweep.val: self._run_sweep_()
             else: self._run_()
@@ -85,6 +85,7 @@ class ESRMeasure(Measurement):
             print('done')
         return
         
+    @ignore
     def update_display(self):
         if(self.settings.plotting_type.val == 'signal'):
             self.plot.setTitle("Signal vs Frequency")
