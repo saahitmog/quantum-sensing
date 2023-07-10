@@ -51,7 +51,6 @@ class ESRMeasure(Measurement):
         S.sweep.connect_to_widget(self.ui.sweep_CheckBox)
         S.plotting_type.connect_to_widget(self.ui.plot_ComboBox)
 
-    @ignore(RuntimeWarning)
     def setup_figure(self):
 
         self.plotdata, self.sweep = np.array([]), np.array([])
@@ -86,7 +85,6 @@ class ESRMeasure(Measurement):
                 # self._save_data_()
             return
         
-    @ignore(RuntimeWarning)
     def update_display(self):
         if(self.settings.plotting_type.val == 'signal'):
             self.plot.setTitle("Signal vs Frequency")
