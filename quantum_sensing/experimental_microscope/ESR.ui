@@ -109,14 +109,14 @@
     </widget>
    </item>
 
-   <item row="0" column="2">
+   <item row="0" column="3">
     <widget class="QGroupBox" name="camera_controls_groupBox">
      <property name="title">
       <string>Controls</string>
      </property>
      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
 
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QPushButton" name="interrupt_pushButton">
         <property name="text">
          <string>Interrupt</string>
@@ -124,7 +124,7 @@
        </widget>
       </item>
 
-      <item row="1" column="0">
+      <item row="0" column="0">
        <widget class="QPushButton" name="start_pushButton">
         <property name="text">
          <string>Start</string>
@@ -132,13 +132,24 @@
        </widget>
       </item>
 
-      <item row="0" column="1">
+      <item row="0" column="2">
        <widget class="QCheckBox" name="sweep_CheckBox"/>
       </item>
-      <item row="0" column="0">
+      <item row="0" column="1">
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Sweep</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="save_CheckBox"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Save</string>
         </property>
        </widget>
       </item>

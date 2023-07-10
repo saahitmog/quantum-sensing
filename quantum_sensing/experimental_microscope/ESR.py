@@ -1,9 +1,8 @@
-from ScopeFoundry.base_app import BaseMicroscopeApp
 from ScopeFoundry import Measurement, h5_io
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import pyqtgraph as pg
 
-import sys, os, inspect, traceback
+import os, inspect, traceback
 from datetime import datetime
 import numpy as np
 import pandas as pd
@@ -34,6 +33,7 @@ class ESRMeasure(Measurement):
         S.New('plotting_type', dtype=str, initial='signal', choices=('signal', 'contrast'))
         S.New('fname_format', dtype=str, initial='{timestamp:%y%m%d_%H%M%S}_{measurement.name}_{sample}.{ext}')
         S.New('sweep', dtype=bool, initial=False)
+        S.New('save', dtype=bool, initial=False)
 
         self.ui_filename = sibling_path(__file__,"ESR.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
@@ -49,23 +49,21 @@ class ESRMeasure(Measurement):
         S.Vpp.connect_to_widget(self.ui.Vpp_doubleSpinBox)
         S.magnet_current.connect_to_widget(self.ui.magcurr_doubleSpinBox)
         S.sweep.connect_to_widget(self.ui.sweep_CheckBox)
+        S.save.connect_to_widget(self.ui.save_CheckBox)
         S.plotting_type.connect_to_widget(self.ui.plot_ComboBox)
 
     def setup_figure(self):
-
         self.plotdata, self.sweep = np.array([]), np.array([])
-
         self.graph_layout = pg.GraphicsLayoutWidget()
         self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
         self.plot = self.graph_layout.addPlot(title="")
-
         self.plotline = self.plot.plot()
 
     def run(self):
         with timer('Measurement Complete: '):
             self.set_progress(0)
-            S = self.settings
-            # self._make_savefiles_()
+            S, save = self.settings, False
+            if save: self._make_savefiles_()
 
             print(f"Starting ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
 
@@ -73,27 +71,23 @@ class ESRMeasure(Measurement):
             self.plotdata = np.zeros_like(self.sweep)
 
             try:
-                with timer('--> Initialization AWG/DAQ: '), hide(): self._initialize_()
+                with timer('--> Hardware Startup: '), hide(): self._initialize_()
                 if S.sweep.val: self._run_sweep_()
                 else: self._run_()
 
-            except Exception:
-                traceback.print_exc()
+            except Exception: traceback.print_exc()
 
             finally:
-                self._finalize_()
-                # self._save_data_()
+                with timer('--> Hardware Close: '): self._finalize_()
+                if save: self._save_data_()
                 print('')
-            return
         
     def update_display(self):
-        if(self.settings.plotting_type.val == 'signal'):
-            self.plot.setTitle("Signal vs Frequency")
-        else:
-            self.plot.setTitle("Contrast vs Frequency")
+        if self.settings.plotting_type.val == 'signal': self.plot.setTitle("Signal vs Frequency")
+        else: self.plot.setTitle("Contrast vs Frequency")
         self.plotline.setData(self.sweep, self.plotdata)
 
-    def _run_sweep_(self):
+    def _run_sweep_(self) -> None:
         S = self.settings
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
@@ -106,14 +100,13 @@ class ESRMeasure(Measurement):
                     break
             with timer('--> Read DAQ: '): counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
             for i in range(self.sweep.size):
-                signal[i] = np.mean(counts[2*i::2*self.sweep.size])
-                background[i] = np.mean(counts[2*i+1::2*self.sweep.size])
+                signal[i], background[i] = np.mean(counts[2*i::2*self.sweep.size]), np.mean(counts[2*i+1::2*self.sweep.size])
 
             if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
             self.plotdata = ((self.plotdata*n) + signal) / (n+1)
             self.set_progress(n/S.Navg.val * 100)
 
-    def _run_(self):
+    def _run_(self) -> None:
         #Configure the DAQ
         S = self.settings
         self.task = task = DAQ.configureDAQ(S.N_samples.val)
@@ -123,9 +116,8 @@ class ESRMeasure(Measurement):
             for i, f in enumerate(self.sweep):
                 if self.interrupt_measurement_called:
                     interrupted = True
-                    print('interrupted')
+                    print('Measurement Interrupted')
                     break
-                #print('.', end='')
                 AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
                 counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
                 signal = np.mean(counts[0::2])
@@ -133,15 +125,14 @@ class ESRMeasure(Measurement):
                 if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
                 self.plotdata[i] = (self.plotdata[i]*n + signal) / (n+1)
                 self.set_progress((n*self.sweep.size+i+1)/(S.Navg.val*self.sweep.size) * 100)
-            #print('')
 
-    def _interrupt_(self):
+    def _interrupt_(self) -> None:
         self.interrupt_measurement_called = True
 
-    def _start_(self):
+    def _start_(self) -> None:
         self.activation.update_value(True)
 
-    def _initialize_(self):
+    def _initialize_(self) -> None:
         self.admin = admin = AWGctrl.loadDLL()
         slotId = AWGctrl.getSlotId(admin)
         if not slotId:
@@ -155,7 +146,7 @@ class ESRMeasure(Measurement):
                 self.instId = inst.InstrId
         AWGctrl.instrumentSetup(inst)
 
-    def _finalize_(self):
+    def _finalize_(self) -> None:
         AWGctrl.SendScpi(self.inst, ":OUTP OFF")
         rc = self.admin.CloseInstrument(self.instId)
         AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
@@ -163,7 +154,7 @@ class ESRMeasure(Measurement):
         AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
         DAQ.closeDAQTask(self.task)
 
-    def _make_savefiles_(self):
+    def _make_savefiles_(self) -> None:
         S = self.settings
         t = datetime.now()
         if  not os.path.isdir(self.app.settings['save_dir']):
@@ -188,7 +179,7 @@ class ESRMeasure(Measurement):
         self.csvfn = os.path.join(self.app.settings['save_dir'], fn)
         self.save_dict = {}
 
-    def _save_data_(self):
+    def _save_data_(self) -> None:
         S = self.settings
 
         self.save_dict['sweep'] = self.sweep
