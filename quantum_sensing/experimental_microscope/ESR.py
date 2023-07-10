@@ -71,12 +71,11 @@ class ESRMeasure(Measurement):
             print(f"Starting ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
 
             self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
-            self.plotdata = np.empty_like(self.sweep)
+            self.plotdata = np.zeros_like(self.sweep)
 
             try:
                 with timer('--> Initialization AWG/DAQ: '), hide(): self._initialize_()
-                if S.sweep.val: 
-                    with hide(): self._run_sweep_()
+                if S.sweep.val: self._run_sweep_()
                 else: self._run_()
 
             except Exception:
