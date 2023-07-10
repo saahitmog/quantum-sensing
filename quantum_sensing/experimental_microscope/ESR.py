@@ -125,6 +125,7 @@ class ESRMeasure(Measurement):
                     break
                 #print('.', end='')
                 AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
+                print('here')
                 counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
                 signal = np.mean(counts[0::2])
                 background = np.mean(counts[1::2])
