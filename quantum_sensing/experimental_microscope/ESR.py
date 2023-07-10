@@ -89,7 +89,7 @@ class ESRMeasure(Measurement):
             self.plot.setTitle("Signal vs Frequency")
         else:
             self.plot.setTitle("Contrast vs Frequency")
-        #self.plotline.setData(self.sweep, self.plotdata)
+        self.plotline.setData(self.sweep, self.plotdata)
 
     def _run_sweep_(self):
         S = self.settings
