@@ -1,16 +1,17 @@
 import time
 from utils import *
 import warnings
-
+from multiprocessing import Pool
 
 def printer(): print('fsusibvsibvub')
 
-@ignore(Warning)
-def my_method_decorator(*args, **kwargs) -> bool:
-    warnings.warn("WARNING", UserWarning)
-    time.sleep(1)
-    print('doin stuffs')
+def method(*args, **kwargs) -> bool:
+    #time.sleep(1)
+    return args
 
 if __name__ == '__main__':
-    with timer('Timer test: '): my_method_decorator()
+    with Pool() as pool:
+        results = pool.map(method, range(100))
+
+    #print(results)
 

@@ -51,6 +51,7 @@ class ESRMeasure(Measurement):
         S.sweep.connect_to_widget(self.ui.sweep_CheckBox)
         S.plotting_type.connect_to_widget(self.ui.plot_ComboBox)
 
+    @ignore(RuntimeWarning)
     def setup_figure(self):
 
         self.plotdata, self.sweep = np.array([]), np.array([])
@@ -62,19 +63,20 @@ class ESRMeasure(Measurement):
         self.plotline = self.plot.plot()
 
     def run(self):
-        with timer('--> Measurement Complete: '):
+        with timer('Measurement Complete: '):
             self.set_progress(0)
             S = self.settings
             # self._make_savefiles_()
 
-            print(f"ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
+            print(f"Starting ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
 
             self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
             self.plotdata = np.empty_like(self.sweep)
 
             try:
                 with timer('--> Initialization AWG/DAQ: '), hide(): self._initialize_()
-                if S.sweep.val: self._run_sweep_()
+                if S.sweep.val: 
+                    with hide(): self._run_sweep_()
                 else: self._run_()
 
             except Exception:
@@ -102,9 +104,9 @@ class ESRMeasure(Measurement):
 
         for n in range(S.Navg.val):
             if self.interrupt_measurement_called:
-                    print('interrupted')
+                    print('Measurement Interrupted')
                     break
-            counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
+            with timer('--> Read DAQ: '): counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
             for i in range(self.sweep.size):
                 signal[i] = np.mean(counts[2*i::2*self.sweep.size])
                 background[i] = np.mean(counts[2*i+1::2*self.sweep.size])
