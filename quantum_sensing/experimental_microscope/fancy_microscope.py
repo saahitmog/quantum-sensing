@@ -1,5 +1,6 @@
 
 from ScopeFoundry import BaseMicroscopeApp
+from utils import hide
 import os, sys
 
 class FancyMicroscopeApp(BaseMicroscopeApp):
@@ -73,15 +74,6 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         # show ui
         self.ui.show()
         self.ui.activateWindow()
-
-class hide:
-    def __enter__(self):
-        self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stdout = self._original_stdout
 
 
 if __name__ == '__main__':

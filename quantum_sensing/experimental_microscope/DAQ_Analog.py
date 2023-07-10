@@ -28,6 +28,7 @@ import sys
 import time
 DAQ_APDInput = "Dev1/ai0"
 DAQ_StartTrig = "APFI0"
+DAQ_SampleClk = "PFI2"
 
 system = nidaqmx.system.System.local()
 def configureDAQ(Nsamples):
@@ -42,10 +43,10 @@ def configureDAQ(Nsamples):
 		NsampsPerDAQread=2*Nsamples
 		readTask = nidaqmx.Task()
 		#channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput)
-		channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput,"",TerminalConfiguration.DIFFERENTIAL,minVoltage,maxVoltage,VoltageUnits.VOLTS)
+		channel = readTask.ai_channels.add_ai_voltage_chan(DAQ_APDInput, "", TerminalConfiguration.DIFFERENTIAL, minVoltage, maxVoltage, VoltageUnits.VOLTS)
 
 		#Configure sample clock
-		readTask.timing.cfg_samp_clk_timing(DAQ_MaxSamplingRate,DAQ_SampleClk,Edge.RISING,AcquisitionType.FINITE, NsampsPerDAQread)
+		readTask.timing.cfg_samp_clk_timing(DAQ_MaxSamplingRate, DAQ_SampleClk, Edge.RISING,AcquisitionType.FINITE, NsampsPerDAQread)
 
 		# #Configure convert clock
 		#readTask.timing.ai_conv_src = DAQ_SampleClk

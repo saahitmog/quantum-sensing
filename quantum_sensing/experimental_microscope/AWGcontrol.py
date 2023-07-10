@@ -808,7 +808,6 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
 
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
     
-    waveform=[]
     args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
     with Pool() as pool:
         waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()   
