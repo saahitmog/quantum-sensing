@@ -14,7 +14,7 @@ import numpy as np
 
 class ESRImageMeasure(Measurement):
     
-    name = 'ESRImage'
+    name = 'ESR Map'
     
     def setup(self):
         
@@ -42,7 +42,7 @@ class ESRImageMeasure(Measurement):
         S.New('plotting_type', dtype=str, initial='contrast')
         S.New('fname_format', dtype=str, initial='{timestamp:%y%m%d_%H%M%S}_{measurement.name}_{sample}.{ext}')
         
-        self.ui_filename = sibling_path(__file__,"image_test.ui")
+        self.ui_filename = sibling_path(__file__,"mapping.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
         self.ui.setWindowTitle(self.name)
         
@@ -250,10 +250,10 @@ class ESRImageMeasure(Measurement):
         self.ui.num_pts.setText(str(int(self.pix.size/2)))
         self.ui.res.setText(f'{self.dims[0]} X {self.dims[1]}')
 
-        if(S.plotting_type.value == 'signal'):
+        '''if(S.plotting_type.value == 'signal'):
             self.plot.setTitle("Signal vs Frequency")
         else:
-            self.plot.setTitle("Constrast vs Frequency")
+            self.plot.setTitle("Constrast vs Frequency")'''
 
         #self.current_plotline.setData(self.sweep, self.plotdata)
         for i in range(x):

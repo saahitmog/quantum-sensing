@@ -583,14 +583,15 @@ def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
     SendScpi(inst, ":TRACe:DEF {0},{1}".format(segNum, len(dacSignal)), query_syst_err)
     SendScpi(inst, ":TRACe:SEL {0}".format(segNum), query_syst_err)
 
-    prefix = ':TRACe:DATA'
+    prefix = '*OPC?; :TRAC:DATA'
 
     lasttime=starttime
     currtime=time.time()
     print('Setup segment:', currtime-lasttime, ' seconds')
 
     f=open(".waveform","wb")
-    dacSignal.tofile(f)
+    #dacSignal.tofile(f)
+    f.write(waveform.tobytes())
     f.close()
     res = inst.WriteBinaryData(prefix, '.waveform')
 
@@ -802,23 +803,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
 
-    SendScpi(inst, ':TRACe:FREE?', print_line=True)
-    SendScpi(inst, ':TRAC:DEL:ALL')
-    SendScpi(inst, ':TRACe:FREE?', print_line=True)
-
-    '''cycles = freqs * segmentLength * 1e9 / 9e9
-    squares = int((1/(duration)) * segmentLength / 9e9)
-    duty = 0.5'''
-
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
-    
-    '''waveform=[]
-    for i in range(len(freqs)):
-        waveform = np.append(waveform, sinePulse(segmentLength, squares, cycles[i], duty, 1))'''
-    
-    '''waveform = np.array([], dtype=np.uint8)
-    for f in freqs:
-        waveform = np.append(waveform, fastsine(segmentLength, f*segmentLength, 1))'''
     
     args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
     with Pool() as pool:
@@ -827,7 +812,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     lasttime=starttime
     currtime=time.time()
     print('----> Calculate sequence:', currtime-lasttime, ' seconds')
-    print(f'{np.uint8(waveform).nbytes * 1e-9}')
+    # print(f'{np.uint8(waveform).nbytes * 1e-9}')
     
     testinstrumentCalls(inst, np.uint8(waveform), vpp)
     lasttime=currtime
@@ -873,11 +858,11 @@ def makeESRSweepMarker(inst, segmentLength, num):
     markerWave = np.uint8(totalWaveform)
     del totalWaveform
 
-    prefix = ':MARK:DATA 0,#'
+    prefix = '*OPC?; :MARK:DATA'
     # print(prefix, end=' .. ')
     
     f = open(".marker","wb")
-    markerWave.tofile(f)
+    f.write(totalWaveform.tobytes())
     f.close()
     res = inst.WriteBinaryData(prefix, '.marker')
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)

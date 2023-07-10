@@ -873,7 +873,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     print('----> Calculate sequence:', currtime-lasttime, ' seconds')
     # print(f'{waveform.nbytes * 1e-9}')
 
-    instrumentCalls(inst, waveform, vpp)
+    testinstrumentCalls(inst, waveform, vpp)
     # print(waveform.size)
     lasttime=currtime
     currtime=time.time()
@@ -921,11 +921,11 @@ def makeESRSweepMarker(inst, segmentLength, num):
         pass
 
     prefix = '*OPC?; :MARK:DATA'
-    # print(prefix, end=' .. ')
+    
     '''f = open(".marker","wb")
-    totalWaveform.tofile(f)
+    f.write(totalWaveform.tobytes())
     f.close()
-    inst.WriteBinaryData(prefix, '.marker')'''
+    res = inst.WriteBinaryData(prefix, '.marker')'''
     inst.WriteBinaryData(prefix, totalWaveform.tobytes())
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
     # res = SendScpi(inst, ":SYST:ERR?", False, False)

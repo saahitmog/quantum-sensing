@@ -17,52 +17,31 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         #Add hardware components
         print("Adding Hardware Components")
         
-<<<<<<< HEAD
         from thorcam_sci.thorcam_sci_hw import ThorcamSCIHW as camHW
         from stageHW import stageHW
         with hide():
-            self.add_hardware(camHW(self))
+            #self.add_hardware(camHW(self))
             self.add_hardware(stageHW(self))
-=======
-        import thorcam_sci.thorcam_sci_hw.ThorcamSCIHW as camHW
-        self.add_hardware(camHW(self))
-        from stageHW import stageHW
-        self.add_hardware(stageHW(self))
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
 
         #Add measurement components
         print("Create Measurement objects")
         # from custommeasure import LaserQuantumOptimizer
         # self.add_measurement(LaserQuantumOptimizer(self))
 
-<<<<<<< HEAD
         from ESR import ESRMeasure
         self.add_measurement(ESRMeasure(self))
 
-=======
-
-
-        from ESR import ESRMeasure
-        self.add_measurement(ESRMeasure(self))
-
-        
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
         #from RabiMeasure import RabiMeasure
         #from RabiMappingMeasure import RabiImageMeasure
         #from T1Measure import T1Measure
 
-<<<<<<< HEAD
         from thorcam_capture import ThorCamCaptureMeasure
-=======
-        #import thorcam_sci.thorcam_sci_liveview
-        #from thorcam_capture import ThorCamCaptureMeasure
->>>>>>> b3a85c6cbf98f6f8733dc2dc652629536e7b40b1
         
         #self.add_measurement(RabiMeasure(self))
         #self.add_measurement(RabiImageMeasure(self))
         #self.add_measurement(T1Measure(self))
 
-        self.add_measurement(ThorCamCaptureMeasure(self))
+        #self.add_measurement(ThorCamCaptureMeasure(self))
         # cam not working disconnected?
 
         #from ESRSweepMeasure import ESRSweepMeasure
@@ -74,10 +53,10 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
 
         #from ESRImage import ESRImageMeasure
 
-        '''from ESRMappingMeasure import ESRImageMeasure
+        from ESRMappingMeasure import ESRImageMeasure
         self.add_measurement(ESRImageMeasure(self))
 
-        from T2SweepMeasure import T2SweepMeasure
+        '''from T2SweepMeasure import T2SweepMeasure
         self.add_measurement(T2SweepMeasure(self))
 
         from T2Measure import T2Measure
