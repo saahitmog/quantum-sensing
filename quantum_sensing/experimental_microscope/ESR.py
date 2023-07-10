@@ -3,7 +3,7 @@ from ScopeFoundry import Measurement, h5_io
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 import pyqtgraph as pg
 
-import sys, os, inspect
+import sys, os, inspect, traceback
 from datetime import datetime
 import numpy as np
 import pandas as pd
@@ -75,8 +75,8 @@ class ESRMeasure(Measurement):
             if S.sweep.val: self._run_sweep_()
             else: self._run_()
 
-        except Exception as e:
-            print(e)
+        except Exception:
+            traceback.print_exc()
 
         finally:
             self._finalize_()
