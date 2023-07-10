@@ -93,7 +93,7 @@ class ESRMeasure(Measurement):
 
     def _run_sweep_(self):
         S = self.settings
-        self.task = task = DAQ.configureDAQ(S.N_samples.val * self.sweep.size)
+        self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
         AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
@@ -102,7 +102,7 @@ class ESRMeasure(Measurement):
             if self.interrupt_measurement_called:
                     print('interrupted')
                     break
-            counts = DAQ.readDAQ(task, S.N_samples.val*2*self.sweep.size, S.DAQtimeout.val)
+            counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
             for i in range(self.sweep.size):
                 signal[i] = np.mean(counts[2*i::2*self.sweep.size])
                 background[i] = np.mean(counts[2*i+1::2*self.sweep.size])
