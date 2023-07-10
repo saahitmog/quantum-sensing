@@ -72,7 +72,7 @@ class ESRMeasure(Measurement):
         self.plotdata = np.empty_like(self.sweep)
 
         try:
-            with hide(), timer('----> Initialization: '): self._initialize_()
+            with timer('----> Initialization: '), hide(): self._initialize_()
             if S.sweep.val: self._run_sweep_()
             else: self._run_()
 
