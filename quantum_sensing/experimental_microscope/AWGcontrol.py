@@ -865,9 +865,9 @@ def makeESRSweepMarker(inst, segmentLength, num):
     prefix = '*OPC?; :MARK:DATA'
     # print(prefix, end=' .. ')
     
-    f = open(".marker","wb")
-    f.write(totalWaveform.tobytes())
-    f.close()
+    with open(".marker","wb") as f:
+        f.write(markerWave.tobytes())
+
     res = inst.WriteBinaryData(prefix, '.marker')
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
     # res = SendScpi(inst, ":SYST:ERR?", False, False)
