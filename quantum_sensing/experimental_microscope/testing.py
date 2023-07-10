@@ -92,7 +92,4 @@ def fast(num):
     return markerWave
 
 if __name__ == '__main__':
-    #run('orig(100)', sort='cumtime')
-    #run('fast(100)', sort='cumtime')
-    fast(500)
-    #orig(100)
+    pass
