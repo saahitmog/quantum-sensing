@@ -83,6 +83,7 @@ class ESRMeasure(Measurement):
             finally:
                 self._finalize_()
                 # self._save_data_()
+                print('')
             return
         
     def update_display(self):

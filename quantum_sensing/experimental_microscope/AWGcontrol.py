@@ -669,15 +669,14 @@ def sinePulse(segmentLength, squareCycles, sinCycles, duty, amp):
     return(dacSignal)
 
 def fastsine(seg, cyc, amp):
-    with hide():
-        t = np.arange(seg, step=1)
-        omegaSin = 2 * np.pi * cyc
-        sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(seg/2), dtype=int)))
-        sn = np.sin(omegaSin*t/seg)
-        rawSignal = sq * amp * sn
-        dacSignal = np.uint8((rawSignal/amp*127)+127)
-        del t, sq, sn, rawSignal
-        return dacSignal
+    t = np.arange(seg, step=1)
+    omegaSin = 2 * np.pi * cyc
+    sq = np.concatenate((np.ones(int(seg/2), dtype=int), np.zeros(int(seg/2), dtype=int)))
+    sn = np.sin(omegaSin*t/seg)
+    rawSignal = sq * amp * sn
+    dacSignal = np.uint8((rawSignal/amp*127)+127)
+    del t, sq, sn, rawSignal
+    return dacSignal
 
 def rabiPulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
     time = np.linspace(0, segmentLength-1, segmentLength)
