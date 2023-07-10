@@ -741,7 +741,10 @@ def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
     squares = int((1/(duration)) * segmentLength / 9e9)
     duty = 0.5
     print('Frequency: {0} GHz'.format(freq))
-    instrumentCalls(inst, sinePulse(segmentLength, squares, cycles, duty, 1), vpp)
+    #instrumentCalls(inst, sinePulse(segmentLength, squares, cycles, duty, 1), vpp)
+    waveform = fastsine(segmentLength, cycles, 1)
+    
+    instrumentCalls(inst, waveform, vpp)
     lasttime=starttime
     currtime=time.time()
     print('----> Total Waveform call:', currtime-lasttime, ' seconds')
@@ -805,6 +808,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
 
     print('Sweeping Frequencies {0} GHz to {1} GHz at {2} points'.format(freqs[0], freqs[-1], len(freqs)))
     
+    waveform=[]
     args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
     with Pool() as pool:
         waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()   
