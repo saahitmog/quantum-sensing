@@ -87,7 +87,7 @@ class ESRMeasure(Measurement):
         else: self.plot.setTitle("Contrast vs Frequency")
         self.plotline.setData(self.sweep, self.plotdata)
 
-    def post_run(self): 
+    def pre_run(self): 
         with hide(): self.app.settings_save_ini('.config.ini')
 
     def _run_sweep_(self) -> None:
