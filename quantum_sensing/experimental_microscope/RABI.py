@@ -50,7 +50,7 @@ class RabiMeasure(Measurement):
         S.End_Duration.connect_to_widget(self.ui.durmax_doubleSpinBox)
         S.Vpp.connect_to_widget(self.ui.Vpp_doubleSpinBox)
         S.MW_Frequency.connect_to_widget(self.ui.mwfreq_doubleSpinBox)
-        S.MW_Delay.connect_to_widget(self.ui.mwdelay_doubleSpinBox)
+        S.MW_delay.connect_to_widget(self.ui.mwdelay_doubleSpinBox)
         S.sweep.connect_to_widget(self.ui.sweep_CheckBox)
         S.save.connect_to_widget(self.ui.save_CheckBox)
         S.plotting_type.connect_to_widget(self.ui.plot_ComboBox)
