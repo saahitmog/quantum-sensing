@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>633</width>
+    <height>506</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,1">
+
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="move_groupBox">
+     <property name="title">
+      <string>Rabi Parameters</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="durmin_doubleSpinBox"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Start Duration</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="durmax_doubleSpinBox"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>End Duration</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="Vpp_doubleSpinBox"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Microwave Voltage</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="mwfreq_doubleSpinBox"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Microwave Frequency</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="image_groupBox">
+     <property name="title">
+      <string>Experiment Parameters</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0">
+
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="Navg_doubleSpinBox"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Num. Averaging Runs</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="Npts_doubleSpinBox"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Num. points</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="2" column="1">
+       <widget class="QComboBox" name="plot_ComboBox"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Plot Mode</string>
+        </property>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <item row="0" column="2">
+    <widget class="QGroupBox" name="camera_controls_groupBox">
+     <property name="title">
+      <string>Controls</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
+
+      <item row="1" column="0">
+       <widget class="QPushButton" name="interrupt_pushButton">
+        <property name="text">
+         <string>Interrupt</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="0" column="0">
+       <widget class="QPushButton" name="start_pushButton">
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="sweep_CheckBox"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Sweep</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="save_CheckBox"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <item row="1" column="0" colspan="3">
+    <widget class="QGroupBox" name="plot_groupBox">
+     <property name="title">
+      <string>Image</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="show_pushButton">
+        <property name="text">
+         <string>Show</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

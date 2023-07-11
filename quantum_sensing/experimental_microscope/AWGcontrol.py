@@ -1,39 +1,16 @@
-# import PBcontrol as PBctl
-# import sequenceControl as seqCtl
-#import ESRconfig as ESR
-# from spinapi import *
-from ctypes import *
+import sys, time, math, os, inspect, clr
 import numpy as np
-import sys
-# import DAQ_Analog as DAQ #NOTE THIS CHANGE FROM PHOTODIODE CODE
-# import SRScontrol as SRSctl
-# from PBinit import initPB
-import time
-import copy
-import pandas as pd
-import math
-
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib import style
 from multiprocessing import Pool
-
-import os
-import inspect
-import clr
-import array
-from System import Array, Char, Int16
-from scipy import constants
 from scipy import signal as sg
-import time
+from ctypes import *
 from utils import *
 
-datapath = os.path.dirname(sys.argv[0])
-maxScpiResponse = 65535
+if __name__ == '__main__':
+    datapath = os.path.dirname(sys.argv[0])
+    maxScpiResponse = 65535
 
-if (datapath):
-    datapath = datapath + "\\"
-print(datapath)
+    if datapath: datapath += "\\"
+    print(datapath)
 
 def OnLoggerEvent(sender, e):
     del sender
@@ -42,7 +19,6 @@ def OnLoggerEvent(sender, e):
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print(e.Message.Trim())
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
 
 def Validate(rc, condExpr, funcName="", lineNumber=0):
     _ = condExpr
@@ -683,7 +659,7 @@ def rabiPulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
     omegaSin = 2 * np.pi * sinCycles
     pulseProfile = np.zeros(segmentLength)
 
-    print(mw_delay, mw_duration, int((mw_delay-mw_duration)*segmentLength/1e6), int(mw_delay*segmentLength/1e6))
+    # print(mw_delay, mw_duration, int((mw_delay-mw_duration)*segmentLength/1e6), int(mw_delay*segmentLength/1e6))
 
     for i in range(int((mw_delay-mw_duration)*segmentLength/1e6), int(mw_delay*segmentLength/1e6)):
         pulseProfile[i] = 1
@@ -693,7 +669,18 @@ def rabiPulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
     # dacSignal = scaleWaveform(rawSignal, "P9082M")
     dacSignal = np.uint8((rawSignal/amp*127)+127)
 
-    return(dacSignal)
+    return dacSignal
+
+def fastrabi(seg, cyc, delay, dur, amp):
+    t = np.arange(seg, step=1)
+    omegaSin = 2 * np.pi * cyc
+    pre, pulse, post = int((delay-dur)*seg//1e6), int(dur*seg//1e6), int(seg-delay*seg//1e6)
+    sq = np.concatenate((np.zeros(pre, dtype=int), np.ones(pulse, dtype=int), np.zeros(post, dtype=int)))
+    sn = np.sin(omegaSin*t/seg)
+    rawSignal = sq * amp * sn
+    dacSignal = np.uint8((rawSignal/amp*127)+127)
+    del t, sq, sn, rawSignal
+    return dacSignal
 
 def T1Pulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
     time = np.linspace(0, segmentLength-1, segmentLength)
@@ -727,35 +714,23 @@ def sinePulseOffset(segmentLength, squareCycles, sinCycles, duty, amp, offset):
     return(dacSignal)
 
 def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
-    starttime=time.time()
-    segmentLength = 4999936
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
+    cycles = int(freq * segmentLength / 9)
 
-    cycles = int(freq * segmentLength * 1e9 / 9e9)
-    squares = int((1/(duration)) * segmentLength / 9e9)
-    duty = 0.5
-    print('Frequency: {0} GHz'.format(freq))
-    #instrumentCalls(inst, sinePulse(segmentLength, squares, cycles, duty, 1), vpp)
-    waveform = fastsine(segmentLength, cycles, 1)
-    
-    instrumentCalls(inst, waveform, vpp)
-    lasttime=starttime
-    currtime=time.time()
-    print('----> Total Waveform call:', currtime-lasttime, ' seconds')
-    makeESRMarker(inst, segmentLength)
-    lasttime=currtime
-    currtime=time.time()
-    print('----> Marker call:', currtime-lasttime, ' seconds')
+    print(f'--> Frequency: {freq} GHz')
+    with timer('----> Waveform calculate/call: '): instrumentCalls(inst, fastsine(segmentLength, cycles, 1), vpp)
+    with timer('----> Marker call: '): makeESRMarker(inst, segmentLength)
 
 def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength *= 2
     mw_duration *= 1e9
     mw_delay *= 1e6
-    cycles = int(freq * segmentLength * 1e9 / 9e9)
-    print('Duration: {0} ns, Frequency: {1} GHz'.format(mw_duration, freq))
-    instrumentCalls(inst, rabiPulse(segmentLength, 8, cycles, int(mw_delay/2*1e3), mw_duration/2, 1), vpp)
+    cycles = int(freq * segmentLength / 9)
+    print(f'Duration: {mw_duration} ns, Frequency: {freq} GHz')
+    #instrumentCalls(inst, rabiPulse(segmentLength, 8, cycles, int(mw_delay/2*1e3), mw_duration/2, 1), vpp)
+    instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
     makeRabiMarker(inst, segmentLength)
 
 # def makeSingleRabiSeq(inst, mw_duration, mw_delay, freq, vpp=0.001): ### MUST BE FIXED FOR 2KHZ TRIGGER SIGNAL
@@ -802,7 +777,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
     print(f'--> Sweeping Frequencies {freqs[0]} GHz to {freqs[-1]} GHz at {len(freqs)} points')
     
     args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
-    with timer('----> Calculate waveform: '), hide(), Pool() as pool:
+    with timer('----> Waveform calculate: '), hide(), Pool() as pool:
         waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()
     
     with timer('----> Waveform call: '): testinstrumentCalls(inst, np.uint8(waveform), vpp)
