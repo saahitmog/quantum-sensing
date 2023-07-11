@@ -528,8 +528,8 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     # connect ouput
     SendScpi(inst, ":OUTP ON", query_syst_err)
 
-    lasttime=currtime
-    currtime=time.time()
+    # lasttime=currtime
+    # currtime=time.time()
     # print('Set settings and toggle output:', currtime-lasttime, ' seconds')
 
 def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
