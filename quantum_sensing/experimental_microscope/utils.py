@@ -13,15 +13,15 @@ class hide:
         sys.stdout = self._original_stdout
 
 class timer:
-    def __init__(self, msg: str = ''):
-        self.msg = msg
+    def __init__(self, msg: str = '', quiet: bool = False):
+        self.msg, self.quiet = msg, quiet
 
     def __enter__(self):
         self.start_time = time.perf_counter()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         t = time.perf_counter()-self.start_time
-        print(self.msg, f'{t:.4f} seconds', sep='')
+        if not self.quiet: print(self.msg, f'{t:.4f} seconds', sep='')
 
 def ignore(warning: Type[Warning]):
     def inner(func):
