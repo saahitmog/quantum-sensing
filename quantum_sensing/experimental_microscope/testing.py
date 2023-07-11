@@ -5,6 +5,7 @@ from multiprocessing import Pool
 from matplotlib import pyplot as plt
 from cProfile import run
 from AWGcontrol import *
+from DAQ_Analog import *
 
 def rabi(seg, cyc, mw_delay, mw_duration, amp):
     t = np.arange(seg, step=1)
@@ -19,20 +20,25 @@ def rabi(seg, cyc, mw_delay, mw_duration, amp):
     del t, sq, sn #, rawSignal
     return rawSignal
 
-def AWGtest():
+def AWGtest(N=100, dur=0.0005):
     admin = loadDLL()
     slotId = getSlotId(admin)
     if slotId:
         inst = admin.OpenInstrument(slotId)
         if inst: instId = inst.InstrId
     instrumentSetup(inst)
-
-    makeESRSweep(inst, 0.0005, np.full(100, 2), 0.1)
+    task = configureDAQ(1000)
+    for _ in range(N):
+        makeSingleESRSeqMarker(inst, dur, 2, 0.1)
+        readDAQ(task, 1000*2, 10)
+    #makeESRSweep(inst, 0.0005, np.full(100, 2), 0.1)
+    #readDAQ(task, 1000*N*2, 1000)
 
     SendScpi(inst, ":OUTP OFF")
     SendScpi(inst, ":MARK OFF")
     admin.CloseInstrument(instId)
     admin.Close()
+    closeDAQTask(task)
 
 if __name__ == '__main__':
     '''args, N = (8998848, 5999232, 250000, 5, 1), 1
