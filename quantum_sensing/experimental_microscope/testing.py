@@ -46,6 +46,6 @@ if __name__ == '__main__':
     plt.plot(np.arange(args[0], step=1), rabi(*args))
     plt.xlim(2.24965e6, 2.249725e6)
     plt.show()'''
-    AWGtest(f=1)
+    AWGtest(dur=0.005, f=1)
 
 
