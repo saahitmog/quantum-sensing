@@ -96,10 +96,9 @@ class RabiMeasure(Measurement):
     def _run_sweep_(self) -> None:
         S = self.settings
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
-        return
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
-        AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
+        AWGctrl.makeRabiSweep(self.inst, self.sweep, S.MW_delay.val, S.MW_Frequency.val, S.Vpp.val)
 
         for n in range(S.Navg.val):
             if self.interrupt_measurement_called:
@@ -120,12 +119,12 @@ class RabiMeasure(Measurement):
         interrupted = False
         for n in range(S.Navg.val):
             if interrupted: break
-            for i, f in enumerate(self.sweep):
+            for i, d in enumerate(self.sweep):
                 if self.interrupt_measurement_called:
                     interrupted = True
                     print('Measurement Interrupted')
                     break
-                AWGctrl.makeSingleRabiSeqMarker(self.inst, f, S.MW_delay.val, S.MW_Frequency.val, S.Vpp.val)
+                AWGctrl.makeSingleRabiSeqMarker(self.inst, d, S.MW_delay.val, S.MW_Frequency.val, S.Vpp.val)
                 counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
                 signal = np.mean(counts[0::2])
                 background = np.mean(counts[1::2])

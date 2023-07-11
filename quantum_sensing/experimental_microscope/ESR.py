@@ -122,7 +122,7 @@ class ESRMeasure(Measurement):
                     print('Measurement Interrupted')
                     break
                 AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
-                counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
+                with timer('----> Read DAQ: '): counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
                 signal = np.mean(counts[0::2])
                 background = np.mean(counts[1::2])
                 if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
