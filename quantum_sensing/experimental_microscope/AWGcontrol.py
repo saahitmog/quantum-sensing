@@ -293,8 +293,8 @@ def makeESRMarker(inst, segmentLength):
     for i in range(0, int(duration*segmentLength/1e6)):
         waveform[i] += 1
 
-    delay = 400000
-    tot = 500000
+    delay = 400_000
+    tot = 500_000
     duration2 = 100
 
     for i in range(int((delay-duration2)*segmentLength/1e6), int(delay*segmentLength/1e6)):
@@ -772,12 +772,6 @@ def makeESRSweepMarker(inst, segmentLength, num):
     #MARKER CODE >>>>
     SendScpi(inst, ":MARK OFF")
     SendScpi(inst, ":MARK:SEL 1")
-    # SendScpi(inst, ":MARK:SEL?")
-    # SendScpi(inst, ":MARK?")
-    # SendScpi(inst, ":MARK:OFFS 0")
-
-    #enble marker 1 CH 1
-    # time = np.linspace(0, segmentLength-1, segmentLength)
 
     waveform = np.zeros(segmentLength, dtype=np.uint8)
 
@@ -835,22 +829,73 @@ def makeESRSweepMarker(inst, segmentLength, num):
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
 
-def makeRabiSweep(inst, mw_durations, mw_delay, freq, vpp=0.001):
+def makeRabiSweep(inst, sweep, mw_delay, freq, vpp=0.001):
     segmentLength = 8998848 * 2 # this segment length is optimized for 1kHz trigger signal
+    sweep = 1e9 * np.array(sweep)
 
-    print(f'--> Sweeping MW Durations {mw_durations[0]*1e9} ns to {mw_durations[-1]*1e9} ns at {len(mw_durations)} points')
+    print(f'--> Sweeping MW Durations {sweep[0]} ns to {sweep[-1]} ns at {len(sweep)} points')
     
-    args = np.array([np.full(mw_durations.shape, segmentLength), 
-                             segmentLength*mw_durations, 
-                             np.ones(mw_durations.shape)]).T
+    args = np.array([np.full(sweep.shape, segmentLength), 
+                     np.full(sweep.shape, segmentLength*freq//9),
+                     np.full(sweep.shape, int(mw_delay/2 * 1e9)),
+                     sweep/2,
+                     np.ones(sweep.shape)]).T
     with timer('----> Waveform calculate: '), hide(), Pool() as pool:
         waveform = np.array(pool.starmap(fastrabi, args), dtype=np.uint8).flatten()
     
     with timer('----> Waveform call: '): testinstrumentCalls(inst, np.uint8(waveform), vpp)
-    with timer('----> Marker call: '): makeRabiSweepMarker(inst, segmentLength, len(mw_durations))
+    with timer('----> Marker call: '): makeRabiSweepMarker(inst, segmentLength, len(sweep))
 
-def makeRabiSweepMarker():
-    ...
+def makeRabiSweepMarker(inst, segmentLength, num):
+    SendScpi(inst, ":MARK OFF")
+    
+    segmentLength //= 16
+    waveform = np.zeros(segmentLength)
+
+    delay = 1_000_000
+    duration2 = 500_000
+
+    for i in range(int((delay-duration2)*segmentLength/1e6), int(delay*segmentLength/1e6)):
+        waveform[i] += 4
+
+    for i in range(int((2*delay-duration2)*segmentLength/1e6), int(2*delay*segmentLength/1e6)):
+        waveform[i] += 4
+    
+    delay = 900_000
+    tot = 1_000_000
+    duration = 100
+
+    for i in range(int((delay-duration)*segmentLength/1e6), int(delay*segmentLength/1e6)):
+        waveform[i] += 2
+
+    for i in range(int(tot*segmentLength/1e6)+int((delay-duration)*segmentLength/1e6), int(tot*segmentLength/1e6)+int(delay*segmentLength/1e6)):
+        waveform[i] += 2
+
+    totalWaveform = np.array([waveform]*num, dtype=np.uint8).flatten()
+
+    duration = 300
+    for i in range(0, int(duration*segmentLength/1e6)):
+        totalWaveform[i] += 1
+
+    markerWave = np.uint8(totalWaveform)
+    del totalWaveform
+
+    prefix = '*OPC?; :MARK:DATA'
+    with open(".marker","wb") as f:
+        f.write(markerWave.tobytes())
+    inst.WriteBinaryData(prefix, '.marker')
+
+    SendScpi(inst, ":MARK:SEL 1")
+    SendScpi(inst, ":MARK:VOLT:PTOP 1.2")
+    SendScpi(inst, ":MARK ON")
+
+    SendScpi(inst, ":MARK:SEL 2")
+    SendScpi(inst, ":MARK:VOLT:PTOP 0.5")
+    SendScpi(inst, ":MARK ON")
+
+    SendScpi(inst, ":MARK:SEL 3")
+    SendScpi(inst, ":MARK:VOLT:PTOP 1.2")
+    SendScpi(inst, ":MARK ON")   
 
 def makeT2Seq(inst, t_delay,t_AOM,t_readoutDelay, t_pi, freq, vpp=0.001, IQpadding=0, numberOfPiPulses=1):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
