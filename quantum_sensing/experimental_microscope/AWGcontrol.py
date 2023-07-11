@@ -388,8 +388,8 @@ def makeRabiMarker(inst, segmentLength):
     res = inst.WriteBinaryData(prefix, markerWave.tobytes())
     Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
 
-    res = SendScpi(inst, ":SYST:ERR?", False, False)
-    print(res[1])
+    # res = SendScpi(inst, ":SYST:ERR?", False, False)
+    # print(res[1])
 
     # SendScpi(inst, ":MARK:SEL?")
 
@@ -478,9 +478,7 @@ def makeT1Marker(inst, segmentLength, t_delay, t_readoutDelay, t_AOM):
     # SendScpi(inst, ":MARK?")
     
 def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
-    starttime=time.time()
     query_syst_err = True  
-    
     dacSignal = waveform
     
     # ---------------------------------------------------------------------
@@ -490,25 +488,18 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     # select channel
     SendScpi(inst, ":INST:CHAN 1", query_syst_err)
 
-
     # load I waveform into instrument
     segNum = 1
     SendScpi(inst, ":TRACe:DEF {0},{1}".format(segNum, len(dacSignal)), query_syst_err)
     SendScpi(inst, ":TRACe:SEL {0}".format(segNum), query_syst_err)
 
     prefix = ':TRAC:DATA 0,#'
-    # print(prefix, end=' .. ')
 
-    lasttime=starttime
-    currtime=time.time()
-    print('Setup segment:', currtime-lasttime, ' seconds')
+    #print('Setup segment:', currtime-lasttime, ' seconds')
 
-    res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
-
-    lasttime=currtime
-    currtime=time.time()
-    print('Write segment:', currtime-lasttime, ' seconds')
-    print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
+    with timer('------> AWG Write: '): res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
+    #print('Write segment:', currtime-lasttime, ' seconds')
+    #print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
 
     # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
 
@@ -539,21 +530,13 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
 
     lasttime=currtime
     currtime=time.time()
-    print('Set settings and toggle output:', currtime-lasttime, ' seconds')
+    # print('Set settings and toggle output:', currtime-lasttime, ' seconds')
 
 def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
     starttime=time.time()
     query_syst_err = True  
-    
     dacSignal = waveform
-    
-    # ---------------------------------------------------------------------
-    # DAC functions CH 1 
-    # ---------------------------------------------------------------------
-
-    # select channel
     SendScpi(inst, ":INST:CHAN 1", query_syst_err)
-
 
     # load I waveform into instrument
     segNum = 1
@@ -723,16 +706,14 @@ def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
     with timer('----> Marker call: '): makeESRMarker(inst, segmentLength)
 
 def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
-    segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
-    segmentLength *= 2
+    segmentLength = 8998848 * 2 #this segment length is optimized for 1kHz trigger signal
     mw_duration *= 1e9
     mw_delay *= 1e6
     cycles = int(freq * segmentLength / 9)
-    print(f'Duration: {mw_duration} ns, Frequency: {freq} GHz')
+    print(f'Duration: {mw_duration:.3f} ns, Frequency: {freq} GHz')
     #instrumentCalls(inst, rabiPulse(segmentLength, 8, cycles, int(mw_delay/2*1e3), mw_duration/2, 1), vpp)
-    print(cycles, int(mw_delay*1e3//2), mw_duration/2)
-    instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
-    makeRabiMarker(inst, segmentLength)
+    with timer('----> Waveform calculate/call: '): instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
+    with timer('----> Marker call: '): makeRabiMarker(inst, segmentLength)
 
 # def makeSingleRabiSeq(inst, mw_duration, mw_delay, freq, vpp=0.001): ### MUST BE FIXED FOR 2KHZ TRIGGER SIGNAL
 #     segmentLength = 4999936
