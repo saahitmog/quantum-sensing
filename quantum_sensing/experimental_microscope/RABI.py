@@ -49,7 +49,7 @@ class RabiMeasure(Measurement):
         S.Start_Duration.connect_to_widget(self.ui.durmin_doubleSpinBox)
         S.End_Duration.connect_to_widget(self.ui.durmax_doubleSpinBox)
         S.Vpp.connect_to_widget(self.ui.Vpp_doubleSpinBox)
-        S.MW_Frequency.connect_to_widget(self.ui.mwfreq_doubleSpinSox)
+        S.MW_Frequency.connect_to_widget(self.ui.mwfreq_doubleSpinBox)
         # S.magnet_current.connect_to_widget(self.ui.magcurr_doubleSpinBox)
         S.sweep.connect_to_widget(self.ui.sweep_CheckBox)
         S.save.connect_to_widget(self.ui.save_CheckBox)
