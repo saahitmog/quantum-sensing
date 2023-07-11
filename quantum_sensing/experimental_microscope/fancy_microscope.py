@@ -74,7 +74,7 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         # show ui
         self.ui.show()
         self.ui.activateWindow()
-        try: self.settings_load_last()
+        try: self.settings_load_ini('.config.ini')
         except Exception: pass
 
 if __name__ == '__main__':

@@ -62,6 +62,7 @@ class ESRMeasure(Measurement):
     def run(self):
         with timer('Measurement Complete: '):
             self.set_progress(0)
+            self.app.settings_save_ini('.config.ini')
             S = self.settings
             if S.save.val: self._make_savefiles_()
 
@@ -80,7 +81,6 @@ class ESRMeasure(Measurement):
             finally:
                 with timer('--> Hardware Close: '): self._finalize_()
                 if S.save.val: self._save_data_()
-                self.app.settings_auto_save_ini()
                 # print('')
         
     def update_display(self):
