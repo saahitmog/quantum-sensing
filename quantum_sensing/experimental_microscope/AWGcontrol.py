@@ -730,6 +730,7 @@ def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
     cycles = int(freq * segmentLength / 9)
     print(f'Duration: {mw_duration} ns, Frequency: {freq} GHz')
     #instrumentCalls(inst, rabiPulse(segmentLength, 8, cycles, int(mw_delay/2*1e3), mw_duration/2, 1), vpp)
+    print(cycles, int(mw_delay*1e3//2), mw_duration/2)
     instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
     makeRabiMarker(inst, segmentLength)
 
