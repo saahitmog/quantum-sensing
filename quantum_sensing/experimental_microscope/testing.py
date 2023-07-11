@@ -20,7 +20,7 @@ def rabi(seg, cyc, mw_delay, mw_duration, amp):
     del t, sq, sn #, rawSignal
     return rawSignal
 
-def AWGtest(N=100, dur=0.0005):
+def AWGtest(N=100, dur=0.0005, f=2):
     admin = loadDLL()
     slotId = getSlotId(admin)
     if slotId:
@@ -29,9 +29,9 @@ def AWGtest(N=100, dur=0.0005):
     instrumentSetup(inst)
     task = configureDAQ(1000)
     for _ in range(N):
-        makeSingleESRSeqMarker(inst, dur, 2, 0.1)
+        makeSingleESRSeqMarker(inst, dur, f, 0.1)
         readDAQ(task, 1000*2, 10)
-    #makeESRSweep(inst, 0.0005, np.full(100, 2), 0.1)
+    #makeESRSweep(inst, 0.0005, np.full(100, f), 0.1)
     #readDAQ(task, 1000*N*2, 1000)
 
     SendScpi(inst, ":OUTP OFF")
@@ -45,6 +45,6 @@ if __name__ == '__main__':
     plt.plot(np.arange(args[0], step=1), rabi(*args))
     plt.xlim(2.24965e6, 2.249725e6)
     plt.show()'''
-    AWGtest()
+    AWGtest(f=1)
 
 
