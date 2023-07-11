@@ -32,6 +32,9 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         from ESR import ESRMeasure
         self.add_measurement(ESRMeasure(self))
 
+        from RABI import RabiMeasure
+        self.add_measurement(RabiMeasure(self))
+
         #from RabiMeasure import RabiMeasure
         #from RabiMappingMeasure import RabiImageMeasure
         #from T1Measure import T1Measure
