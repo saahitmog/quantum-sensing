@@ -27,7 +27,7 @@ class RabiMeasure(Measurement):
         S.New('End_Duration', dtype=float, initial=6e-7, spinbox_decimals=9, unit='s', si=True)
         S.New('Vpp', dtype=float, initial=0.08, spinbox_decimals=3, spinbox_step=0.01, unit='V', si=True, vmin=0)
         S.New('MW_Frequency', dtype=float, initial=3.0000, spinbox_decimals=4, unit='GHz', spinbox_step=0.001)
-        S.New('MW_delay', dtype=float, initial=0.0005, unit='s', si=True)
+        S.New('MW_delay', dtype=float, initial=0.0005, spinbox_decimals=5, unit='s', si=True)
         S.New('N_samples', dtype=int, initial=1000, vmin=1)
         S.New('DAQtimeout', dtype=int, initial=1000, unit='s', vmin=0)
         S.New('t_duration', dtype=float, initial=0.0005, unit='s', si=True, vmin=0)
