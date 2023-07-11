@@ -27,12 +27,13 @@ def AWGtest(N=100, dur=0.0005, f=2):
         inst = admin.OpenInstrument(slotId)
         if inst: instId = inst.InstrId
     instrumentSetup(inst)
-    task = configureDAQ(1000*N)
-    '''for _ in range(N):
+    task = configureDAQ(10)
+    for _ in range(N):
         makeSingleESRSeqMarker(inst, dur, f, 0.1)
-        readDAQ(task, 1000*2, 10)'''
-    makeESRSweep(inst, 0.0005, np.full(100, f), 0.1)
-    readDAQ(task, 1000*N*2, 1000)
+        readDAQ(task, 10*2, 10)
+    #task = configureDAQ(1000*N)
+    #makeESRSweep(inst, dur, np.full(N, f), 0.1)
+    #readDAQ(task, 1000*N*2, 1000)
 
     SendScpi(inst, ":OUTP OFF")
     SendScpi(inst, ":MARK OFF")
