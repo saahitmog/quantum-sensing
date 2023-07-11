@@ -674,7 +674,7 @@ def rabiPulse(segmentLength, bits, sinCycles, mw_delay, mw_duration, amp):
 def fastrabi(seg, cyc, delay, dur, amp):
     t = np.arange(seg, step=1)
     omegaSin = 2 * np.pi * cyc
-    pre, pulse, post = int((delay-dur)*seg//1e6), int(dur*seg//1e6), int(seg-delay*seg//1e6)
+    pre, pulse, post = int((delay-dur)*seg//1e6), int(round(dur*seg/1e6)), int(seg-delay*seg//1e6)
     sq = np.concatenate((np.zeros(pre, dtype=int), np.ones(pulse, dtype=int), np.zeros(post, dtype=int)))
     sn = np.sin(omegaSin*t/seg)
     rawSignal = sq * amp * sn
