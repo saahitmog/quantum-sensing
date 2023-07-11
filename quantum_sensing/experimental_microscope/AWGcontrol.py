@@ -4,6 +4,7 @@ from multiprocessing import Pool
 from scipy import signal as sg
 from ctypes import *
 from utils import *
+quiet=True
 
 if __name__ == '__main__':
     datapath = os.path.dirname(sys.argv[0])
@@ -497,7 +498,7 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
 
     #print('Setup segment:', currtime-lasttime, ' seconds')
 
-    with timer('------> AWG Write: '): res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
+    with timer('------> AWG Write: ', quiet): res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
     #print('Write segment:', currtime-lasttime, ' seconds')
     #print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
 
@@ -702,8 +703,8 @@ def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
     cycles = int(freq * segmentLength / 9)
 
     print(f'--> Frequency: {freq} GHz')
-    with timer('----> Waveform calculate/call: '): instrumentCalls(inst, fastsine(segmentLength, cycles, 1), vpp)
-    with timer('----> Marker call: '): makeESRMarker(inst, segmentLength)
+    with timer('----> Waveform calculate/call: ', quiet): instrumentCalls(inst, fastsine(segmentLength, cycles, 1), vpp)
+    with timer('----> Marker call: ', quiet): makeESRMarker(inst, segmentLength)
 
 def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
     segmentLength = 8998848 * 2 #this segment length is optimized for 1kHz trigger signal
@@ -712,8 +713,8 @@ def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
     cycles = int(freq * segmentLength / 9)
     print(f'Duration: {mw_duration:.3f} ns, Frequency: {freq} GHz')
     #instrumentCalls(inst, rabiPulse(segmentLength, 8, cycles, int(mw_delay/2*1e3), mw_duration/2, 1), vpp)
-    with timer('----> Waveform calculate/call: '): instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
-    with timer('----> Marker call: '): makeRabiMarker(inst, segmentLength)
+    with timer('----> Waveform calculate/call: ', quiet): instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
+    with timer('----> Marker call: ', quiet): makeRabiMarker(inst, segmentLength)
 
 # def makeSingleRabiSeq(inst, mw_duration, mw_delay, freq, vpp=0.001): ### MUST BE FIXED FOR 2KHZ TRIGGER SIGNAL
 #     segmentLength = 4999936
