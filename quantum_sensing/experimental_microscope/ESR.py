@@ -62,7 +62,6 @@ class ESRMeasure(Measurement):
     def run(self):
         with timer('Measurement Complete: '):
             self.set_progress(0)
-            self.app.settings_save_ini('.config.ini')
             S = self.settings
             if S.save.val: self._make_savefiles_()
 
@@ -87,6 +86,9 @@ class ESRMeasure(Measurement):
         if self.settings.plotting_type.val == 'signal': self.plot.setTitle("Signal vs Frequency")
         else: self.plot.setTitle("Contrast vs Frequency")
         self.plotline.setData(self.sweep, self.plotdata)
+
+    def post_run(self): 
+        with hide(): self.app.settings_save_ini('.config.ini')
 
     def _run_sweep_(self) -> None:
         S = self.settings
