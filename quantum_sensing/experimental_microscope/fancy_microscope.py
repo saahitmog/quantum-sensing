@@ -1,7 +1,7 @@
 
 from ScopeFoundry import BaseMicroscopeApp
 from utils import hide
-import os, sys
+import os, sys 
 
 class FancyMicroscopeApp(BaseMicroscopeApp):
 
@@ -74,6 +74,7 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         # show ui
         self.ui.show()
         self.ui.activateWindow()
+        self.settings_load_last()
 
 
 if __name__ == '__main__':

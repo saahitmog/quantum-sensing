@@ -62,8 +62,8 @@ class ESRMeasure(Measurement):
     def run(self):
         with timer('Measurement Complete: '):
             self.set_progress(0)
-            S, save = self.settings, False
-            if save: self._make_savefiles_()
+            S = self.settings
+            if S.save.val: self._make_savefiles_()
 
             print(f"Starting ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
 
@@ -79,8 +79,9 @@ class ESRMeasure(Measurement):
 
             finally:
                 with timer('--> Hardware Close: '): self._finalize_()
-                if save: self._save_data_()
-                print('')
+                if S.save.val: self._save_data_()
+                self.app.settings_auto_save_ini()
+                # print('')
         
     def update_display(self):
         if self.settings.plotting_type.val == 'signal': self.plot.setTitle("Signal vs Frequency")
