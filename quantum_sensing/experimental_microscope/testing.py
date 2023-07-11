@@ -4,6 +4,7 @@ import warnings, numpy as np
 from multiprocessing import Pool
 from matplotlib import pyplot as plt
 from cProfile import run
+from AWGcontrol import *
 
 def rabi(seg, cyc, mw_delay, mw_duration, amp):
     t = np.arange(seg, step=1)
@@ -18,8 +19,25 @@ def rabi(seg, cyc, mw_delay, mw_duration, amp):
     del t, sq, sn #, rawSignal
     return rawSignal
 
+def AWGtest():
+    admin = loadDLL()
+    slotId = getSlotId(admin)
+    if slotId:
+        inst = admin.OpenInstrument(slotId)
+        if inst: instId = inst.InstrId
+    instrumentSetup(inst)
+
+    makeESRSweep(inst, 0.0005, np.full(100, 2), 0.1)
+
+    SendScpi(inst, ":OUTP OFF")
+    SendScpi(inst, ":MARK OFF")
+    admin.CloseInstrument(instId)
+    admin.Close()
+
 if __name__ == '__main__':
-    args, N = (8998848, 5999232, 250000, 5, 1), 1
+    '''args, N = (8998848, 5999232, 250000, 5, 1), 1
     plt.plot(np.arange(args[0], step=1), rabi(*args))
     plt.xlim(2.24965e6, 2.249725e6)
-    plt.show()
+    plt.show()'''
+
+

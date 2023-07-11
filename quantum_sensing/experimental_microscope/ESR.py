@@ -151,6 +151,7 @@ class ESRMeasure(Measurement):
 
     def _finalize_(self) -> None:
         AWGctrl.SendScpi(self.inst, ":OUTP OFF")
+        AWGctrl.SendScpi(self.inst, ":MARK OFF")
         rc = self.admin.CloseInstrument(self.instId)
         AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
         rc = self.admin.Close()
