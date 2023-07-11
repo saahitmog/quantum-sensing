@@ -23,8 +23,8 @@ class RabiMeasure(Measurement):
         S.New('Navg', dtype=int, initial=10, vmin=1)
         S.New('photon_mode', dtype=bool, initial=False)
         S.New('AWG_mode', dtype=bool, initial=True)
-        S.New('Start_Duration', dtype=float, initial=1e-8, unit='s', si=True)
-        S.New('End_Duration', dtype=float, initial=6e-7, unit='s', si=True)     
+        S.New('Start_Duration', dtype=float, initial=1e-8, spinbox_decimals=9, unit='s', si=True)
+        S.New('End_Duration', dtype=float, initial=6e-7, spinbox_decimals=9, unit='s', si=True)
         S.New('Vpp', dtype=float, initial=0.08, spinbox_decimals=3, spinbox_step=0.01, unit='V', si=True, vmin=0)
         S.New('MW_Frequency', dtype=float, initial=3.0000, spinbox_decimals=4, unit='GHz', spinbox_step=0.001)
         S.New('MW_delay', dtype=float, initial=0.0005, unit='s', si=True)
@@ -94,9 +94,9 @@ class RabiMeasure(Measurement):
         with hide(): self.app.settings_save_ini('.config.ini')
 
     def _run_sweep_(self) -> None:
-        return
         S = self.settings
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
+        return
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
         AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
