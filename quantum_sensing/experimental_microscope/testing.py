@@ -27,7 +27,7 @@ def fast(seg, bits, cyc, mw_delay, mw_duration, amp):
     return dacSignal
 
 if __name__ == '__main__':
-    args, N = (10000000, 100000, 8, 500000, 300000, 1), 100
+    args, N = (8998848*2, 100000, 8, 500000, 300000, 1), 100
     s, f = slow(*args), fast(*args)
     print(all(s == f))
     run('[slow(*args) for _ in range(N)]', sort='cumtime')
