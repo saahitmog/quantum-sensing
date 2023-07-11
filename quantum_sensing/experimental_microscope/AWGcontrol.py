@@ -4,7 +4,6 @@ from multiprocessing import Pool
 from scipy import signal as sg
 from ctypes import *
 from utils import *
-quiet=True
 
 if __name__ == '__main__':
     datapath = os.path.dirname(sys.argv[0])
@@ -498,7 +497,7 @@ def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
 
     #print('Setup segment:', currtime-lasttime, ' seconds')
 
-    with timer('------> AWG Write: ', quiet): res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
+    with timer('------> AWG Write: ', True): res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
     #print('Write segment:', currtime-lasttime, ' seconds')
     #print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
 
@@ -701,6 +700,7 @@ def makeSingleESRSeqMarker(inst, duration, freq, vpp = 0.001):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
     segmentLength = int((2*duration/0.001)*segmentLength)
     cycles = int(freq * segmentLength / 9)
+    quiet = True
 
     print(f'--> Frequency: {freq} GHz')
     with timer('----> Waveform calculate/call: ', quiet): instrumentCalls(inst, fastsine(segmentLength, cycles, 1), vpp)
@@ -711,8 +711,9 @@ def makeSingleRabiSeqMarker(inst, mw_duration, mw_delay, freq, vpp=0.001):
     mw_duration *= 1e9
     mw_delay *= 1e6
     cycles = int(freq * segmentLength / 9)
+    quiet=True
+
     print(f'Duration: {mw_duration:.3f} ns, Frequency: {freq} GHz')
-    #instrumentCalls(inst, rabiPulse(segmentLength, 8, cycles, int(mw_delay/2*1e3), mw_duration/2, 1), vpp)
     with timer('----> Waveform calculate/call: ', quiet): instrumentCalls(inst, fastrabi(segmentLength, cycles, int(mw_delay*1e3//2), mw_duration/2, 1), vpp)
     with timer('----> Marker call: ', quiet): makeRabiMarker(inst, segmentLength)
 
@@ -759,7 +760,7 @@ def makeESRSweep(inst, duration, freqs, vpp = 0.001):
 
     print(f'--> Sweeping Frequencies {freqs[0]} GHz to {freqs[-1]} GHz at {len(freqs)} points')
     
-    args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs, np.ones(freqs.shape)]).T
+    args = np.array([np.full(freqs.shape, segmentLength), segmentLength*freqs//9, np.ones(freqs.shape)]).T
     with timer('----> Waveform calculate: '), hide(), Pool() as pool:
         waveform = np.array(pool.starmap(fastsine, args), dtype=np.uint8).flatten()
     
@@ -833,6 +834,23 @@ def makeESRSweepMarker(inst, segmentLength, num):
     SendScpi(inst, ":MARK ON")
     # SendScpi(inst, ":MARK:SEL?")
     # SendScpi(inst, ":MARK?")
+
+def makeRabiSweep(inst, mw_durations, mw_delay, freq, vpp=0.001):
+    segmentLength = 8998848 * 2 # this segment length is optimized for 1kHz trigger signal
+
+    print(f'--> Sweeping MW Durations {mw_durations[0]*1e9} ns to {mw_durations[-1]*1e9} ns at {len(mw_durations)} points')
+    
+    args = np.array([np.full(mw_durations.shape, segmentLength), 
+                             segmentLength*mw_durations, 
+                             np.ones(mw_durations.shape)]).T
+    with timer('----> Waveform calculate: '), hide(), Pool() as pool:
+        waveform = np.array(pool.starmap(fastrabi, args), dtype=np.uint8).flatten()
+    
+    with timer('----> Waveform call: '): testinstrumentCalls(inst, np.uint8(waveform), vpp)
+    with timer('----> Marker call: '): makeRabiSweepMarker(inst, segmentLength, len(mw_durations))
+
+def makeRabiSweepMarker():
+    ...
 
 def makeT2Seq(inst, t_delay,t_AOM,t_readoutDelay, t_pi, freq, vpp=0.001, IQpadding=0, numberOfPiPulses=1):
     segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
