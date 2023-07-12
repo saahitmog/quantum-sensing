@@ -52,22 +52,10 @@ def AWGtest(N=100, dur=0.0005, f=2):
     admin.Close()
     closeDAQTask(task)'''
 
-from ScopeFoundry import BaseMicroscopeApp
-class TestMicroscopeApp(BaseMicroscopeApp):
-
-    name = 'test_microscope'
-
-    def setup(self):
-        print("Create Measurement")
-        from utils import AOMToggle
-        self.add_measurement(AOMToggle(self))
-        self.ui.show()
-        self.ui.activateWindow()
+from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
 
 if __name__ == '__main__':
-    import sys
-    app = TestMicroscopeApp(sys.argv)
-    sys.exit(app.exec_())
+    print(sibling_path(__file__, 'ESR.py'))
 
 '''if __name__ == '__main__':
     #AWGtest(dur=0.0005, f=1)'''

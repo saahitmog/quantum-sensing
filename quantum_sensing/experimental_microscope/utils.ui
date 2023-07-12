@@ -23,7 +23,7 @@
      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
 
       <item row="1" column="0">
-       <widget class="QPushButton" name="interrupt_pushButton">
+       <widget class="QPushButton" name="interruptAOM_pushButton">
         <property name="text">
          <string>Interrupt</string>
         </property>
@@ -31,7 +31,7 @@
       </item>
 
       <item row="0" column="0">
-       <widget class="QPushButton" name="start_pushButton">
+       <widget class="QPushButton" name="startAOM_pushButton">
         <property name="text">
          <string>Start</string>
         </property>

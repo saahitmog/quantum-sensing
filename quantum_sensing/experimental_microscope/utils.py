@@ -35,7 +35,7 @@ def ignore(warning: Type[Warning]):
 
 from ScopeFoundry import Measurement
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
-import os, inspect, traceback
+import os, traceback
 import numpy as np
 import AWGcontrol as AWGctrl
 
@@ -44,18 +44,18 @@ class Utility(Measurement):
     name = 'Utility'
     
     def setup(self):
-        self.ui_filename = sibling_path(__file__,"utils.ui")
-        self.ui = load_qt_ui_file(self.ui_filename)
+        self.ui = load_qt_ui_file(sibling_path(__file__,"utils.ui"))
         self.ui.setWindowTitle(self.name)
-        self.ui.interrupt_pushButton.clicked.connect(self._interrupt_)
-        self.ui.start_pushButton.clicked.connect(self._start_)
+        self.ui.interruptAOM_pushButton.clicked.connect(self._interrupt_)
+        self.ui.startAOM_pushButton.clicked.connect(self._start_)
 
     def run(self):
         print(f"Toggling AOM")
+        mode = 'AOM'
         try:
             with hide(): self._initialize_()
             print('----- AOM ON -----')
-            self._run_()
+            if mode == 'AOM': self.runAOM()
         except Exception: traceback.print_exc()
         finally: 
             self._finalize_()
@@ -67,7 +67,7 @@ class Utility(Measurement):
     def _start_(self) -> None:
         self.activation.update_value(True)
 
-    def _run_(self) -> None:
+    def runAOM(self) -> None:
         AWGctrl.SendScpi(self.inst, ":MARK OFF")
         self.inst.WriteBinaryData(':MARK:DATA 0,#', np.full(999872, 4, dtype=np.uint8).tobytes())
         AWGctrl.SendScpi(self.inst, ":MARK:SEL 3; :MARK:VOLT:PTOP 1.2; :MARK ON")
