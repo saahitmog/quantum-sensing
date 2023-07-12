@@ -18,7 +18,7 @@
    <item row="0" column="2">
     <widget class="QGroupBox" name="camera_controls_groupBox">
      <property name="title">
-      <string>Controls</string>
+      <string>AOM Toggle</string>
      </property>
      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
 

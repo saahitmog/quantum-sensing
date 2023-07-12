@@ -41,28 +41,25 @@ import AWGcontrol as AWGctrl
 
 class AOMToggle(Measurement):
     
-    name = 'AOM Toggle'
+    name = 'Utility'
     
     def setup(self):
-        
-        S = self.settings
-
         self.ui_filename = sibling_path(__file__,"utils.ui")
         self.ui = load_qt_ui_file(self.ui_filename)
         self.ui.setWindowTitle(self.name)
-
         self.ui.interrupt_pushButton.clicked.connect(self._interrupt_)
         self.ui.start_pushButton.clicked.connect(self._start_)
 
     def run(self):
         print(f"Toggling AOM")
-
         try:
-            with timer('--> Hardware Startup: '), hide(): self._initialize_()
+            with hide(): self._initialize_()
+            print('----- AOM ON -----')
             self._run_()
         except Exception: traceback.print_exc()
         finally: 
-            with timer('--> Hardware Close: '): self._finalize_()
+            self._finalize_()
+            print('----- AOM OFF -----')
 
     def _interrupt_(self) -> None:
         self.interrupt_measurement_called = True
@@ -71,29 +68,20 @@ class AOMToggle(Measurement):
         self.activation.update_value(True)
 
     def _run_(self) -> None:
-        send, SEG = AWGctrl.SendScpi, 999872
-        send(self.inst, ":MARK OFF")
-        self.inst.WriteBinaryData(':MARK:DATA 0,#', np.full(SEG, 4, dtype=np.uint8).tobytes())
-        send(self.inst, ":MARK:SEL 3; :MARK:VOLT:PTOP 1.2; :MARK ON")
-        #send(self.inst, ":MARK:VOLT:PTOP 1.2")
-        #send(self.inst, ":MARK ON")
+        AWGctrl.SendScpi(self.inst, ":MARK OFF")
+        self.inst.WriteBinaryData(':MARK:DATA 0,#', np.full(999872, 4, dtype=np.uint8).tobytes())
+        AWGctrl.SendScpi(self.inst, ":MARK:SEL 3; :MARK:VOLT:PTOP 1.2; :MARK ON")
         while not self.interrupt_measurement_called: pass
 
     def _initialize_(self) -> None:
         self.admin = admin = AWGctrl.loadDLL()
         slotId = AWGctrl.getSlotId(admin)
-        if not slotId: print("Invalid choice!")
-        else:
+        if slotId:
             self.inst = inst = admin.OpenInstrument(slotId)
-            if not inst: print(f"Failed to Open instrument with slot-Id {slotId}")
-            else: self.instId = inst.InstrId
+            if inst: self.instId = inst.InstrId
         AWGctrl.instrumentSetup(inst)
 
     def _finalize_(self) -> None:
-        AWGctrl.SendScpi(self.inst, ":OUTP OFF")
-        AWGctrl.SendScpi(self.inst, ":MARK OFF")
-        rc = self.admin.CloseInstrument(self.instId)
-        AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
-        rc = self.admin.Close()
-        AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
-
+        AWGctrl.SendScpi(self.inst, ":OUTP OFF; :MARK OFF")
+        self.admin.CloseInstrument(self.instId)
+        self.admin.Close()
