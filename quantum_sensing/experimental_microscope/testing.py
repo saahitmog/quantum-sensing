@@ -19,7 +19,7 @@ def rabi(seg, cyc, mw_delay, mw_duration, amp):
     del t, sq, sn #, rawSignal
     return rawSignal
 
-from AWGcontrol import *
+'''from AWGcontrol import *
 from DAQ_Analog import *
 
 def seqgen(inst, dur, freq, vpp):
@@ -50,9 +50,26 @@ def AWGtest(N=100, dur=0.0005, f=2):
     #SendScpi(inst, ":MARK OFF")
     admin.CloseInstrument(instId)
     admin.Close()
-    closeDAQTask(task)
+    closeDAQTask(task)'''
+
+from ScopeFoundry import BaseMicroscopeApp
+class TestMicroscopeApp(BaseMicroscopeApp):
+
+    name = 'test_microscope'
+
+    def setup(self):
+        print("Create Measurement")
+        from utils import AOMToggle
+        self.add_measurement(AOMToggle(self))
+        self.ui.show()
+        self.ui.activateWindow()
 
 if __name__ == '__main__':
-    AWGtest(dur=0.0005, f=1)
+    import sys
+    app = TestMicroscopeApp(sys.argv)
+    sys.exit(app.exec_())
+
+'''if __name__ == '__main__':
+    #AWGtest(dur=0.0005, f=1)'''
 
 

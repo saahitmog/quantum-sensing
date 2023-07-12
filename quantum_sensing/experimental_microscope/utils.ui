@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>633</width>
+    <height>506</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,1">
+
+   <item row="0" column="2">
+    <widget class="QGroupBox" name="camera_controls_groupBox">
+     <property name="title">
+      <string>Controls</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
+
+      <item row="1" column="0">
+       <widget class="QPushButton" name="interrupt_pushButton">
+        <property name="text">
+         <string>Interrupt</string>
+        </property>
+       </widget>
+      </item>
+
+      <item row="0" column="0">
+       <widget class="QPushButton" name="start_pushButton">
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
