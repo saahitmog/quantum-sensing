@@ -60,7 +60,7 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
 
         #from ESRImage import ESRImageMeasure
 
-        from ESRMappingMeasure import ESRImageMeasure
+        #from ESRMappingMeasure import ESRImageMeasure
         #self.add_measurement(ESRImageMeasure(self))
 
         '''from T2SweepMeasure import T2SweepMeasure

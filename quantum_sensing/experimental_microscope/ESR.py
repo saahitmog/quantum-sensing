@@ -195,4 +195,5 @@ class ESRMeasure(Measurement):
 
         self.M['sweep'] = self.sweep
         self.M[f'average {S.plotting_type.val}'] = self.plotdata
+        h5_io.h5_save_measurement_settings(self, self.M)
         self.h5f.close()
