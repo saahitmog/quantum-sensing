@@ -95,6 +95,8 @@ class ESRMeasure(Measurement):
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
+        print('ESR Sweep Measurement not yet implemented. Aborting measurement.')
+        return
         AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
 
         for n in range(S.Navg.val):

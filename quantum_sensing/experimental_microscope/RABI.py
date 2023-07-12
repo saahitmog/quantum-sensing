@@ -98,6 +98,7 @@ class RabiMeasure(Measurement):
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
+        return
         AWGctrl.makeRabiSweep(self.inst, self.sweep, S.MW_delay.val, S.MW_Frequency.val, S.Vpp.val)
 
         for n in range(S.Navg.val):

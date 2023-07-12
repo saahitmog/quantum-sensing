@@ -47,12 +47,12 @@ def AWGtest(N=100, dur=0.0005, f=2):
     #readDAQ(task, 1000*N*2, 1000)
 
     SendScpi(inst, ":OUTP OFF")
-    SendScpi(inst, ":MARK OFF")
+    #SendScpi(inst, ":MARK OFF")
     admin.CloseInstrument(instId)
     admin.Close()
     closeDAQTask(task)
 
 if __name__ == '__main__':
-    AWGtest(dur=0.005, f=1)
+    AWGtest(dur=0.0005, f=1)
 
 
