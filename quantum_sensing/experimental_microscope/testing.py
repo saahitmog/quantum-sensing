@@ -4,8 +4,7 @@ import warnings, numpy as np
 from multiprocessing import Pool
 from matplotlib import pyplot as plt
 from cProfile import run
-from AWGcontrol import *
-from DAQ_Analog import *
+from scipy import signal as sg
 
 def rabi(seg, cyc, mw_delay, mw_duration, amp):
     t = np.arange(seg, step=1)
@@ -19,6 +18,18 @@ def rabi(seg, cyc, mw_delay, mw_duration, amp):
     dacSignal = np.uint8((rawSignal/amp*127)+127)
     del t, sq, sn #, rawSignal
     return rawSignal
+
+from AWGcontrol import *
+from DAQ_Analog import *
+
+def seqgen(inst, dur, freq, vpp):
+    segmentLength = 8998848 #this segment length is optimized for 1kHz trigger signal
+    segmentLength = int((2*dur/0.001)*segmentLength)
+    cycles = int(freq * segmentLength / 9)
+
+    print(f'--> Frequency: {freq} GHz')
+    instrumentCalls(inst, fastsine(segmentLength, cycles, 1), vpp)
+    makeESRMarker(inst, segmentLength)
 
 def AWGtest(N=100, dur=0.0005, f=2):
     admin = loadDLL()
@@ -42,10 +53,6 @@ def AWGtest(N=100, dur=0.0005, f=2):
     closeDAQTask(task)
 
 if __name__ == '__main__':
-    '''args, N = (8998848, 5999232, 250000, 5, 1), 1
-    plt.plot(np.arange(args[0], step=1), rabi(*args))
-    plt.xlim(2.24965e6, 2.249725e6)
-    plt.show()'''
     AWGtest(dur=0.005, f=1)
 
 

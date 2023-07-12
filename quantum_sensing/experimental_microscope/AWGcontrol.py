@@ -479,58 +479,19 @@ def makeT1Marker(inst, segmentLength, t_delay, t_readoutDelay, t_AOM):
     
 def instrumentCalls(inst, waveform, vpp=0.001, offset=0):
     query_syst_err = True  
-    dacSignal = waveform
-    
-    # ---------------------------------------------------------------------
-    # DAC functions CH 1 
-    # ---------------------------------------------------------------------
-
-    # select channel
     SendScpi(inst, ":INST:CHAN 1", query_syst_err)
 
     # load I waveform into instrument
     segNum = 1
-    SendScpi(inst, ":TRACe:DEF {0},{1}".format(segNum, len(dacSignal)), query_syst_err)
-    SendScpi(inst, ":TRACe:SEL {0}".format(segNum), query_syst_err)
+    SendScpi(inst, f":TRACe:DEF {segNum},{len(waveform)}", query_syst_err)
+    SendScpi(inst, f":TRACe:SEL {segNum}", query_syst_err)
 
     prefix = ':TRAC:DATA 0,#'
+    with timer('------> AWG Write: ', True): inst.WriteBinaryData(prefix, waveform.tobytes())
 
-    #print('Setup segment:', currtime-lasttime, ' seconds')
-
-    with timer('------> AWG Write: ', True): res = inst.WriteBinaryData(prefix, dacSignal.tobytes())
-    #print('Write segment:', currtime-lasttime, ' seconds')
-    #print(f'Write speed: {dacSignal.nbytes * 1e-9  / (currtime-lasttime)} GB/s')
-
-    # Validate(res.ErrCode, __name__, inspect.currentframe().f_back.f_lineno)
-
-    # res = SendScpi(inst, ":SYST:ERR?", False, False)
-    # print(res[1])
-
-    # lasttime=currtime
-    # currtime=time.time()
-    # print('Validate error:', currtime-lasttime, ' seconds')
-
-    # Vpp for output
-    # SendScpi(inst, ":VOLT:OFFS 0")
-    # SendScpi(inst, ":VOLT:OFFS?")
-    SendScpi(inst, ":SOUR:VOLT {0}".format(vpp))
-    #SendScpi(inst, ":VOLT?")
-
-    # sel segment 1 - play I
-    SendScpi(inst, ":SOUR:FUNC:MODE:SEGM {0}".format(segNum), query_syst_err) 
-    
-
-    # SendScpi(inst, ":TRIG:STAT OFF") # Enable trigger state (CH specific)
-    # SendScpi(inst, ":INIT:CONT ON") # Enable trigger mode (CH specific)
-    # trig_lev = 128
-    # enableTrigger(inst, trig_lev, 1)
-
-    # connect ouput
+    SendScpi(inst, f":SOUR:VOLT {vpp}")
+    SendScpi(inst, f":SOUR:FUNC:MODE:SEGM {segNum}", query_syst_err) 
     SendScpi(inst, ":OUTP ON", query_syst_err)
-
-    # lasttime=currtime
-    # currtime=time.time()
-    # print('Set settings and toggle output:', currtime-lasttime, ' seconds')
 
 def testinstrumentCalls(inst, waveform, vpp=0.001, offset=0):
     starttime=time.time()
