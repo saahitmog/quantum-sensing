@@ -71,16 +71,12 @@ class AOMToggle(Measurement):
         self.activation.update_value(True)
 
     def _run_(self) -> None:
-        send = AWGctrl.SendScpi
-        segmentLength = int(8998848/8)
+        send, SEG = AWGctrl.SendScpi, 999872
         send(self.inst, ":MARK OFF")
-        wv = np.full(segmentLength, 4, dtype=np.uint8)
-        
-        prefix = ':MARK:DATA 0,#'
-        self.inst.WriteBinaryData(prefix, wv.tobytes())
-        send(self.inst, ":MARK:SEL 3")
-        send(self.inst, ":MARK:VOLT:PTOP 1.2")
-        send(self.inst, ":MARK ON")
+        self.inst.WriteBinaryData(':MARK:DATA 0,#', np.full(SEG, 4, dtype=np.uint8).tobytes())
+        send(self.inst, ":MARK:SEL 3; :MARK:VOLT:PTOP 1.2; :MARK ON")
+        #send(self.inst, ":MARK:VOLT:PTOP 1.2")
+        #send(self.inst, ":MARK ON")
         while not self.interrupt_measurement_called: pass
 
     def _initialize_(self) -> None:
