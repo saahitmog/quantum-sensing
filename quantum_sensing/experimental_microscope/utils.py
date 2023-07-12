@@ -39,7 +39,7 @@ import os, inspect, traceback
 import numpy as np
 import AWGcontrol as AWGctrl
 
-class AOMToggle(Measurement):
+class Utility(Measurement):
     
     name = 'Utility'
     

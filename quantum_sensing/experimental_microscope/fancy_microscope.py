@@ -35,8 +35,8 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         from RABI import RabiMeasure
         self.add_measurement(RabiMeasure(self))
 
-        from utils import AOMToggle
-        self.add_measurement(AOMToggle(self))
+        from utils import Utility
+        self.add_measurement(Utility(self))
 
         #from RabiMeasure import RabiMeasure
         #from RabiMappingMeasure import RabiImageMeasure
