@@ -53,11 +53,104 @@ def AWGtest(N=100, dur=0.0005, f=2):
     closeDAQTask(task)'''
 
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
+from ScopeFoundry import Measurement, BaseMicroscopeApp
+import traceback, sys
+import numpy as np
+
+import AWGcontrol as AWGctrl
+import DAQ_Analog as DAQ
+
+class Test(Measurement):
+    
+    name = 'Test'
+    
+    def setup(self):
+        self.ui = load_qt_ui_file(sibling_path(__file__,"utils.ui"))
+        self.ui.setWindowTitle(self.name)
+        self.ui.interruptAOM_pushButton.clicked.connect(self._interrupt_)
+        self.ui.startAOM_pushButton.clicked.connect(self._start_)
+
+    def run(self):
+        msr, LOG = timer(), self.LOG
+        LOG(f"Testing ESR Sweep")
+        with msr:
+            try:
+                hws = timer()
+                with hws, hide(): self._initialize_()
+                LOG(f'Hardware Startup: {hws.t:.4f} s')
+                self._run_()
+            except Exception: traceback.print_exc()
+            finally:
+                hwc = timer()
+                with hwc: self._finalize_()
+                LOG(f'Hardware Close: {hwc.t:.4f} s')
+        LOG(f'I WAITED FOR {msr.t:.4f} SECONDS >.< !!!')
+
+    def _interrupt_(self) -> None:
+        self.interrupt_measurement_called = True
+
+    def _start_(self) -> None:
+        self.activation.update_value(True)
+
+    def _initialize_(self) -> None:
+        self.admin = admin = AWGctrl.loadDLL()
+        slotId = AWGctrl.getSlotId(admin)
+        if not slotId:
+            print("Invalid choice!")
+        else:
+            self.inst = inst = admin.OpenInstrument(slotId)
+            if not inst:
+                print("Failed to Open instrument with slot-Id {0}".format(slotId))  # @IgnorePep8
+                print("\n")
+            else:
+                self.instId = inst.InstrId
+        AWGctrl.instrumentSetup(inst)
+        
+    def _finalize_(self) -> None:
+        AWGctrl.SendScpi(self.inst, ":OUTP OFF; :MARK OFF")
+        self.admin.CloseInstrument(self.instId)
+        self.admin.Close()
+        DAQ.closeDAQTask(self.task)
+
+    def _run_(self) -> None:
+        n, N = 50, 5
+        LOG, sweep = self.LOG, np.linspace(2.79, 2.95, n)
+        LOG(f'Sweeping Frequencies from {sweep[0]:.4f} GHz to {sweep[-1]:.4f} GHz at {n} points.')
+
+        self.task = DAQ.configureDAQ(100 * n)
+        
+        awg = timer()
+        with awg: AWGctrl.makeESRSweep(self.inst, 0.0005, sweep, 0.1)
+        LOG(f'AWG Write: {awg.t:.4f} s')
+        
+        for _n in range(N):
+            LOG(f'Starting Averaging Run {_n+1}')
+            if self.interrupt_measurement_called:
+                    LOG('Measurement Interrupted')
+                    break
+            daq = timer()
+            with daq: DAQ.readDAQ(self.task, 100 * n * 2, 1000)
+            LOG(f'DAQ Read: {daq.t:.4f} s')
+            self.set_progress(_n/N * 100)
+            #LOG('HAI HEWWOO ^w^ !!!')
+
+    def LOG(self, msg):
+        record = makelog(self.name, msg)
+        self.app.logging_widget_handler.emit(record)
+
+
+class TestApp(BaseMicroscopeApp):
+
+    name = 'test_app'
+    
+    def setup(self):
+        
+        self.add_measurement(Test(self))
+        self.ui.show()
+        self.ui.activateWindow()
 
 if __name__ == '__main__':
-    print(sibling_path(__file__, 'ESR.py'))
-
-'''if __name__ == '__main__':
-    #AWGtest(dur=0.0005, f=1)'''
+    app = TestApp(sys.argv)
+    sys.exit(app.exec_())
 
 

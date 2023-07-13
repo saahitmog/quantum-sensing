@@ -60,27 +60,30 @@ class ESRMeasure(Measurement):
         self.plotline = self.plot.plot()
 
     def run(self):
-        with timer('Measurement Complete: '):
-            self.set_progress(0)
-            S = self.settings
+        msr, S, LOG = timer(), self.settings, self.LOG
+        with msr:
             if S.save.val: self._make_savefiles_()
 
-            print(f"Starting ESR Measurement in {S.plotting_type.val.capitalize()} Mode")
+            LOG(f"Starting {self.name} Measurement in {S.plotting_type.val.capitalize()} Mode")
 
             self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
             self.plotdata = np.zeros_like(self.sweep)
 
             try:
-                with timer('--> Hardware Startup: '), hide(): self._initialize_()
+                hws = timer()
+                with hws, hide(): self._initialize_()
+                LOG(f'Hardware Startup: {hws.t:.4f} s')
                 if S.sweep.val: self._run_sweep_()
                 else: self._run_()
 
             except Exception: traceback.print_exc()
 
             finally:
-                with timer('--> Hardware Close: '): self._finalize_()
+                hwc = timer()
+                with hwc: self._finalize_()
+                LOG(f'Hardware Close: {hwc.t:.4f} s')
                 if S.save.val: self._save_data_()
-                # print('')
+        LOG(f'Measurement Complete: {msr.t:.4f} s')
         
     def update_display(self):
         if self.settings.plotting_type.val == 'signal': self.plot.setTitle("Signal vs Frequency")
@@ -91,11 +94,11 @@ class ESRMeasure(Measurement):
         with hide(): self.app.settings_save_ini('.config.ini')
 
     def _run_sweep_(self) -> None:
-        S = self.settings
+        S, LOG = self.settings, self.LOG
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
-        print('ESR Sweep Measurement not yet implemented. Aborting measurement.')
+        LOG(f'{self.name} Sweep Measurement not yet implemented. Aborting measurement.')
         return
         AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
 
@@ -113,20 +116,25 @@ class ESRMeasure(Measurement):
 
     def _run_(self) -> None:
         #Configure the DAQ
-        S = self.settings
-        self.task = task = DAQ.configureDAQ(S.N_samples.val)
+        S, LOG = self.settings, self.LOG
+        self.task = DAQ.configureDAQ(self.settings.N_samples.val)
         interrupted = False
         for n in range(S.Navg.val):
             if interrupted: break
+            LOG(f'Starting Averaging Run {n+1}')
             for i, f in enumerate(self.sweep):
                 if self.interrupt_measurement_called:
                     interrupted = True
-                    print('Measurement Interrupted')
+                    LOG('Measurement Interrupted')
                     break
-                AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
-                with timer('----> Read DAQ: '): counts = DAQ.readDAQ(task, S.N_samples.val*2, S.DAQtimeout.val)
-                signal = np.mean(counts[0::2])
-                background = np.mean(counts[1::2])
+                LOG(f'Frequency: {f:.4f} GHz')
+                awg = timer()
+                with awg: AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
+                LOG(f'AWG Write: {awg.t:.4f} s')
+                daq = timer()
+                with daq: counts = DAQ.readDAQ(self.task, S.N_samples.val*2, S.DAQtimeout.val)
+                LOG(f'DAQ Read: {daq.t:.4f} s')
+                signal, background = np.mean(counts[0::2]), np.mean(counts[1::2])
                 if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
                 self.plotdata[i] = (self.plotdata[i]*n + signal) / (n+1)
                 self.set_progress((n*self.sweep.size+i+1)/(S.Navg.val*self.sweep.size) * 100)
@@ -150,14 +158,11 @@ class ESRMeasure(Measurement):
             else:
                 self.instId = inst.InstrId
         AWGctrl.instrumentSetup(inst)
-
+        
     def _finalize_(self) -> None:
-        AWGctrl.SendScpi(self.inst, ":OUTP OFF")
-        AWGctrl.SendScpi(self.inst, ":MARK OFF")
-        rc = self.admin.CloseInstrument(self.instId)
-        AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
-        rc = self.admin.Close()
-        AWGctrl.Validate(rc, __name__, inspect.currentframe().f_back.f_lineno)
+        AWGctrl.SendScpi(self.inst, ":OUTP OFF; :MARK OFF")
+        self.admin.CloseInstrument(self.instId)
+        self.admin.Close()
         DAQ.closeDAQTask(self.task)
 
     def _make_savefiles_(self) -> None:
@@ -197,3 +202,7 @@ class ESRMeasure(Measurement):
         self.M[f'average {S.plotting_type.val}'] = self.plotdata
         h5_io.h5_save_measurement_settings(self, self.M)
         self.h5f.close()
+
+    def LOG(self, msg):
+        record = makelog(self.name, msg)
+        self.app.logging_widget_handler.emit(record)

@@ -2,6 +2,7 @@ import sys, os, time
 import functools
 import warnings
 from typing import Type
+from  logging import LogRecord
 
 class hide:
     def __enter__(self):
@@ -13,15 +14,14 @@ class hide:
         sys.stdout = self._original_stdout
 
 class timer:
-    def __init__(self, msg: str = '', quiet: bool = False):
-        self.msg, self.quiet = msg, quiet
-
+    def __init__(self):
+        self.t = 0
     def __enter__(self):
         self.start_time = time.perf_counter()
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        t = time.perf_counter()-self.start_time
-        if not self.quiet: print(self.msg, f'{t:.4f} seconds', sep='')
+        self.t = time.perf_counter()-self.start_time
 
 def ignore(warning: Type[Warning]):
     def inner(func):
@@ -32,6 +32,9 @@ def ignore(warning: Type[Warning]):
                 return func(*args, **kwargs)
         return wrapper
     return inner
+
+def makelog(measurement, msg):
+    return LogRecord(measurement, 20, __file__, 0, ' '+msg, None, None)
 
 from ScopeFoundry import Measurement
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file
@@ -50,16 +53,17 @@ class Utility(Measurement):
         self.ui.startAOM_pushButton.clicked.connect(self._start_)
 
     def run(self):
-        print(f"Toggling AOM")
+        LOG = self.LOG
+        LOG(f"Toggling AOM")
         mode = 'AOM'
         try:
             with hide(): self._initialize_()
-            print('----- AOM ON -----')
+            LOG('AOM ON')
             if mode == 'AOM': self.runAOM()
         except Exception: traceback.print_exc()
         finally: 
             self._finalize_()
-            print('----- AOM OFF -----')
+            LOG('AOM OFF')
 
     def _interrupt_(self) -> None:
         self.interrupt_measurement_called = True
@@ -85,3 +89,7 @@ class Utility(Measurement):
         AWGctrl.SendScpi(self.inst, ":OUTP OFF; :MARK OFF")
         self.admin.CloseInstrument(self.instId)
         self.admin.Close()
+
+    def LOG(self, msg):
+        record = makelog(self.name, msg)
+        self.app.logging_widget_handler.emit(record)
