@@ -95,20 +95,23 @@ class ESRMeasure(Measurement):
 
     def _run_sweep_(self) -> None:
         S, LOG = self.settings, self.LOG
+        LOG(f'Sweeping Frequencies from {self.sweep[0]:.4f} GHz to {self.sweep[-1]:.4f} GHz at {self.sweep.size} points.')
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
-        LOG(f'{self.name} Sweep Measurement not yet implemented. Aborting measurement.')
-        return
-        AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
+        awg = timer()
+        with awg: AWGctrl.makeESRSweep(self.inst, S.t_duration.val, self.sweep, S.Vpp.val)
+        LOG(f'AWG Write: {awg.t:.4f} s')
 
         for n in range(S.Navg.val):
+            LOG(f'Starting Averaging Run {n+1}')
             if self.interrupt_measurement_called:
-                    print('Measurement Interrupted')
+                    LOG('Measurement Interrupted')
                     break
-            with timer('--> Read DAQ: '): counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
-            for i in range(self.sweep.size):
-                signal[i], background[i] = np.mean(counts[2*i::2*self.sweep.size]), np.mean(counts[2*i+1::2*self.sweep.size])
+            daq = timer()
+            with daq: counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
+            LOG(f'DAQ Read: {daq.t:.4f} s')
+            for i in range(self.sweep.size): signal[i], background[i] = np.mean(counts[2*i::2*self.sweep.size]), np.mean(counts[2*i+1::2*self.sweep.size])
 
             if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
             self.plotdata = ((self.plotdata*n) + signal) / (n+1)
@@ -204,5 +207,4 @@ class ESRMeasure(Measurement):
         self.h5f.close()
 
     def LOG(self, msg):
-        record = makelog(self.name, msg)
-        self.app.logging_widget_handler.emit(record)
+        self.app.logging_widget_handler.emit(makelog(self.name, msg))
