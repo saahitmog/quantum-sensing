@@ -129,6 +129,7 @@ class Test(Measurement):
     def _run_(self) -> None:
         n, N = self.n, self.N
         LOG, sweep = self.LOG, np.linspace(2.79, 2.95, n)
+        self.sweep = sweep
         signal, background = np.zeros(n, dtype=float), np.zeros(n, dtype=float)
         LOG(f'Sweeping Frequencies from {sweep[0]:.4f} GHz to {sweep[-1]:.4f} GHz at {n} points.')
 
