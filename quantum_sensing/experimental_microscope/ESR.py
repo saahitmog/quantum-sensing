@@ -60,14 +60,12 @@ class ESRMeasure(Measurement):
         self.plotline = self.plot.plot()
 
     def run(self):
-        msr, S, LOG = timer(), self.settings, self.LOG
+        msr, S, LOG = timer(), self.settings, self._log_
         with msr:
             if S.save.val: self._make_savefiles_()
-
-            LOG(f"Starting {self.name} Measurement in {S.plotting_type.val.capitalize()} Mode")
-
             self.sweep = np.linspace(S.Start_Frequency.val, S.End_Frequency.val, num=S.Npts.val)
             self.plotdata = np.zeros_like(self.sweep)
+            self.cutoff = -1
 
             try:
                 hws = timer()
@@ -76,9 +74,7 @@ class ESRMeasure(Measurement):
                     LOG(f'Hardware Startup: {hws.t:.4f} s')
                     if S.sweep.val: self._run_sweep_()
                     else: self._run_()
-
-            except Exception: traceback.print_exc()
-
+            except Exception: LOG(traceback.format_exc())
             finally:
                 if self.inst:
                     hwc = timer()
@@ -90,13 +86,13 @@ class ESRMeasure(Measurement):
     def update_display(self):
         if self.settings.plotting_type.val == 'signal': self.plot.setTitle("Signal vs Frequency")
         else: self.plot.setTitle("Contrast vs Frequency")
-        self.plotline.setData(self.sweep, self.plotdata)
+        if self.cutoff: self.plotline.setData(self.sweep[:self.cutoff], self.plotdata[:self.cutoff])
 
     def post_run(self): 
         with hide(): self.app.settings_save_ini('.config.ini')
 
     def _run_sweep_(self) -> None:
-        S, LOG = self.settings, self.LOG
+        S, LOG = self.settings, self._log_
         LOG(f'Sweeping Frequencies from {self.sweep[0]:.4f} GHz to {self.sweep[-1]:.4f} GHz at {self.sweep.size} points.')
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
@@ -107,34 +103,27 @@ class ESRMeasure(Measurement):
 
         for n in range(S.Navg.val):
             LOG(f'Averaging Run {n+1}')
-            if self.interrupt_measurement_called:
-                    LOG('Measurement Interrupted')
-                    break
+            if self.interrupt_measurement_called: break
             daq = timer()
             with daq: counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
             LOG(f'DAQ Read: {daq.t:.4f} s')
 
-            
             for i in range(self.sweep.size): signal[i], background[i] = np.mean(counts[2*i::2*self.sweep.size]), np.mean(counts[2*i+1::2*self.sweep.size])
-            signal, background = np.mean(counts.reshape(self.sweep.size, -1)[:,::2], axis=1), np.mean(counts.reshape(self.sweep.size, -1)[:,1::2], axis=1)
-
+            # signal, background = np.mean(counts.reshape(self.sweep.size, -1)[:,::2], axis=1), np.mean(counts.reshape(self.sweep.size, -1)[:,1::2], axis=1)
 
             if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
             self.plotdata = ((self.plotdata*n) + signal) / (n+1)
             self.set_progress(n/S.Navg.val * 100)
 
     def _run_(self) -> None:
-        S, LOG = self.settings, self.LOG
+        S, LOG, self.cutoff = self.settings, self._log_, 1
         self.task = DAQ.configureDAQ(self.settings.N_samples.val)
-        interrupted = False
         for n in range(S.Navg.val):
-            if interrupted: break
-            LOG(f'Starting Averaging Run {n+1}')
+            if self.interrupt_measurement_called: break
+            if n: self.cutoff = -1
+            LOG(f'Averaging Run {n+1}')
             for i, f in enumerate(self.sweep):
-                if self.interrupt_measurement_called:
-                    interrupted = True
-                    LOG('Measurement Interrupted')
-                    break
+                if self.interrupt_measurement_called: break
                 LOG(f'Frequency: {f:.4f} GHz')
                 awg = timer()
                 with awg: AWGctrl.makeSingleESRSeqMarker(self.inst, S.t_duration.val, f, S.Vpp.val)
@@ -146,12 +135,15 @@ class ESRMeasure(Measurement):
                 if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
                 self.plotdata[i] = (self.plotdata[i]*n + signal) / (n+1)
                 self.set_progress((n*self.sweep.size+i+1)/(S.Navg.val*self.sweep.size) * 100)
+                if not n: self.cutoff += 1
 
     def _interrupt_(self) -> None:
         self.interrupt_measurement_called = True
+        self._log_('Measurement Interrupted')
 
     def _start_(self) -> None:
         self.activation.update_value(True)
+        self._log_(f"Starting {self.name} Measurement in {self.settings.plotting_type.val.capitalize()} Mode")
 
     def _initialize_(self) -> None:
         self.admin, self.inst = AWGctrl.loadDLL(), None
@@ -206,5 +198,5 @@ class ESRMeasure(Measurement):
         h5_io.h5_save_measurement_settings(self, self.M)
         self.h5f.close()
 
-    def LOG(self, msg):
+    def _log_(self, msg):
         self.app.logging_widget_handler.emit(makelog(self.name, msg))
