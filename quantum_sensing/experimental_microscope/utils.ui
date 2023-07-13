@@ -42,6 +42,23 @@
     </widget>
    </item>
 
+   <item row="1" column="0" colspan="3">
+    <widget class="QGroupBox" name="plot_groupBox">
+     <property name="title">
+      <string>Image</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="show_pushButton">
+        <property name="text">
+         <string>Show</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
   </layout>
  </widget>
  <resources/>
