@@ -70,33 +70,21 @@ class Test(Measurement):
         self.ui.setWindowTitle(self.name)
         self.ui.interruptAOM_pushButton.clicked.connect(self._interrupt_)
         self.ui.startAOM_pushButton.clicked.connect(self._start_)
-        self.n, self.N, self.mode = 50, 5, 'contrast'
-
-    def setup_figure(self):
-        self.plotdata, self.sweep = np.array([]), np.array([])
-        self.graph_layout = pg.GraphicsLayoutWidget()
-        self.ui.plot_groupBox.layout().addWidget(self.graph_layout)
-        self.plot = self.graph_layout.addPlot(title="")
-        self.plotline = self.plot.plot()
-
-    def update_display(self):
-        self.plot.setTitle(f"{self.mode.capitalize()} vs Frequency")
-        self.plotline.setData(self.sweep, self.plotdata)
 
     def run(self):
         msr, LOG = timer(), self.LOG
-        LOG(f"Testing ESR Sweep")
+        LOG(f"Testing")
         with msr:
             try:
-                hws = timer()
+                '''hws = timer()
                 with hws, hide(): self._initialize_()
-                LOG(f'Hardware Startup: {hws.t:.4f} s')
+                LOG(f'Hardware Startup: {hws.t:.4f} s')'''
                 self._run_()
             except Exception: traceback.print_exc()
             finally:
-                hwc = timer()
+                '''hwc = timer()
                 with hwc: self._finalize_()
-                LOG(f'Hardware Close: {hwc.t:.4f} s')
+                LOG(f'Hardware Close: {hwc.t:.4f} s')'''
         LOG(f'Total Time: {msr.t:.4f} s')
         #LOG(f'I WAITED FOR {msr.t:.4f} SECONDS >.< !!!')
 
@@ -127,36 +115,12 @@ class Test(Measurement):
         DAQ.closeDAQTask(self.task)
 
     def _run_(self) -> None:
-        n, N = self.n, self.N
-        LOG, sweep = self.LOG, np.linspace(2.79, 2.95, n)
-        self.sweep, self.plotdata = sweep, np.zeros_like(sweep)
-        signal, background = np.zeros(n, dtype=float), np.zeros(n, dtype=float)
-        LOG(f'Sweeping Frequencies from {sweep[0]:.4f} GHz to {sweep[-1]:.4f} GHz at {n} points.')
-
-        self.task = DAQ.configureDAQ(100 * n)
-
-        awg = timer()
-        with awg: AWGctrl.makeESRSweep(self.inst, 0.0005, sweep, 0.1)
-        LOG(f'AWG Write: {awg.t:.4f} s')
-        
-        for _n in range(N):
-            LOG(f'Starting Averaging Run {_n+1}')
-            if self.interrupt_measurement_called:
-                    LOG('Measurement Interrupted')
-                    break
-            daq = timer()
-            with daq: counts = DAQ.readDAQ(self.task, 100 * n * 2, 1000)
-            LOG(f'DAQ Read: {daq.t:.4f} s')
-
-            for i in range(n): signal[i], background[i] = np.mean(counts[2*i::2*n]), np.mean(counts[2*i+1::2*n])
-            if self.mode == 'contrast': signal = np.divide(signal, background)
-            self.plotdata = ((self.plotdata*n) + signal) / (n+1)
-            self.set_progress(_n/N * 100)
-            #LOG('HAI HEWWOO ^w^ !!!')
+        while not self.interrupt_measurement_called:
+            time.sleep(2)
+            self.LOG('HAI HEWWOO ^w^ !!!')
 
     def LOG(self, msg):
-        record = makelog(self.name, msg)
-        self.app.logging_widget_handler.emit(record)
+        self.app.logging_widget_handler.emit(makelog(self.name, msg))
 
 
 class TestApp(BaseMicroscopeApp):
