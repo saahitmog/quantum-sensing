@@ -57,9 +57,8 @@ from ScopeFoundry import Measurement, BaseMicroscopeApp
 import traceback, sys
 import numpy as np
 
-import AWGcontrol as AWGctrl
-import DAQ_Analog as DAQ
-import pyqtgraph as pg
+'''import AWGcontrol as AWGctrl
+import DAQ_Analog as DAQ'''
 
 class Test(Measurement):
     
@@ -76,15 +75,9 @@ class Test(Measurement):
         LOG(f"Testing")
         with msr:
             try:
-                '''hws = timer()
-                with hws, hide(): self._initialize_()
-                LOG(f'Hardware Startup: {hws.t:.4f} s')'''
                 self._run_()
             except Exception: traceback.print_exc()
-            finally:
-                '''hwc = timer()
-                with hwc: self._finalize_()
-                LOG(f'Hardware Close: {hwc.t:.4f} s')'''
+            finally: ...
         LOG(f'Total Time: {msr.t:.4f} s')
         #LOG(f'I WAITED FOR {msr.t:.4f} SECONDS >.< !!!')
 
@@ -94,7 +87,7 @@ class Test(Measurement):
     def _start_(self) -> None:
         self.activation.update_value(True)
 
-    def _initialize_(self) -> None:
+    '''def _initialize_(self) -> None:
         self.admin = admin = AWGctrl.loadDLL()
         slotId = AWGctrl.getSlotId(admin)
         if not slotId:
@@ -112,15 +105,20 @@ class Test(Measurement):
         AWGctrl.SendScpi(self.inst, ":OUTP OFF; :MARK OFF")
         self.admin.CloseInstrument(self.instId)
         self.admin.Close()
-        DAQ.closeDAQTask(self.task)
+        DAQ.closeDAQTask(self.task)'''
 
     def _run_(self) -> None:
-        while not self.interrupt_measurement_called:
+        '''while not self.interrupt_measurement_called:
             time.sleep(2)
-            self.LOG('HAI HEWWOO ^w^ !!!')
+            '''
+        with Pool() as pool: pool.map(worker, range(100))
+        self.LOG('HAI HEWWOO ^w^ !!!')
 
     def LOG(self, msg):
         self.app.logging_widget_handler.emit(makelog(self.name, msg))
+
+def worker(id):
+    time.sleep(1)
 
 
 class TestApp(BaseMicroscopeApp):
@@ -136,5 +134,6 @@ class TestApp(BaseMicroscopeApp):
 if __name__ == '__main__':
     app = TestApp(sys.argv)
     sys.exit(app.exec_())
+    print(os.cpu_count())
 
 

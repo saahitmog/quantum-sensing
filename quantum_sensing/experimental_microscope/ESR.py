@@ -72,16 +72,18 @@ class ESRMeasure(Measurement):
             try:
                 hws = timer()
                 with hws, hide(): self._initialize_()
-                LOG(f'Hardware Startup: {hws.t:.4f} s')
-                if S.sweep.val: self._run_sweep_()
-                else: self._run_()
+                if self.inst: 
+                    LOG(f'Hardware Startup: {hws.t:.4f} s')
+                    if S.sweep.val: self._run_sweep_()
+                    else: self._run_()
 
             except Exception: traceback.print_exc()
 
             finally:
-                hwc = timer()
-                with hwc: self._finalize_()
-                LOG(f'Hardware Close: {hwc.t:.4f} s')
+                if self.inst:
+                    hwc = timer()
+                    with hwc: self._finalize_()
+                    LOG(f'Hardware Close: {hwc.t:.4f} s')
                 if S.save.val: self._save_data_()
         LOG(f'Measurement Complete: {msr.t:.4f} s')
         
@@ -104,21 +106,24 @@ class ESRMeasure(Measurement):
         LOG(f'AWG Write: {awg.t:.4f} s')
 
         for n in range(S.Navg.val):
-            LOG(f'Starting Averaging Run {n+1}')
+            LOG(f'Averaging Run {n+1}')
             if self.interrupt_measurement_called:
                     LOG('Measurement Interrupted')
                     break
             daq = timer()
             with daq: counts = DAQ.readDAQ(task, S.N_samples.val*S.Npts.val*2, S.DAQtimeout.val)
             LOG(f'DAQ Read: {daq.t:.4f} s')
+
+            
             for i in range(self.sweep.size): signal[i], background[i] = np.mean(counts[2*i::2*self.sweep.size]), np.mean(counts[2*i+1::2*self.sweep.size])
+            signal, background = np.mean(counts.reshape(self.sweep.size, -1)[:,::2], axis=1), np.mean(counts.reshape(self.sweep.size, -1)[:,1::2], axis=1)
+
 
             if S.plotting_type.val == 'contrast': signal = np.divide(signal, background)
             self.plotdata = ((self.plotdata*n) + signal) / (n+1)
             self.set_progress(n/S.Navg.val * 100)
 
     def _run_(self) -> None:
-        #Configure the DAQ
         S, LOG = self.settings, self.LOG
         self.task = DAQ.configureDAQ(self.settings.N_samples.val)
         interrupted = False
@@ -149,18 +154,13 @@ class ESRMeasure(Measurement):
         self.activation.update_value(True)
 
     def _initialize_(self) -> None:
-        self.admin = admin = AWGctrl.loadDLL()
-        slotId = AWGctrl.getSlotId(admin)
-        if not slotId:
-            print("Invalid choice!")
-        else:
-            self.inst = inst = admin.OpenInstrument(slotId)
-            if not inst:
-                print("Failed to Open instrument with slot-Id {0}".format(slotId))  # @IgnorePep8
-                print("\n")
-            else:
-                self.instId = inst.InstrId
-        AWGctrl.instrumentSetup(inst)
+        self.admin, self.inst = AWGctrl.loadDLL(), None
+        slotId = AWGctrl.getSlotId(self.admin)
+        if slotId:
+            self.inst = self.admin.OpenInstrument(slotId)
+            if self.inst: self.instId = self.inst.InstrId
+        if not slotId or not self.inst: self.LOG('Hardware Connection Failed')
+        AWGctrl.instrumentSetup(self.inst)
         
     def _finalize_(self) -> None:
         AWGctrl.SendScpi(self.inst, ":OUTP OFF; :MARK OFF")
