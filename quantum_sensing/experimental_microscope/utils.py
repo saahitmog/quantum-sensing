@@ -33,8 +33,8 @@ def ignore(warning: Type[Warning]):
         return wrapper
     return inner
 
-def makelog(measurement, msg):
-    return LogRecord(measurement, 20, __file__, 0, ' '+msg, None, None)
+def makelog(measurement, msg): return LogRecord(measurement, 20, __file__, 0, ' '+msg, None, None)
+def sleeper(id): time.sleep(1)
 
 from ScopeFoundry import Measurement
 from ScopeFoundry.helper_funcs import sibling_path, load_qt_ui_file

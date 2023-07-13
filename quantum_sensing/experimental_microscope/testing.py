@@ -111,15 +111,11 @@ class Test(Measurement):
         '''while not self.interrupt_measurement_called:
             time.sleep(2)
             '''
-        with Pool() as pool: pool.map(worker, range(100))
+        with Pool() as pool: pool.map(sleeper, range(100))
         self.LOG('HAI HEWWOO ^w^ !!!')
 
     def LOG(self, msg):
         self.app.logging_widget_handler.emit(makelog(self.name, msg))
-
-def worker(id):
-    time.sleep(1)
-
 
 class TestApp(BaseMicroscopeApp):
 
