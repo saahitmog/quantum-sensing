@@ -75,9 +75,7 @@ class RabiMeasure(Measurement):
 
             try:
                 with timer('--> Hardware Startup: '), hide(): self._initialize_()
-                if S.sweep.val: 
-                    print('Rabi Sweep Measurement not yet implemented. Aborting measurement.')
-                    self._run_sweep_()
+                if S.sweep.val: self._run_sweep_()
                 else: self._run_()
             except Exception: traceback.print_exc()
             finally:
@@ -98,6 +96,7 @@ class RabiMeasure(Measurement):
         self.task = task = DAQ.configureDAQ(S.N_samples.val * S.Npts.val)
         signal = np.zeros(self.sweep.shape, dtype=float)
         background = np.zeros(self.sweep.shape, dtype=float)
+        print('Rabi Sweep Measurement not yet implemented. Aborting measurement.')
         return
         AWGctrl.makeRabiSweep(self.inst, self.sweep, S.MW_delay.val, S.MW_Frequency.val, S.Vpp.val)
 

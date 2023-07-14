@@ -1,7 +1,7 @@
 
 from ScopeFoundry import BaseMicroscopeApp
 from utils import *
-import os, sys 
+import os, sys, warnings
 
 class FancyMicroscopeApp(BaseMicroscopeApp):
 
@@ -10,7 +10,6 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
     def LOG(self, msg): self.logging_widget_handler.emit(makelog('APP', msg))
 
     def setup(self):
-        
 
         self.LOG("Adding Hardware Components")
         #from thorcam_sci.thorcam_sci_hw import ThorcamSCIHW as camHW
@@ -70,5 +69,6 @@ class FancyMicroscopeApp(BaseMicroscopeApp):
         except Exception: pass
 
 if __name__ == '__main__':
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
     app = FancyMicroscopeApp(sys.argv)
     sys.exit(app.exec_())

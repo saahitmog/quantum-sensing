@@ -26,7 +26,7 @@ from  nidaqmx.constants import *
 from connectionConfig import *
 import sys
 import time
-DAQ_APDInput = "Dev1/ai0"
+DAQ_APDInput = "DEV1/AI2"
 DAQ_StartTrig = "APFI0"
 DAQ_SampleClk = "PFI2"
 
